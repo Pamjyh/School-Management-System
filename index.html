@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบบริหารงานโรงเรียน</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ======= LOADING ======= -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">กำลังโหลด...</div>
+</div>
+
+<!-- ======= SETUP SCREEN ======= -->
+<div class="setup-screen" id="setupScreen" style="display:none">
+  <div class="setup-box">
+    <div class="setup-logo">
+      <img src="assets/logo1.jpg" style="width:40px;height:40px;border-radius:50%;object-fit:cover">
+      <span style="font-size:16px;font-weight:700;letter-spacing:-.02em">ระบบบริหารงานโรงเรียน</span>
+    </div>
+    <h1>เชื่อมต่อ<br>Supabase</h1>
+    <p>ใส่ข้อมูลจาก Supabase Project ของท่าน<br>ดูได้ที่ Settings → API</p>
+    <div class="setup-step"><div class="step-dot">1</div><span>เข้า supabase.com → Project ของท่าน → Settings → API</span></div>
+    <div class="setup-step"><div class="step-dot">2</div><span>Copy "Project URL" และ "anon public" key</span></div>
+    <div class="setup-step"><div class="step-dot">3</div><span>วางด้านล่างแล้วกด เชื่อมต่อ</span></div>
+    <div class="form-group" style="margin-top:24px">
+      <label class="form-lbl">Project URL</label>
+      <input class="form-inp" type="url" id="sbUrl" placeholder="https://xxxxxxxxxxxx.supabase.co">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Anon Key</label>
+      <input class="form-inp" type="password" id="sbKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+    </div>
+    <div class="error-banner" id="setupError"></div>
+    <button class="btn-ink" onclick="connectSupabase()">เชื่อมต่อ Supabase →</button>
+    <p class="setup-note">ข้อมูลถูกเก็บใน browser ของท่านเท่านั้น ไม่ส่งที่ไหน</p>
+  </div>
+</div>
+
+<!-- ======= MAIN APP ======= -->
+<div class="app" id="mainApp">
+
+  <!-- NAV -->
+  <div class="nav-spacer"></div>
+  <div class="nav-outer">
+    <div class="nav-pill">
+      <div class="nav-brand" onclick="goPage('dashboard')">
+        <img src="assets/logo2.jpg" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0">
+        <span class="nav-title">ระบบงานโรงเรียน</span>
+      </div>
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-page="dashboard">ภาพรวม</button>
+        <button class="nav-tab" data-page="projects">โครงการ</button>
+        <button class="nav-tab" data-page="procurement">พัสดุ</button>
+        <button class="nav-tab" data-page="finance">การเงิน</button>
+      </div>
+      <div class="nav-right">
+        <select class="year-sel" id="yearSel" onchange="switchYear()"></select>
+        <button class="btn-sm" onclick="openYearModal()">+ ปี</button>
+        <button class="btn-outline-sm" onclick="resetConfig()">⚙</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= PAGE: DASHBOARD ======= -->
+  <div class="page active" id="page-dashboard">
+    <div class="eyebrow"><span class="eyebrow-dot"></span>ภาพรวม ปีงบประมาณ <span id="dbYear">—</span></div>
+    <h2 class="page-title">สรุปการดำเนินงาน</h2>
+    <p class="page-sub">ข้อมูลรวมทุก module — โครงการ งานพัสดุ และการเงิน</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#3860BE"></div><div class="stat-ey-text">โครงการทั้งหมด</div></div>
+        <div class="stat-val" id="db-projects">—</div>
+        <div class="stat-sub" id="db-projects-sub">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#3860BE"></div><div class="stat-ey-text">งบประมาณรวม</div></div>
+        <div class="stat-val" id="db-budget">—</div>
+        <div class="stat-sub">บาท</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#9A3A0A"></div><div class="stat-ey-text">รายการพัสดุ</div></div>
+        <div class="stat-val" id="db-items">—</div>
+        <div class="stat-sub" id="db-items-sub">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#2d9c5c"></div><div class="stat-ey-text">เบิกจ่ายแล้ว</div></div>
+        <div class="stat-val" id="db-done">—</div>
+        <div class="stat-sub" id="db-done-sub">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:var(--arc)"></div><div class="stat-ey-text">รอดำเนินการเบิก</div></div>
+        <div class="stat-val" id="db-pend">—</div>
+        <div class="stat-sub" id="db-pend-sub">—</div>
+      </div>
+    </div>
+
+    <!-- โครงการที่ใช้งบเกิน -->
+    <div class="eyebrow" style="margin-top:8px"><span class="eyebrow-dot"></span>โครงการแยกตามสถานะงบ</div>
+    <div id="db-proj-table"></div>
+  </div>
+
+  <!-- ======= PAGE: PROJECTS ======= -->
+  <div class="page" id="page-projects">
+    <div class="eyebrow"><span class="eyebrow-dot"></span>Module 1</div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:10px">
+      <div>
+        <h2 class="page-title" style="margin-bottom:0">ข้อมูลโครงการ</h2>
+        <p class="page-sub" style="margin-bottom:0">งบประมาณ ยอดใช้ไป คงเหลือ</p>
+      </div>
+      <button class="btn-sm" onclick="openProjectForm()">+ เพิ่มโครงการ</button>
+    </div>
+
+    <div id="proj-grid" class="project-grid"></div>
+
+    <!-- Project detail -->
+    <div id="proj-detail" style="display:none">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <button class="btn-outline-sm" onclick="closeProjectDetail()">← กลับ</button>
+        <span id="proj-detail-name" style="font-size:16px;font-weight:700;color:var(--ink)"></span>
+      </div>
+      <div class="tab-bar">
+        <button class="tab-btn active" data-ptab="items">รายการพัสดุ</button>
+        <button class="tab-btn" data-ptab="finance">รายการการเงิน</button>
+      </div>
+      <div class="table-card" style="margin-top:0">
+        <div id="proj-detail-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= PAGE: PROCUREMENT ======= -->
+  <div class="page" id="page-procurement">
+    <div class="eyebrow"><span class="eyebrow-dot"></span>Module 3</div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:10px">
+      <div>
+        <h2 class="page-title" style="margin-bottom:0">งานพัสดุ</h2>
+        <p class="page-sub" style="margin-bottom:0">จัดซื้อ-จัดจ้าง สถานะการเบิกจ่าย</p>
+      </div>
+      <button class="btn-sm" onclick="openProcForm()">+ เพิ่มรายการ</button>
+    </div>
+
+    <!-- Project budget summary bar -->
+    <div id="proj-budget-bar" style="display:none;background:var(--lifted);border-radius:var(--r-card);padding:14px 18px;margin-bottom:16px;border:1px solid rgba(20,20,19,.08)">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate);margin-bottom:10px">สรุปยอดงบประมาณต่อโครงการ (เฉพาะรายการที่เชื่อมโครงการ)</div>
+      <div id="proj-budget-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px"></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-pill">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="proc-search" placeholder="ค้นหารายการ...">
+      </div>
+      <select class="filter-sel" id="proc-ftype">
+        <option value="">ประเภททั้งหมด</option>
+        <option value="จัดซื้อ">จัดซื้อ</option>
+        <option value="จัดจ้าง">จัดจ้าง</option>
+      </select>
+      <select class="filter-sel" id="proc-fstatus">
+        <option value="">สถานะทั้งหมด</option>
+        <option value="เบิกแล้ว">เบิกแล้ว</option>
+        <option value="ยังไม่เบิก">รอดำเนินการเบิก</option>
+      </select>
+      <select class="filter-sel" id="proc-fproject">
+        <option value="">โครงการทั้งหมด</option>
+      </select>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" data-ptab2="all">ทั้งหมด</button>
+      <button class="tab-btn" data-ptab2="จัดซื้อ">จัดซื้อ</button>
+      <button class="tab-btn" data-ptab2="จัดจ้าง">จัดจ้าง</button>
+    </div>
+    <div class="table-card">
+      <div class="table-meta">
+        <span class="meta-txt" id="proc-info">—</span>
+        <div class="meta-pills">
+          <span class="mpill mp-g" id="proc-mg">—</span>
+          <span class="mpill mp-a" id="proc-ma">—</span>
+        </div>
+      </div>
+      <table>
+        <thead><tr>
+          <th>ลำดับ</th><th>ประเภท</th><th>รายการ</th><th>โครงการ</th>
+          <th>ผู้รับผิดชอบ</th><th>วันที่รายงาน</th>
+          <th class="r">วงเงิน (บาท)</th><th>สถานะ</th><th>เลขใบเบิก</th><th></th>
+        </tr></thead>
+        <tbody id="proc-tbody"></tbody>
+        <tfoot id="proc-tfoot"></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- ======= PAGE: FINANCE ======= -->
+  <div class="page" id="page-finance">
+    <div class="eyebrow"><span class="eyebrow-dot"></span>Module 2</div>
+    <h2 class="page-title">งานฝ่ายการเงิน</h2>
+    <div class="coming-soon">
+      <div class="cs-icon">💰</div>
+      <div class="cs-title">กำลังออกแบบ</div>
+      <p class="cs-sub">รอรายละเอียดจากฝ่ายการเงินก่อนครับ เมื่อทราบแล้วจะพัฒนาต่อทันที<br><br>
+      ตารางในฐานข้อมูล <code style="background:rgba(20,20,19,.07);padding:2px 6px;border-radius:4px;font-size:12px">finance_records</code> พร้อมแล้ว</p>
+    </div>
+  </div>
+
+</div><!-- end .app -->
+
+<!-- ======= PROCUREMENT FORM MODAL ======= -->
+<div class="overlay" id="procOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="procFormTitle">เพิ่มรายการ</h2>
+      <button class="modal-x" onclick="closeProcForm()">✕</button>
+    </div>
+    <input type="hidden" id="procEditId">
+    <div class="form-grid">
+      <div class="fg">
+        <label>ลำดับที่ (จ.?) <span style="color:var(--arc)">*</span></label>
+        <div style="display:flex;align-items:center">
+          <span style="background:var(--canvas);border:1.5px solid rgba(20,20,19,.15);border-right:none;border-radius:var(--r-btn) 0 0 var(--r-btn);padding:10px 12px;font-size:13px;font-weight:700;color:var(--slate);font-family:var(--mono)">จ.</span>
+          <input class="fc" type="number" id="pSeq" min="1" placeholder="1" style="border-radius:0 var(--r-btn) var(--r-btn) 0;border-left:none">
+        </div>
+      </div>
+      <div class="fg">
+        <label>ประเภท <span style="color:var(--arc)">*</span></label>
+        <select class="fc" id="pType" onchange="suggestProcSeq()">
+          <option value="จัดซื้อ">จัดซื้อ</option>
+          <option value="จัดจ้าง">จัดจ้าง</option>
+        </select>
+      </div>
+      <div class="fg form-full">
+        <label>ชื่อรายการ <span style="color:var(--arc)">*</span></label>
+        <input class="fc" type="text" id="pTitle" placeholder="ระบุชื่อรายการจัดซื้อหรือจัดจ้าง">
+      </div>
+      <div class="fg">
+        <label>โครงการ</label>
+        <select class="fc" id="pProject"><option value="">— ไม่ระบุ —</option></select>
+      </div>
+      <div class="fg">
+        <label>ผู้รับผิดชอบ</label>
+        <input class="fc" type="text" id="pPerson" placeholder="ชื่อ-สกุล / ชื่อย่อ">
+      </div>
+      <div class="fg">
+        <label>แหล่งงบประมาณ</label>
+        <select class="fc" id="pBudgetSrc">
+          <option value="">— ไม่ระบุ —</option>
+          <option value="อุดหนุน">เงินอุดหนุน</option>
+          <option value="พัฒนาผู้เรียน">เงินพัฒนาผู้เรียน</option>
+          <option value="เงินพัฒนาผู้เรียน">เงินพัฒนาผู้เรียน (เงินพัฒนาฯ)</option>
+          <option value="อื่นๆ">อื่นๆ</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>วันที่รายงานขอซื้อ/จ้าง</label>
+        <input class="fc" type="date" id="pDate">
+      </div>
+      <div class="fg">
+        <label>วงเงินงบประมาณ (บาท)</label>
+        <input class="fc" type="number" id="pAmount" min="0" step="0.01" placeholder="0.00">
+      </div>
+      <div class="fg">
+        <label>สถานะการเบิกจ่าย</label>
+        <select class="fc" id="pStatus" onchange="toggleWD()">
+          <option value="ยังไม่เบิก">รอดำเนินการเบิก</option>
+          <option value="เบิกแล้ว">เบิกจ่ายแล้ว</option>
+        </select>
+      </div>
+      <div class="fg" id="withdrawGroup">
+        <label>เลขที่ใบเบิก</label>
+        <input class="fc" type="text" id="pWithdrawNo" placeholder="เลขที่ใบเบิกจ่าย">
+      </div>
+      <div class="fg form-full">
+        <label>หมายเหตุ</label>
+        <textarea class="fc" id="pRemark" placeholder="หมายเหตุ (ถ้ามี)"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeProcForm()">ยกเลิก</button>
+      <button class="btn-sm" style="padding:10px 24px;font-size:13px" onclick="saveProcItem()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= PROJECT FORM MODAL ======= -->
+<div class="overlay" id="projOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="projFormTitle">เพิ่มโครงการ</h2>
+      <button class="modal-x" onclick="closeProjForm()">✕</button>
+    </div>
+    <input type="hidden" id="projEditId">
+    <div class="form-grid">
+      <div class="fg form-full">
+        <label>ชื่อโครงการ <span style="color:var(--arc)">*</span></label>
+        <input class="fc" type="text" id="projName" placeholder="ชื่อโครงการ">
+      </div>
+      <div class="fg">
+        <label>ครู/ผู้รับผิดชอบ</label>
+        <input class="fc" type="text" id="projTeacher" placeholder="ชื่อ-สกุล">
+      </div>
+      <div class="fg">
+        <label>งบประมาณ (บาท)</label>
+        <input class="fc" type="number" id="projBudget" min="0" step="0.01" placeholder="0.00">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeProjForm()">ยกเลิก</button>
+      <button class="btn-sm" style="padding:10px 24px;font-size:13px" onclick="saveProjItem()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= YEAR MODAL ======= -->
+<div class="overlay" id="yearOverlay">
+  <div class="sm-modal">
+    <h2>เพิ่มปีงบประมาณ</h2>
+    <div class="fg" style="margin-bottom:18px">
+      <label class="form-lbl">ปีงบประมาณ (พ.ศ.)</label>
+      <input class="fc" type="number" id="newYear" placeholder="เช่น 2570" min="2560" max="2599">
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-cancel" onclick="closeYearModal()">ยกเลิก</button>
+      <button class="btn-sm" style="padding:10px 20px" onclick="addYear()">เพิ่ม</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= CONFIRM MODAL ======= -->
+<div class="overlay" id="confirmOverlay">
+  <div class="confirm-modal">
+    <div class="conf-icon">🗑️</div>
+    <div class="conf-title">ยืนยันการลบ</div>
+    <p class="conf-msg" id="confirmMsg"></p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button class="btn-cancel" onclick="closeConfirm()">ยกเลิก</button>
+      <button class="btn-danger" onclick="confirmDel()">ลบ</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/app.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/projects.js"></script>
+<script src="js/procurement.js"></script>
+<script>
+// Safety net: ถ้า 10 วิยังโหลดอยู่ แสดง error
+setTimeout(()=>{
+  const overlay = document.getElementById('loadingOverlay');
+  if(overlay && overlay.style.display !== 'none'){
+    overlay.style.display = 'none';
+    show('mainApp');
+    document.querySelector('.app')?.classList.add('show');
+    showError('โหลดนานผิดปกติ — กรุณาตรวจสอบ Supabase Dashboard');
+  }
+}, 10000);
+init();
+</script>
+</body>
+</html>
