@@ -1137,7 +1137,19 @@ document.addEventListener('keydown',e=>{
 // =====================================================================
 // START
 // =====================================================================
-init();
+
+// Safety net: ถ้า 15 วิยังโหลดอยู่ ให้ซ่อน spinner และแสดง error
+const _safetyTimer = setTimeout(()=>{
+  const overlay = document.getElementById('loadingOverlay');
+  if(overlay && overlay.style.display !== 'none'){
+    overlay.style.display = 'none';
+    show('mainApp');
+    document.querySelector('.app')?.classList.add('show');
+    showError('โหลดเกินเวลา — กรุณาตรวจสอบ 3 อย่าง:<br>1) รัน 01_schema.sql ใน Supabase SQL Editor แล้วหรือยัง<br>2) Supabase project status = Healthy<br>3) กด Refresh หน้าเว็บ');
+  }
+}, 15000);
+
+init().then(()=>clearTimeout(_safetyTimer)).catch(()=>clearTimeout(_safetyTimer));
 </script>
 </body>
 </html>
