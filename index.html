@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ระบบบริหารงานโรงเรียน</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
   --canvas:#F3F0EE; --lifted:#FCFBFA; --white:#FFFFFF;
@@ -673,16 +674,13 @@ async function init(){
   }
   try{
     await loadYears();
-    hide('loadingOverlay');
-    show('mainApp');
-    document.querySelector('.app').classList.add('show');
     await loadAll();
   }catch(e){
+    showError(e.message);
+  }finally{
     hide('loadingOverlay');
-    // Always show app — never get stuck on loading screen
     show('mainApp');
     document.querySelector('.app').classList.add('show');
-    showError(e.message);
   }
 }
 
@@ -731,18 +729,29 @@ async function loadYears(){
 }
 
 async function loadAll(){
-  show('loadingOverlay','flex');
   try{
-    PROJECTS = await GET('projects',`select=*,procurement_items(id,amount,withdraw_status)&year_id=eq.${CY}&order=sort_order`)||[];
-    PROC = await GET('procurement_items',`select=*,projects(name)&year_id=eq.${CY}&order=type,seq`)||[];
-    hide('loadingOverlay');
+    // Query แยกกัน เพื่อหลีกเลี่ยงปัญหา nested join
+    PROJECTS = await GET('projects',`select=*&year_id=eq.${CY}&order=sort_order`)||[];
+    PROC = await GET('procurement_items',`select=*&year_id=eq.${CY}&order=type,seq`)||[];
+    // ดึง procurement counts ต่อ project แยกต่างหาก
+    const procByProj = {};
+    PROC.forEach(i=>{
+      if(!i.project_id) return;
+      if(!procByProj[i.project_id]) procByProj[i.project_id]={items:[]};
+      procByProj[i.project_id].items.push(i);
+    });
+    // ใส่ procurement_items เข้า projects เพื่อใช้ใน dashboard
+    PROJECTS = PROJECTS.map(p=>({...p, procurement_items: procByProj[p.id]?.items||[]}));
+    // ใส่ project name เข้า proc items
+    const projMap = {};
+    PROJECTS.forEach(p=>projMap[p.id]=p);
+    PROC = PROC.map(i=>({...i, projects: i.project_id?{name:projMap[i.project_id]?.name||''}:null}));
     renderDashboard();
     renderProjGrid();
     renderProc();
     fillProjSelects();
   }catch(e){
-    hide('loadingOverlay');
-    alert('โหลดข้อมูลไม่ได้: '+e.message);
+    showError('โหลดข้อมูลไม่ได้: '+e.message);
   }
 }
 
@@ -895,12 +904,11 @@ async function saveProjItem(){
   if(!name){alert('กรุณาระบุชื่อโครงการ');return}
   const eid=document.getElementById('projEditId').value;
   const body={year_id:CY,name,teacher_name:document.getElementById('projTeacher').value.trim(),budget_amount:parseFloat(document.getElementById('projBudget').value)||0};
-  show('loadingOverlay','flex');
   try{
     if(eid) await PATCH('projects',`id=eq.${eid}`,body);
     else await POST('projects',body);
     await loadAll(); closeProjForm();
-  }catch(e){ hide('loadingOverlay'); alert('บันทึกไม่ได้: '+e.message); }
+  }catch(e){ showError('บันทึกไม่ได้: '+e.message); }
 }
 
 // =====================================================================
@@ -1062,12 +1070,11 @@ async function saveProcItem(){
     withdraw_no:document.getElementById('pWithdrawNo').value.trim()||null,
     remark:document.getElementById('pRemark').value.trim()||null
   };
-  show('loadingOverlay','flex');
   try{
     if(eid) await PATCH('procurement_items',`id=eq.${eid}`,body);
     else await POST('procurement_items',body);
     await loadAll(); closeProcForm();
-  }catch(e){ hide('loadingOverlay'); alert('บันทึกไม่ได้: '+e.message); }
+  }catch(e){ showError('บันทึกไม่ได้: '+e.message); }
 }
 
 // =====================================================================
@@ -1078,12 +1085,11 @@ function closeConfirm(){ PENDING_DEL=null; document.getElementById('confirmOverl
 async function confirmDel(){
   if(!PENDING_DEL)return;
   const {type,id}=PENDING_DEL;
-  show('loadingOverlay','flex');
   try{
     if(type==='proc') await DEL('procurement_items',`id=eq.${id}`);
     else if(type==='project') await DEL('projects',`id=eq.${id}`);
     await loadAll(); closeConfirm();
-  }catch(e){ hide('loadingOverlay'); alert('ลบไม่ได้: '+e.message); }
+  }catch(e){ showError('ลบไม่ได้: '+e.message); }
 }
 
 // =====================================================================
@@ -1139,17 +1145,18 @@ document.addEventListener('keydown',e=>{
 // =====================================================================
 
 // Safety net: ถ้า 15 วิยังโหลดอยู่ ให้ซ่อน spinner และแสดง error
-const _safetyTimer = setTimeout(()=>{
+// Safety net — always fires after 10s regardless of init state
+setTimeout(()=>{
   const overlay = document.getElementById('loadingOverlay');
   if(overlay && overlay.style.display !== 'none'){
     overlay.style.display = 'none';
     show('mainApp');
     document.querySelector('.app')?.classList.add('show');
-    showError('โหลดเกินเวลา — กรุณาตรวจสอบ 3 อย่าง:<br>1) รัน 01_schema.sql ใน Supabase SQL Editor แล้วหรือยัง<br>2) Supabase project status = Healthy<br>3) กด Refresh หน้าเว็บ');
+    showError('โหลดนานผิดปกติ — กรุณากด Cmd+Shift+R เพื่อ hard refresh');
   }
-}, 15000);
+}, 10000);
 
-init().then(()=>clearTimeout(_safetyTimer)).catch(()=>clearTimeout(_safetyTimer));
+init();
 </script>
 </body>
 </html>
