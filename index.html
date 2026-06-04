@@ -716,7 +716,7 @@ async function connectSupabase(){
   }
 }
 
-async function loadYears(){
+async async function loadYears(){
   YEARS = await GET('years','select=*&order=year_be.desc');
   if(!YEARS||!YEARS.length){
     // Create default year
