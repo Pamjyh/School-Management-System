@@ -2,262 +2,261 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>งานพัสดุ &amp; การเงิน</title>
+<title>งานพัสดุ & การเงิน</title>
+<link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;450;500;700&display=swap" rel="stylesheet">
 <style>
-/* ── DELL 1996 DESIGN SYSTEM ─────────────────────────── */
+/* ── MASTERCARD-INSPIRED DESIGN SYSTEM ───────────────── */
 :root{
-  --red:#e91d2a; --ylw:#fcc20f; --pur:#6a26a4;
-  --K:#000000;  --W:#ffffff;   --lnk:#0000ee;
-  --olive:#8e8a25; --sage:#b3bd95; --sal:#d77a7a;
-  --pch:#e6915d;   --lim:#c0d4a7; --sky:#9ab6c8;
-  --stl:#a5b8c0;   --per:#8c9ae0;
+  --cvs:#F3F0EE; --lift:#FCFBFA; --ink:#141413;
+  --W:#fff;      --org:#CF4500;  --arc:#F37338;
+  --mut:#696969; --lnk:#3860BE;
+  --r1:20px; --r2:40px; --rp:999px;
+  --sn:rgba(0,0,0,.04) 0 4px 24px 0;
+  --sc:rgba(0,0,0,.08) 0 24px 48px 0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-/* 8px black page frame = body background */
-body{background:var(--K);padding:8px;min-height:100vh;
-  font:14px/1.4 'Times New Roman',Times,serif;color:var(--K)}
-input,select,button{font-family:'Times New Roman',Times,serif;font-size:14px}
-#wrap{background:var(--W);min-height:calc(100vh - 16px)}
+body{background:var(--cvs);font:450 16px/1.4 'Sofia Sans',Arial,sans-serif;color:var(--ink);padding-top:96px}
+input,select,button{font-family:'Sofia Sans',Arial,sans-serif}
 
-/* ── TOP BANNER ─────────────────────────────────────── */
-#ban{background:var(--K);color:var(--W);padding:10px 16px;
-  display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.bhl{font:700 16px/1.2 Helvetica,Arial,sans-serif;text-transform:uppercase;flex:1}
-.bsub{font-size:12px;color:#aaa;font-family:Helvetica,Arial,sans-serif;margin-top:2px}
-/* BUY-A-DELL sticker → year badge */
-.stk{background:var(--ylw);color:var(--K);border:1px solid var(--K);
-  padding:4px 10px;cursor:pointer;text-align:center;
-  font:700 13px/1.0 Helvetica,Arial,sans-serif;min-width:68px}
-.stk .sp{background:var(--pur);color:var(--W);font-size:9px;
-  text-align:center;margin:-4px -10px 3px;padding:2px 0;display:block}
-/* Phone number → แสดงปีที่กด */
-.ph{color:var(--red);font:700 15px/1.2 Helvetica,Arial,sans-serif;white-space:nowrap}
+/* NAV PILL */
+#nav{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 48px);max-width:1160px}
+.npill{background:var(--W);border-radius:var(--rp);box-shadow:var(--sn);padding:8px 20px;display:flex;align-items:center;gap:12px}
+.nlogo{width:42px;height:42px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--cvs)}
+.nlogo img{width:100%;height:100%;object-fit:cover}
+.nname{font:500 14px/1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.01em;white-space:nowrap;color:var(--ink)}
+.ntabs{display:flex;gap:4px;margin:0 auto}
+.tab{padding:8px 20px;border:none;background:none;cursor:pointer;font:500 14px/1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;color:var(--mut);border-radius:var(--rp)}
+.tab.on{background:var(--ink);color:var(--cvs)}
+.yrpill{background:var(--ink);color:var(--cvs);border:none;cursor:pointer;border-radius:var(--rp);padding:8px 18px;font:500 13px/1 'Sofia Sans',Arial,sans-serif;flex-shrink:0}
 
-/* ── TAB NAV ─────────────────────────────────────────── */
-#nav{background:#e8e8e8;border-bottom:2px solid var(--K);display:flex}
-.tab{padding:7px 18px;border:none;border-right:1px solid var(--K);
-  cursor:pointer;background:none;
-  font:700 12px/1.0 Helvetica,Arial,sans-serif;text-transform:uppercase;color:var(--K)}
-.tab.on{background:var(--K);color:var(--W)}
-@media(max-width:480px){.tab{padding:7px 10px;font-size:11px}}
-
-/* ── SECTION EYEBROWS (Arial Black 36 / 900) ─────────── */
-.ey{padding:14px 16px;border-bottom:1px solid var(--K);
-  font:900 28px/1.0 'Arial Black','Arial Bold',Helvetica,sans-serif;
-  text-transform:uppercase;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.ey-olive{background:var(--olive);color:var(--W)}
-.ey-sal  {background:var(--sal)}
-.ey-per  {background:var(--per)}
-@media(max-width:480px){.ey{font-size:18px;padding:10px 12px}}
-
-/* ── RIBBON CARDS ────────────────────────────────────── */
-.rib{border:1px solid var(--K);margin:10px 14px}
-.rt{background:var(--W);padding:5px 12px;border-bottom:1px solid var(--K);
-  font:700 14px/1.2 Helvetica,Arial,sans-serif;text-transform:uppercase;
-  display:flex;align-items:center;gap:8px;cursor:pointer}
-.rb{padding:10px 14px}
-.c-sage{background:var(--sage)} .c-sal{background:var(--sal)}
-.c-pch {background:var(--pch)}  .c-lim{background:var(--lim)}
-.c-sky {background:var(--sky)}  .c-stl{background:var(--stl)}
-.c-per {background:var(--per)}
-
-/* ── STAT GRID (catalog card row) ───────────────────── */
-.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
-  margin:10px 14px;border:1px solid var(--K)}
-.sc{padding:10px 12px;border-right:1px solid var(--K)}
-.sc:last-child{border-right:none}
-.slbl{font:700 10px/1.0 Helvetica,Arial,sans-serif;text-transform:uppercase;color:#666;margin-bottom:4px}
-.sval{font:900 22px/1.0 'Arial Black','Arial Bold',Helvetica,sans-serif}
-.ssub{font-size:12px;color:#555;margin-top:2px}
-@media(max-width:480px){.sg{grid-template-columns:1fr 1fr}
-  .sc{border-bottom:1px solid var(--K)}.sc:last-child{border-right:none}}
-
-/* ── TABLE ───────────────────────────────────────────── */
-.tw{margin:0 14px 10px;border:1px solid var(--K)}
-table{width:100%;border-collapse:collapse}
-th{background:var(--K);color:var(--W);padding:5px 10px;text-align:left;
-  font:700 11px/1.0 Helvetica,Arial,sans-serif;text-transform:uppercase;white-space:nowrap}
-td{padding:6px 10px;border-bottom:1px solid #ddd;font:14px/1.4 'Times New Roman',Times,serif;vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tfoot td{background:#f0f0f0;font-weight:700;border-top:2px solid var(--K)}
-.ar{text-align:right;font-variant-numeric:tabular-nums}
-.tm{color:#555;font-size:13px}
-
-/* ── BADGES (hard border, no radius) ────────────────── */
-.badge{display:inline-block;padding:1px 7px;border:1px solid var(--K);
-  font:700 10px/1.4 Helvetica,Arial,sans-serif;text-transform:uppercase}
-.bk{background:#dce8ff}.bh{background:var(--pch)}
-.bd2{background:var(--lim)}.bp2{background:var(--sal)}
-
-/* ── TOOLBAR ─────────────────────────────────────────── */
-.tb{padding:7px 14px;display:flex;gap:7px;align-items:center;
-  flex-wrap:wrap;border-bottom:1px solid #ccc;background:#f5f5f5}
-.tb h3{font:700 13px/1.0 Helvetica,Arial,sans-serif;text-transform:uppercase;margin-right:auto}
-select{border:1px solid var(--K);padding:4px 6px;background:var(--W);font:13px/1.2 'Times New Roman',Times,serif}
-input[type=text]{border:1px solid var(--K);padding:4px 7px;background:var(--W)}
-
-/* ── BUTTONS ─────────────────────────────────────────── */
-.btn{padding:4px 14px;border:1px solid var(--K);cursor:pointer;
-  background:var(--K);color:var(--W);
-  font:700 12px/1.0 Helvetica,Arial,sans-serif;text-transform:uppercase}
-.btn.bo{background:var(--W);color:var(--K)}
-.btn.br{background:var(--red);color:var(--W);border-color:var(--red)}
-.btn.ylw{background:var(--ylw);color:var(--K)}
-.btn.sm{padding:3px 9px;font-size:11px}
-
-/* ── FORM ────────────────────────────────────────────── */
-.fi{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
-.fi label{font:700 11px/1.0 Helvetica,Arial,sans-serif;text-transform:uppercase;color:#555}
-.fi input,.fi select{border:1px solid var(--K);padding:5px 8px;background:var(--W);width:100%;
-  font:14px/1.4 'Times New Roman',Times,serif}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:480px){.r2{grid-template-columns:1fr}}
-
-/* ── MODAL ───────────────────────────────────────────── */
-.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);
-  z-index:80;align-items:center;justify-content:center;padding:14px}
-.ov.on{display:flex}
-.modal{background:var(--W);border:2px solid var(--K);padding:20px;
-  width:100%;max-width:520px;max-height:92vh;overflow-y:auto}
-.modal h3{font:700 15px/1.2 Helvetica,Arial,sans-serif;text-transform:uppercase;
-  border-bottom:2px solid var(--K);margin-bottom:14px;padding-bottom:7px}
-.mf{display:flex;gap:8px;justify-content:flex-end;
-  margin-top:14px;border-top:1px solid #ccc;padding-top:12px}
-
-/* ── FINANCE SOURCE SECTIONS ─────────────────────────── */
-.src{margin:10px 14px;border:1px solid var(--K)}
-.srch{background:var(--K);color:var(--W);padding:7px 12px;
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.srch h4{font:700 13px/1.0 Helvetica,Arial,sans-serif;text-transform:uppercase;flex:1}
-.finb{padding:6px 14px;background:#f0f0f0;border-bottom:1px solid #ccc;
-  font-size:13px;display:flex;gap:10px;flex-wrap:wrap}
-.wh{padding:8px 14px;background:var(--lim);border-top:1px solid var(--K);font-size:13px}
-.chip{display:inline-block;background:var(--W);border:1px solid var(--K);
-  padding:1px 9px;margin:1px 3px;
-  font:700 11px/1.4 Helvetica,Arial,sans-serif}
-
-/* ── WITHDRAW BAR (CTA red panel pinned bottom) ──────── */
-#wbar{display:none;position:sticky;bottom:0;background:var(--red);color:var(--W);
-  padding:10px 14px;align-items:center;gap:10px;border-top:2px solid var(--K);flex-wrap:wrap}
-#wbar.on{display:flex}
-#wbar input{border:1px solid var(--W);padding:5px 8px;width:180px;color:var(--K);
-  font:12px/1.2 Helvetica,Arial,sans-serif}
-
-/* ── LOADING / SETUP ─────────────────────────────────── */
-#load{position:fixed;inset:0;background:var(--K);display:flex;align-items:center;
-  justify-content:center;z-index:999;color:var(--W);flex-direction:column;gap:10px;
-  font:700 14px Helvetica,Arial,sans-serif;text-transform:uppercase}
-.spin{width:36px;height:36px;border:3px solid #444;border-top-color:var(--W);
-  border-radius:50%;animation:sp .8s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-#setup{display:none;position:fixed;inset:0;background:var(--K);
-  z-index:98;align-items:center;justify-content:center;padding:16px}
-.sbox{background:var(--W);border:2px solid var(--W);padding:22px;max-width:420px;width:100%}
-.sbox h2{font:700 16px/1.2 Helvetica,Arial,sans-serif;text-transform:uppercase;
-  border-bottom:2px solid var(--K);margin-bottom:14px;padding-bottom:7px}
-
-/* ── PROJECT DETAIL BLOCK ────────────────────────────── */
-.pdet{border:1px solid var(--K);margin:10px 14px}
-.pdh{background:#e0e0e0;padding:7px 12px;border-bottom:1px solid var(--K);
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.pdh h3{font:700 14px/1.2 Helvetica,Arial,sans-serif;text-transform:uppercase;flex:1}
-
-/* ── FOOTER ──────────────────────────────────────────── */
-#foot{border-top:2px solid var(--K);padding:10px 14px;background:#f5f5f5;
-  font:11px/1.4 'Times New Roman',Times,serif;color:#444}
-#foot a{color:var(--lnk);text-decoration:underline;cursor:pointer}
-
-.empty{text-align:center;padding:32px;color:#666;font-family:Helvetica,Arial,sans-serif}
-main{padding-bottom:20px}
+/* PAGES */
+main{max-width:1160px;margin:0 auto;padding:0 24px 96px}
 .page{display:none}.page.on{display:block}
+
+/* GHOST WATERMARK */
+.gw{position:relative;overflow:hidden;padding:40px 0 28px}
+.ghost{position:absolute;top:-16px;left:-8px;font:500 108px/1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;color:#E6E0D8;pointer-events:none;white-space:nowrap;user-select:none;z-index:0}
+.gc{position:relative;z-index:1}
+
+/* EYEBROW */
+.eyebrow{font:700 12px/1 'Sofia Sans',Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);display:flex;align-items:center;gap:5px;margin-bottom:10px}
+.eyebrow::before{content:'•';color:var(--arc);font-size:15px}
+
+/* PROJECT CARDS */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-bottom:28px}
+.pcard{background:var(--lift);border-radius:var(--r2);box-shadow:var(--sc);padding:28px;cursor:pointer;transition:transform .2s}
+.pcard:hover{transform:translateY(-4px)}
+.pcard h3{font:500 19px/1.3 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;margin-bottom:4px}
+.pcard .sub{font-size:14px;color:var(--mut);margin-bottom:18px}
+.srow{display:flex;gap:16px;padding-top:16px;border-top:1px solid rgba(0,0,0,.06);flex-wrap:wrap}
+.si .sl{font:700 10px/1 'Sofia Sans',Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin-bottom:3px}
+.si .sv{font:500 18px/1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.01em}
+.si.ok .sv{color:#0a6640} .si.ng .sv{color:var(--org)}
+
+/* PROJECT DETAIL */
+.dcard{background:var(--lift);border-radius:var(--r2);box-shadow:var(--sc);padding:32px;margin-bottom:24px}
+.dhead{display:flex;align-items:center;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.dhead h2{font:500 24px/1.2 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;flex:1}
+.dstats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.ds{background:var(--cvs);border-radius:var(--r1);padding:16px}
+.ds .dl{font:700 10px/1 'Sofia Sans',Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin-bottom:5px}
+.ds .dv{font:500 20px/1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.01em}
+.ds2col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.dsub{background:var(--cvs);border-radius:var(--r1);padding:12px 16px}
+.dsub .dtl{font:700 10px/1 'Sofia Sans',Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin-bottom:8px}
+
+/* FINANCE CARDS */
+.fcard{background:var(--lift);border-radius:var(--r2);box-shadow:var(--sc);margin-bottom:20px;overflow:hidden}
+.fhead{padding:20px 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid rgba(0,0,0,.06)}
+.fhead h3{font:500 18px/1.2 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;flex:1}
+.fstats{display:flex;gap:24px;padding:14px 28px;background:var(--cvs);border-bottom:1px solid rgba(0,0,0,.05);flex-wrap:wrap}
+.fsi .fl{font:700 10px/1 'Sofia Sans',Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin-bottom:3px}
+.fsi .fv{font:500 16px/1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.01em}
+
+/* SUM CARDS (top of finance) */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.scard{background:var(--lift);border-radius:var(--r2);box-shadow:var(--sc);padding:24px}
+.scard .scl{font:700 10px/1 'Sofia Sans',Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin-bottom:7px}
+.scard .scv{font:500 26px/1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em}
+.scard .scs{font:450 13px/1.4 'Sofia Sans',Arial,sans-serif;color:var(--mut);margin-top:5px}
+
+/* TABLE */
+.tw{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:12px 16px;text-align:left;font:700 11px/1 'Sofia Sans',Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);border-bottom:1px solid rgba(0,0,0,.06);background:var(--cvs);white-space:nowrap}
+td{padding:11px 16px;border-bottom:1px solid rgba(0,0,0,.05);font-size:14px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tfoot td{font-weight:600;background:var(--cvs);border-top:1px solid rgba(0,0,0,.07)}
+.ar{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+.tm{color:var(--mut);font-size:13px}
+
+/* TABLE CARD WRAPPER */
+.tw-card{background:var(--lift);border-radius:var(--r2);box-shadow:var(--sc);overflow:hidden;margin-bottom:24px}
+
+/* BADGES */
+.badge{display:inline-block;padding:4px 12px;border-radius:var(--rp);font:600 11px/1.4 'Sofia Sans',Arial,sans-serif;white-space:nowrap}
+.bk{background:#EBF2FF;color:#1d4ed8}.bh{background:#FEF3C7;color:#92400e}
+.bd{background:#D1FAE5;color:#065f46;cursor:pointer;title:"คลิกเพื่อเปลี่ยนสถานะ"}
+.bp{background:#FEE2E2;color:#991b1b;cursor:pointer}
+.bd:hover{background:#A7F3D0} .bp:hover{background:#FECACA}
+
+/* TOOLBAR */
+.tb{display:flex;gap:8px;margin-bottom:18px;align-items:center;flex-wrap:wrap}
+.tb h3{font:500 18px/1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;margin-right:auto}
+select{border:1.5px solid rgba(0,0,0,.15);border-radius:var(--rp);padding:7px 14px;background:var(--W);color:var(--ink);font-size:13px}
+input[type=text]{border:1.5px solid rgba(0,0,0,.15);border-radius:var(--rp);padding:7px 14px;background:var(--W);color:var(--ink);font-size:13px}
+select:focus,input:focus{outline:none;border-color:var(--ink)}
+
+/* BUTTONS */
+.btn{padding:8px 22px;border-radius:var(--r1);border:none;cursor:pointer;font:500 14px/1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.01em}
+.bi{background:var(--ink);color:var(--cvs)} .bo{background:var(--W);color:var(--ink);border:1.5px solid var(--ink)}
+.sm{padding:6px 14px;font-size:12px} .rp{border-radius:var(--rp)}
+
+/* FORM/MODAL */
+.fi{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fi label{font:700 11px/1 'Sofia Sans',Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+.fi input,.fi select{border:1.5px solid rgba(0,0,0,.15);border-radius:var(--r1);padding:10px 14px;background:var(--W);color:var(--ink);width:100%}
+.fi input:focus,.fi select:focus{outline:none;border-color:var(--ink)}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ov{display:none;position:fixed;inset:0;background:rgba(20,20,19,.45);z-index:200;align-items:center;justify-content:center;padding:20px}
+.ov.on{display:flex}
+.modal{background:var(--lift);border-radius:var(--r2);padding:36px;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;box-shadow:rgba(0,0,0,.15) 0 32px 64px}
+.modal h3{font:500 20px/1.2 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;margin-bottom:22px}
+.mf{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,0,0,.07)}
+
+/* WITHDRAW BAR */
+#wbar{display:none;position:sticky;bottom:20px;background:var(--ink);color:var(--cvs);border-radius:var(--rp);padding:12px 20px;align-items:center;gap:12px;box-shadow:rgba(0,0,0,.2) 0 8px 32px;flex-wrap:wrap}
+#wbar.on{display:flex}
+#wbar input{border:1.5px solid rgba(255,255,255,.3);border-radius:var(--rp);padding:8px 14px;width:200px;color:var(--ink);font-size:13px}
+
+/* WITHDRAWAL HISTORY */
+.wh-row{padding:14px 28px;background:var(--cvs);border-top:1px solid rgba(0,0,0,.05);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.whchip{background:var(--W);border:1.5px solid rgba(0,0,0,.1);border-radius:var(--rp);padding:5px 14px;font:500 12px/1 'Sofia Sans',Arial,sans-serif;color:var(--ink)}
+
+/* LOAD / ERR / SETUP */
+#load{position:fixed;inset:0;background:var(--cvs);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:14px}
+.spin{width:40px;height:40px;border:3px solid rgba(0,0,0,.08);border-top-color:var(--ink);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+#lmsg{font:500 14px/1 'Sofia Sans',Arial,sans-serif;color:var(--mut)}
+#err-screen{display:none;position:fixed;inset:0;background:rgba(20,20,19,.6);z-index:99;align-items:center;justify-content:center;padding:20px}
+.ebox{background:var(--lift);border-radius:var(--r2);padding:36px;max-width:520px;width:100%;box-shadow:rgba(0,0,0,.2) 0 32px 64px}
+.ebox h3{font:500 20px/1.2 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;margin-bottom:14px}
+.edetail{background:var(--cvs);border-radius:var(--r1);padding:14px 16px;font:450 13px/1.5 'Sofia Sans',Arial,sans-serif;margin-bottom:12px;word-break:break-all;color:var(--org)}
+.ehint{font:500 14px/1.5 'Sofia Sans',Arial,sans-serif;color:var(--ink);margin-bottom:16px}
+.estep{background:#F0FDF4;border-radius:var(--r1);padding:14px 16px;font:450 13px/1.7 'Sofia Sans',Arial,sans-serif;margin-bottom:20px}
+#setup{display:none;position:fixed;inset:0;background:rgba(20,20,19,.6);z-index:98;align-items:center;justify-content:center;padding:20px}
+.sbox{background:var(--lift);border-radius:var(--r2);padding:36px;max-width:440px;width:100%;box-shadow:rgba(0,0,0,.2) 0 32px 64px}
+.sbox h2{font:500 20px/1.2 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;margin-bottom:6px}
+.sbox p{font:450 14px/1.4 'Sofia Sans',Arial,sans-serif;color:var(--mut);margin-bottom:18px}
+
+.empty{text-align:center;padding:48px 20px;color:var(--mut);font-size:15px}
+
+@media(max-width:640px){
+  body{padding-top:86px} #nav{top:12px;width:calc(100% - 24px)}
+  .ntabs .tab:not(.on){display:none} .nname{display:none}
+  .r2{grid-template-columns:1fr} .dstats{grid-template-columns:1fr 1fr}
+  .ds2col{grid-template-columns:1fr} .pgrid{grid-template-columns:1fr}
+  main{padding:0 14px 80px} .ghost{font-size:56px}
+  .sgrid{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
 
-<div id="load"><div class="spin"></div><span id="load-msg">LOADING SYSTEM...</span></div>
+<!-- LOADING -->
+<div id="load"><div class="spin"></div><span id="lmsg">กำลังโหลด...</span></div>
 
 <!-- ERROR SCREEN -->
-<div id="err-screen" style="display:none;position:fixed;inset:0;background:var(--K);z-index:99;align-items:center;justify-content:center;padding:16px;flex-direction:column;gap:0">
-  <div style="background:var(--W);border:2px solid var(--W);padding:24px;max-width:520px;width:100%">
-    <div style="background:var(--red);color:var(--W);padding:8px 12px;margin:-24px -24px 16px;font:700 14px Helvetica,Arial,sans-serif;text-transform:uppercase">⚠ CONNECTION ERROR</div>
-    <div style="font:700 11px Helvetica,Arial,sans-serif;text-transform:uppercase;color:#555;margin-bottom:6px">Error Detail</div>
-    <div id="err-msg" style="font:13px/1.5 'Times New Roman',Times,serif;background:#f5f5f5;border:1px solid #ccc;padding:8px 10px;margin-bottom:12px;word-break:break-all"></div>
-    <div id="err-hint" style="font:700 13px/1.4 'Times New Roman',Times,serif;color:var(--red);margin-bottom:16px"></div>
-    <div style="background:var(--lim);border:1px solid var(--K);padding:10px 12px;margin-bottom:16px;font:13px/1.6 'Times New Roman',Times,serif">
-      <b style="font-family:Helvetica,Arial,sans-serif;font-size:12px;text-transform:uppercase">วิธีแก้ไข:</b><br>
-      1. เปิด <b>supabase.com</b> → เลือก project → <b>SQL Editor</b><br>
-      2. Copy ไฟล์ <b>schema.sql</b> แล้ว Run<br>
-      3. กลับมากด <b>RETRY</b> ด้านล่าง
+<div id="err-screen">
+  <div class="ebox">
+    <div class="eyebrow">• ข้อผิดพลาด</div>
+    <h3>ไม่สามารถเชื่อมต่อได้</h3>
+    <div class="edetail" id="err-msg"></div>
+    <div class="ehint" id="err-hint"></div>
+    <div class="estep">
+      <b>วิธีแก้ไข:</b><br>
+      1. เปิด <b>supabase.com</b> → project → <b>SQL Editor</b><br>
+      2. Run ไฟล์ <b>schema.sql</b> แล้วตามด้วย <b>fix_rls.sql</b><br>
+      3. กด Retry ด้านล่าง
     </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn" onclick="location.reload()">↺ RETRY</button>
-      <button class="btn bo" onclick="hide('err-screen');show('setup')">⚙ CHANGE SETTINGS</button>
+    <div style="display:flex;gap:10px">
+      <button class="btn bi rp" onclick="location.reload()">↺ Retry</button>
+      <button class="btn bo rp sm" onclick="hide('err-screen');show('setup')">⚙ เปลี่ยน Settings</button>
     </div>
   </div>
 </div>
 
+<!-- SETUP -->
 <div id="setup">
   <div class="sbox">
-    <h2>⚙ SUPABASE SETUP</h2>
-    <p style="font-size:13px;color:#555;margin-bottom:12px;font-family:Helvetica,Arial,sans-serif">Supabase credentials (แก้ไขได้หากต้องการเปลี่ยน project)</p>
+    <h2>⚙ Supabase Settings</h2>
+    <p>แก้ไข credentials หากต้องการเปลี่ยน project</p>
     <div class="fi"><label>Project URL</label><input id="cu" placeholder="https://xxxx.supabase.co"></div>
     <div class="fi"><label>Anon Key</label><input id="ck" placeholder="eyJ..."></div>
-    <button class="btn" style="width:100%" onclick="saveCfg()">SAVE & CONNECT</button>
-    <button class="btn bo" style="width:100%;margin-top:6px" onclick="resetCfg()">RESET TO DEFAULT</button>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn bi rp" style="flex:1" onclick="saveCfg()">บันทึก & เชื่อมต่อ</button>
+      <button class="btn bo rp sm" onclick="resetCfg()">Reset</button>
+    </div>
   </div>
 </div>
 
-<div id="wrap">
-
-<!-- TOP BANNER -->
-<div id="ban">
-  <div>
-    <div class="bhl">ระบบงานพัสดุ &amp; การเงิน — โรงเรียน</div>
-    <div class="bsub">SCHOOL PROCUREMENT &amp; FINANCE MANAGEMENT. ONLINE.</div>
-  </div>
-  <div class="stk" id="yrbtn">
-    <span class="sp">ปีงบประมาณ</span>2569
-  </div>
-</div>
-
-<!-- TAB NAV -->
+<!-- FLOATING NAV PILL -->
 <div id="nav">
-  <button class="tab on" onclick="go('proj')">🏫 โครงการ</button>
-  <button class="tab" onclick="go('proc')">📦 จัดซื้อ-จัดจ้าง</button>
-  <button class="tab" onclick="go('fin')">💰 การเงิน</button>
+  <div class="npill">
+    <div class="nlogo"><img src="./ตราโรงเรียน/ตราโรงเรียน.JPG" alt="โลโก้" onerror="this.parentElement.style.background='var(--arc)';this.style.display='none'"></div>
+    <span class="nname">พัสดุ &amp; การเงิน</span>
+    <div class="ntabs">
+      <button class="tab on" onclick="go('proj')">🏫 โครงการ</button>
+      <button class="tab" onclick="go('proc')">📦 พัสดุ</button>
+      <button class="tab" onclick="go('fin')">💰 การเงิน</button>
+    </div>
+    <button class="yrpill" id="yrbtn">2569</button>
+  </div>
 </div>
 
 <main>
 
-<!-- ① PAGE: โครงการ -->
+<!-- ① โครงการ -->
 <div id="page-proj" class="page on">
-  <div class="ey ey-olive">
-    โครงการทั้งหมด
-    <button class="btn ylw sm" onclick="openProjForm()">+ NEW PROJECT</button>
+  <div class="gw">
+    <div class="ghost">PROJECTS</div>
+    <div class="gc">
+      <div class="eyebrow">โครงการทั้งหมด</div>
+      <h1 style="font:500 40px/1.1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;margin-bottom:28px">โครงการปีงบประมาณ <span id="proj-yr">2569</span></h1>
+    </div>
   </div>
-  <div id="pgrid"></div>
+  <div class="tb" style="margin-bottom:20px">
+    <span></span>
+    <button class="btn bi rp sm" onclick="openProjForm()">+ โครงการใหม่</button>
+  </div>
+  <div class="pgrid" id="pgrid"></div>
   <div id="pdet" style="display:none">
-    <div class="pdet">
-      <div class="pdh">
-        <h3 id="pd-name"></h3>
-        <span class="tm" id="pd-teacher"></span>
-        <button class="btn bo sm" onclick="editCurProj()">✏ EDIT</button>
-        <button class="btn bo sm" onclick="hideDet()">✕ CLOSE</button>
-      </div>
-      <div class="sg" id="pd-cards"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;margin:0 14px 10px;border:1px solid var(--K)">
+    <div class="dcard">
+      <div class="dhead">
         <div>
-          <div style="background:var(--K);color:var(--W);padding:5px 10px;font:700 11px Helvetica,Arial,sans-serif;text-transform:uppercase">งบแยกตามแหล่งเงิน</div>
-          <table><thead><tr><th>แหล่งเงิน</th><th class="ar">งบ</th><th class="ar">ใช้ไป</th><th class="ar">คงเหลือ</th></tr></thead>
-          <tbody id="pd-src"></tbody></table>
+          <div class="eyebrow">รายละเอียดโครงการ</div>
+          <h2 id="pd-name"></h2>
+          <p class="tm" id="pd-teacher" style="margin-top:4px"></p>
         </div>
-        <div style="border-left:1px solid var(--K)">
-          <div style="background:var(--K);color:var(--W);padding:5px 10px;font:700 11px Helvetica,Arial,sans-serif;text-transform:uppercase">ประวัติใบเบิก</div>
-          <div id="pd-wh" style="padding:10px 12px;font-size:13px"></div>
+        <button class="btn bo rp sm" onclick="editCurProj()">✏ แก้ไข</button>
+        <button class="btn bo rp sm" onclick="hideDet()">✕</button>
+      </div>
+      <div class="dstats" id="pd-cards"></div>
+      <div class="ds2col">
+        <div class="dsub">
+          <div class="dtl">งบแยกตามแหล่งเงิน</div>
+          <table style="width:100%">
+            <thead><tr><th style="background:transparent">แหล่งเงิน</th><th class="ar" style="background:transparent">งบ</th><th class="ar" style="background:transparent">ใช้ไป</th><th class="ar" style="background:transparent">คงเหลือ</th></tr></thead>
+            <tbody id="pd-src"></tbody>
+          </table>
+        </div>
+        <div class="dsub">
+          <div class="dtl">ประวัติใบเบิก</div>
+          <div id="pd-wh" style="padding:4px 0;font-size:14px"></div>
         </div>
       </div>
-      <div style="margin:0 14px 6px;font:700 11px Helvetica,Arial,sans-serif;text-transform:uppercase;color:#555;border-bottom:1px solid #ccc;padding-bottom:4px">รายการพัสดุในโครงการ</div>
-      <div class="tw" style="margin-top:0"><table>
+      <div class="eyebrow" style="margin-bottom:12px">รายการพัสดุในโครงการ</div>
+      <div class="tw"><table>
         <thead><tr><th>ประเภท</th><th>เลข</th><th>หัวข้อ</th><th>แหล่งเงิน</th><th class="ar">ยอดเงิน</th><th>สถานะ</th><th>ใบเบิก</th></tr></thead>
         <tbody id="pd-proc"></tbody>
       </table></div>
@@ -265,67 +264,68 @@ main{padding-bottom:20px}
   </div>
 </div>
 
-<!-- ② PAGE: พัสดุ -->
+<!-- ② พัสดุ -->
 <div id="page-proc" class="page">
-  <div class="ey ey-sal">จัดซื้อ-จัดจ้าง</div>
+  <div class="gw">
+    <div class="ghost">PROCUREMENT</div>
+    <div class="gc">
+      <div class="eyebrow">รายการจัดซื้อ-จัดจ้าง</div>
+      <h1 style="font:500 40px/1.1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;margin-bottom:28px">งานพัสดุ</h1>
+    </div>
+  </div>
   <div class="tb">
     <h3>รายการทั้งหมด</h3>
     <select id="ft" onchange="renderProc()"><option value="">ทุกประเภท</option><option>จัดซื้อ</option><option>จัดจ้าง</option></select>
     <select id="fs" onchange="renderProc()"><option value="">ทุกสถานะ</option><option>เบิกแล้ว</option><option>ยังไม่เบิก</option></select>
     <select id="fsr" onchange="renderProc()"><option value="">ทุกแหล่งเงิน</option></select>
     <select id="fpj" onchange="renderProc()"><option value="">ทุกโครงการ</option></select>
-    <input id="fq" type="text" placeholder="🔍 ค้นหา..." oninput="renderProc()" style="width:120px">
-    <button class="btn sm" onclick="openProcForm()">+ ADD</button>
+    <input id="fq" type="text" placeholder="🔍 ค้นหา..." oninput="renderProc()" style="width:130px">
+    <button class="btn bi rp sm" onclick="openProcForm()">+ เพิ่ม</button>
   </div>
-  <div class="tw"><table>
+  <div class="tw-card"><div class="tw"><table>
     <thead><tr><th>ประเภท</th><th>เลข</th><th>หัวข้อ</th><th>คนทำ</th><th>แหล่งเงิน</th><th>โครงการ</th><th>วันที่</th><th class="ar">ยอดเงิน</th><th>สถานะ</th><th>ใบเบิก</th><th></th></tr></thead>
     <tbody id="ptb"></tbody>
     <tfoot id="ptf"></tfoot>
-  </table></div>
+  </table></div></div>
 </div>
 
-<!-- ③ PAGE: การเงิน -->
+<!-- ③ การเงิน -->
 <div id="page-fin" class="page">
-  <div class="ey ey-per">การเงิน — ยอดคงเหลือ
-    <button class="btn bo sm" style="font-size:11px" onclick="loadAll()">↺ REFRESH</button>
+  <div class="gw">
+    <div class="ghost">FINANCE</div>
+    <div class="gc">
+      <div class="eyebrow">สรุปการเงิน</div>
+      <h1 style="font:500 40px/1.1 'Sofia Sans',Arial,sans-serif;letter-spacing:-.02em;margin-bottom:28px">ยอดคงเหลือและการเบิกจ่าย</h1>
+    </div>
   </div>
-  <div class="sg" id="fin-cards"></div>
+  <div class="sgrid" id="fin-sum"></div>
   <div id="fin-src"></div>
   <div id="wbar">
-    <span style="font:700 13px Helvetica,Arial,sans-serif">เลือก <b id="wn">0</b> รายการ | <b id="ws">0</b> บาท</span>
+    <span style="font:500 14px/1 'Sofia Sans',Arial,sans-serif">เลือก <b id="wn">0</b> รายการ · <b id="ws">0</b> บาท</span>
     <input id="wno" type="text" placeholder="เลขใบเบิก เช่น ใบเบิก 5/2569">
-    <button class="btn ylw sm" onclick="doWithdraw()">✔ CONFIRM WITHDRAWAL</button>
-    <button class="btn sm bo" style="color:var(--W);border-color:rgba(255,255,255,.5)" onclick="clrSel()">CANCEL</button>
+    <button class="btn sm rp" style="background:var(--cvs);color:var(--ink)" onclick="doWithdraw()">✔ บันทึกเบิก</button>
+    <button class="btn sm rp" style="background:transparent;color:var(--cvs);border:1.5px solid rgba(255,255,255,.4)" onclick="clrSel()">ล้าง</button>
   </div>
 </div>
 
 </main>
 
-<!-- FOOTER (icon-label nav style) -->
-<div id="foot">
-  <a href="#">Copyright &copy; ระบบงานพัสดุ &amp; การเงิน ปีงบประมาณ <span id="ft-yr">2569</span></a>
-  &nbsp;|&nbsp; This site works best with modern browsers.
-  &nbsp;|&nbsp; <a onclick="show('setup')">Settings</a>
-</div>
-
-</div><!-- /#wrap -->
-
 <!-- MODAL: โครงการ -->
 <div id="mo-proj" class="ov">
 <div class="modal">
-  <h3 id="pft">NEW PROJECT</h3>
+  <h3 id="pft">โครงการใหม่</h3>
   <input type="hidden" id="pf-id">
   <div class="r2">
     <div class="fi"><label>ชื่อโครงการ *</label><input id="pf-name" type="text"></div>
     <div class="fi"><label>ชื่อครูรับผิดชอบ</label><input id="pf-teacher" type="text"></div>
   </div>
-  <div style="font:700 11px Helvetica,Arial,sans-serif;text-transform:uppercase;margin-bottom:8px;color:#555;border-bottom:1px solid #ccc;padding-bottom:4px">งบประมาณแยกตามแหล่งเงิน</div>
+  <div class="eyebrow" style="margin-bottom:10px">งบประมาณแยกตามแหล่งเงิน</div>
   <div id="brows"></div>
-  <button class="btn bo sm" onclick="addBRow()">+ ADD BUDGET SOURCE</button>
+  <button class="btn bo rp sm" onclick="addBRow()">+ เพิ่มแหล่งเงิน</button>
   <div class="mf">
-    <button class="btn bo" onclick="closeMo('mo-proj')">CANCEL</button>
-    <button class="btn br sm" id="pf-del" style="display:none" onclick="delProj()">DELETE</button>
-    <button class="btn" onclick="saveProj()">SAVE</button>
+    <button class="btn bo rp" onclick="closeMo('mo-proj')">ยกเลิก</button>
+    <button class="btn sm rp" id="pf-del" style="display:none;background:var(--org);color:#fff" onclick="delProj()">🗑 ลบ</button>
+    <button class="btn bi rp" onclick="saveProj()">บันทึก</button>
   </div>
 </div>
 </div>
@@ -333,7 +333,7 @@ main{padding-bottom:20px}
 <!-- MODAL: พัสดุ -->
 <div id="mo-proc" class="ov">
 <div class="modal">
-  <h3 id="prft">ADD PROCUREMENT ITEM</h3>
+  <h3 id="prft">เพิ่มรายการพัสดุ</h3>
   <input type="hidden" id="prf-id">
   <div class="r2">
     <div class="fi"><label>ประเภท *</label><select id="prf-type"><option>จัดซื้อ</option><option>จัดจ้าง</option></select></div>
@@ -346,7 +346,7 @@ main{padding-bottom:20px}
   </div>
   <div class="r2">
     <div class="fi"><label>แหล่งงบประมาณ</label>
-      <select id="prf-src"><option value="">-- SELECT --</option><option>อุดหนุน</option><option>พัฒนาผู้เรียน</option><option>อื่นๆ</option></select>
+      <select id="prf-src"><option value="">-- เลือก --</option><option>อุดหนุน</option><option>พัฒนาผู้เรียน</option><option>อื่นๆ</option></select>
     </div>
     <div class="fi"><label>วันที่รายงาน</label><input id="prf-date" type="date"></div>
   </div>
@@ -358,9 +358,9 @@ main{padding-bottom:20px}
   </div>
   <div class="fi"><label>เลขใบเบิก</label><input id="prf-wno" type="text"></div>
   <div class="mf">
-    <button class="btn bo" onclick="closeMo('mo-proc')">CANCEL</button>
-    <button class="btn br sm" id="prf-del" style="display:none" onclick="delProc()">DELETE</button>
-    <button class="btn" onclick="saveProc()">SAVE</button>
+    <button class="btn bo rp" onclick="closeMo('mo-proc')">ยกเลิก</button>
+    <button class="btn sm rp" id="prf-del" style="display:none;background:var(--org);color:#fff" onclick="delProc()">🗑 ลบ</button>
+    <button class="btn bi rp" onclick="saveProc()">บันทึก</button>
   </div>
 </div>
 </div>
@@ -372,7 +372,6 @@ const _KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 function getCfg(){return{url:ls('su')||_URL,key:ls('sk')||_KEY}}
 function saveCfg(){const u=v('cu'),k=v('ck');if(!u||!k)return alert('กรอกให้ครบ');ls('su',u);ls('sk',k);location.reload();}
 function resetCfg(){ls('su','');ls('sk','');location.reload();}
-// pre-fill setup form with current cfg
 document.addEventListener('DOMContentLoaded',()=>{const c=getCfg();if(q('cu'))q('cu').value=c.url;if(q('ck'))q('ck').value=c.key;});
 
 // ─── SUPABASE ─────────────────────────────────────────
@@ -381,85 +380,49 @@ function initSB(url,key){
   U=url+'/rest/v1';
   H={'apikey':key,'Authorization':'Bearer '+key,'Content-Type':'application/json','Prefer':'return=representation'};
 }
-async function api(m,t,q='',b){
-  const r=await fetch(`${U}/${t}?${q}`,{method:m,headers:H,...(b?{body:JSON.stringify(b)}:{})});
+async function api(m,t,q2='',b){
+  const r=await fetch(`${U}/${t}?${q2}`,{method:m,headers:H,...(b?{body:JSON.stringify(b)}:{})});
   if(!r.ok)throw new Error(await r.text());
   return m==='DELETE'?null:r.json();
 }
-const GET=(t,q)=>api('GET',t,q);
+const GET=(t,q2)=>api('GET',t,q2);
 const POST=(t,b)=>api('POST',t,'',b);
-const PATCH=(t,q,b)=>api('PATCH',t,q,b);
-const DEL=(t,q)=>api('DELETE',t,q);
+const PATCH=(t,q2,b)=>api('PATCH',t,q2,b);
+const DEL=(t,q2)=>api('DELETE',t,q2);
 
 // ─── STATE ────────────────────────────────────────────
 let CY,CYbe=2569,YEARS=[],PJ=[],PB=[],PR=[];
 let SEL=new Map(),CurPJ=null;
-const TINTS=['c-sage','c-pch','c-lim','c-sky','c-stl','c-per','c-sal'];
 
 // ─── INIT ─────────────────────────────────────────────
 async function init(){
   const c=getCfg();
   if(!c.url||!c.key){show('setup');hide('load');return;}
   initSB(c.url,c.key);
-  setLoad('กำลังเชื่อมต่อ Supabase...');
+  setL('กำลังเชื่อมต่อ Supabase...');
   try{
-    // ── auto-create tables if not exist ──
-    setLoad('ตรวจสอบ database...');
-    await ensureTables();
-    setLoad('โหลดข้อมูล...');
+    setL('ตรวจสอบ database...');
+    // verify connection
+    const r=await fetch(`${U}/years?limit=1`,{headers:H});
+    if(!r.ok){const t=await r.text();throw new Error(t);}
+    setL('โหลดข้อมูล...');
     YEARS=await GET('years','order=year_be.desc');
     if(!YEARS.length){await POST('years',{year_be:2569,note:'ปีงบประมาณ 2569'});YEARS=await GET('years','order=year_be.desc');}
     CY=YEARS[0].id;CYbe=YEARS[0].year_be;
-    q('yrbtn').innerHTML=`<span class="sp">ปีงบประมาณ</span>${CYbe}`;
-    q('yrbtn').onclick=changeYear;
-    q('ft-yr').textContent=CYbe;
+    q('yrbtn').textContent=CYbe;q('yrbtn').onclick=changeYear;
+    q('proj-yr').textContent=CYbe;
     await loadAll();hide('load');
   }catch(e){
-    console.error(e);
-    showErr(e.message);
+    console.error(e);hide('load');
+    let hint='',msg=e.message;
+    if(msg.includes('42501')||msg.includes('row-level'))hint='กรุณา Run ไฟล์ fix_rls.sql ใน Supabase SQL Editor';
+    else if(msg.includes('relation')||msg.includes('exist'))hint='กรุณา Run schema.sql ใน Supabase SQL Editor';
+    else if(msg.includes('JWT')||msg.includes('apikey'))hint='Anon Key ไม่ถูกต้อง';
+    else if(msg.includes('fetch')||msg.includes('network'))hint='ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต';
+    q('err-msg').textContent=msg;q('err-hint').textContent=hint;show('err-screen');
   }
 }
-
-function setLoad(msg){
-  q('load-msg').textContent=msg;
-}
-
-function showErr(msg){
-  hide('load');
-  // parse common errors
-  let hint='';
-  if(msg.includes('relation')&&msg.includes('exist'))hint='กรุณา run schema.sql ใน Supabase SQL Editor ก่อนครับ';
-  else if(msg.includes('JWT')||msg.includes('apikey'))hint='Anon Key ไม่ถูกต้อง — กรุณาตรวจสอบอีกครั้ง';
-  else if(msg.includes('fetch')||msg.includes('network')||msg.includes('Failed'))hint='ไม่สามารถเชื่อมต่อ internet ได้ หรือ URL ไม่ถูกต้อง';
-  q('err-msg').textContent=msg;
-  q('err-hint').textContent=hint;
-  show('err-screen');
-}
-
-// ── auto-create tables via Supabase RPC / REST ──────
-async function ensureTables(){
-  const SQL=`
-CREATE TABLE IF NOT EXISTS years(id SERIAL PRIMARY KEY,year_be INTEGER NOT NULL UNIQUE,note TEXT);
-CREATE TABLE IF NOT EXISTS projects(id UUID DEFAULT gen_random_uuid() PRIMARY KEY,year_id INTEGER NOT NULL REFERENCES years(id) ON DELETE CASCADE,name TEXT NOT NULL,teacher_name TEXT,sort_order INTEGER DEFAULT 0);
-CREATE TABLE IF NOT EXISTS project_budgets(id UUID DEFAULT gen_random_uuid() PRIMARY KEY,project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,budget_source TEXT NOT NULL,amount NUMERIC(14,2) DEFAULT 0);
-CREATE TABLE IF NOT EXISTS procurement_items(id UUID DEFAULT gen_random_uuid() PRIMARY KEY,year_id INTEGER NOT NULL REFERENCES years(id),project_id UUID REFERENCES projects(id) ON DELETE SET NULL,seq TEXT,type TEXT CHECK(type IN('จัดซื้อ','จัดจ้าง')),title TEXT NOT NULL,person TEXT,budget_source TEXT,report_date DATE,amount NUMERIC(14,2) DEFAULT 0,withdraw_status TEXT DEFAULT 'ยังไม่เบิก' CHECK(withdraw_status IN('เบิกแล้ว','ยังไม่เบิก')),withdraw_no TEXT,created_at TIMESTAMPTZ DEFAULT NOW());
-`;
-  const cfg=getCfg();
-  // call Supabase SQL via rpc exec_sql if available, otherwise skip silently
-  try{
-    await fetch(`${cfg.url}/rest/v1/rpc/exec_sql`,{
-      method:'POST',
-      headers:{...H,'Content-Type':'application/json'},
-      body:JSON.stringify({sql:SQL})
-    });
-  }catch(_){}
-  // Try a direct query to check if tables exist
-  const r=await fetch(`${cfg.url}/rest/v1/years?limit=1`,{headers:H});
-  if(!r.ok){
-    const txt=await r.text();
-    throw new Error(txt);
-  }
-}
+function setL(m){q('lmsg').textContent=m;}
 
 async function loadAll(){
   PJ=await GET('projects',`year_id=eq.${CY}&order=sort_order`);
@@ -469,12 +432,10 @@ async function loadAll(){
     GET('procurement_items',`year_id=eq.${CY}&order=type,seq`)
   ]);
   renderProjs();renderProc();renderFin();
-  // selects
-  const ps=q('prf-proj');
-  ps.innerHTML='<option value="">-- ไม่ระบุ --</option>';
+  // populate selects
+  const ps=q('prf-proj');ps.innerHTML='<option value="">-- ไม่ระบุ --</option>';
   PJ.forEach(p=>ps.innerHTML+=`<option value="${p.id}">${p.name}</option>`);
-  const fp=q('fpj');
-  fp.innerHTML='<option value="">ทุกโครงการ</option>';
+  const fp=q('fpj');fp.innerHTML='<option value="">ทุกโครงการ</option>';
   PJ.forEach(p=>fp.innerHTML+=`<option value="${p.id}">${p.name}</option>`);
   const srcs=[...new Set(PR.map(p=>p.budget_source).filter(Boolean))].sort();
   const fsr=q('fsr');const cv=fsr.value;
@@ -484,25 +445,19 @@ async function loadAll(){
 
 // ─── PROJECTS ─────────────────────────────────────────
 function renderProjs(){
-  if(!PJ.length){q('pgrid').innerHTML='<div class="empty">— NO PROJECTS — กดปุ่ม + NEW PROJECT เพื่อเริ่ม</div>';return;}
-  q('pgrid').innerHTML=PJ.map((p,i)=>{
+  if(!PJ.length){q('pgrid').innerHTML='<div class="empty">ยังไม่มีโครงการ — กดปุ่มโครงการใหม่เพื่อเริ่ม</div>';return;}
+  q('pgrid').innerHTML=PJ.map(p=>{
     const bud=PB.filter(b=>b.project_id===p.id).reduce((a,b)=>a+(b.amount||0),0);
     const spent=PR.filter(x=>x.project_id===p.id).reduce((a,x)=>a+(x.amount||0),0);
-    const rem=bud-spent;
-    const cnt=PR.filter(x=>x.project_id===p.id).length;
-    return `<div class="rib">
-      <div class="rt" onclick="openDet('${p.id}')">
-        ${p.name}
-        <span class="tm" style="font-weight:400;text-transform:none;margin-left:4px">${p.teacher_name||''}</span>
-        <span style="margin-left:auto;font-size:18px;color:#999">▶</span>
-      </div>
-      <div class="rb ${TINTS[i%TINTS.length]}">
-        <span style="font-family:Helvetica,Arial,sans-serif;font-size:13px">
-          งบ <b>${n(bud)}</b> บาท &nbsp;|&nbsp;
-          ใช้ไป <b>${n(spent)}</b> บาท &nbsp;|&nbsp;
-          คงเหลือ <b style="color:${rem<0?'var(--red)':'#1a5c1a'}">${n(rem)}</b> บาท
-          &nbsp;|&nbsp; ${cnt} รายการพัสดุ
-        </span>
+    const rem=bud-spent;const cnt=PR.filter(x=>x.project_id===p.id).length;
+    return `<div class="pcard" onclick="openDet('${p.id}')">
+      <div class="eyebrow">โครงการ</div>
+      <h3>${p.name}</h3>
+      <p class="sub">${p.teacher_name||'ไม่ระบุครู'} · ${cnt} รายการพัสดุ</p>
+      <div class="srow">
+        <div class="si"><div class="sl">งบทั้งหมด</div><div class="sv">${n(bud)}</div></div>
+        <div class="si"><div class="sl">ใช้ไปแล้ว</div><div class="sv">${n(spent)}</div></div>
+        <div class="si ${rem<0?'ng':'ok'}"><div class="sl">คงเหลือ</div><div class="sv">${n(rem)}</div></div>
       </div>
     </div>`;
   }).join('');
@@ -516,32 +471,28 @@ function openDet(id){
   const spent=items.reduce((a,i)=>a+(i.amount||0),0);
   const wdone=items.filter(i=>i.withdraw_status==='เบิกแล้ว').reduce((a,i)=>a+(i.amount||0),0);
   const rem=bud-spent;
-  q('pd-name').textContent=CurPJ.name;
-  q('pd-teacher').textContent=CurPJ.teacher_name||'';
+  q('pd-name').textContent=CurPJ.name;q('pd-teacher').textContent=CurPJ.teacher_name||'';
   q('pd-cards').innerHTML=`
-    <div class="sc"><div class="slbl">งบทั้งหมด</div><div class="sval">${n(bud)}</div><div class="ssub">บาท</div></div>
-    <div class="sc" style="background:var(--sal)"><div class="slbl">ใช้ไปแล้ว</div><div class="sval">${n(spent)}</div><div class="ssub">บาท</div></div>
-    <div class="sc" style="background:var(--lim)"><div class="slbl">เบิกแล้ว</div><div class="sval">${n(wdone)}</div><div class="ssub">บาท</div></div>
-    <div class="sc" style="background:${rem<0?'var(--sal)':'var(--sage)'}"><div class="slbl">คงเหลือ</div><div class="sval">${n(rem)}</div><div class="ssub">บาท</div></div>`;
-  const sm={};
-  bs.forEach(b=>{sm[b.budget_source]={bud:b.amount||0,spent:0};});
+    <div class="ds"><div class="dl">งบทั้งหมด</div><div class="dv">${n(bud)} <small style="font-size:12px;font-weight:400;color:var(--mut)">บาท</small></div></div>
+    <div class="ds"><div class="dl">ใช้ไปแล้ว</div><div class="dv" style="color:var(--org)">${n(spent)}</div></div>
+    <div class="ds"><div class="dl">เบิกแล้ว</div><div class="dv" style="color:#0a6640">${n(wdone)}</div></div>
+    <div class="ds"><div class="dl">คงเหลือ</div><div class="dv" style="color:${rem<0?'var(--org)':'#0a6640'}">${n(rem)}</div></div>`;
+  const sm={};bs.forEach(b=>{sm[b.budget_source]={bud:b.amount||0,spent:0};});
   items.forEach(i=>{if(i.budget_source&&sm[i.budget_source])sm[i.budget_source].spent+=i.amount||0;});
   q('pd-src').innerHTML=Object.entries(sm).map(([s,v2])=>`<tr>
-    <td>${s}</td><td class="ar">${n(v2.bud)}</td><td class="ar">${n(v2.spent)}</td>
-    <td class="ar" style="color:${v2.bud-v2.spent<0?'var(--red)':'#1a5c1a'}">${n(v2.bud-v2.spent)}</td></tr>`).join('')||
-    '<tr><td colspan="4" class="empty" style="padding:12px">ยังไม่ได้กำหนดงบ</td></tr>';
-  const wh={};
-  items.filter(i=>i.withdraw_status==='เบิกแล้ว').forEach(i=>{const k=i.withdraw_no||'?';if(!wh[k])wh[k]=[];wh[k].push(i);});
-  q('pd-wh').innerHTML=Object.keys(wh).length?
-    Object.entries(wh).map(([wno,wi])=>`<div style="margin-bottom:6px">
-      <b style="font-family:Helvetica,Arial,sans-serif">${wno}</b><br>
-      <span class="tm">${wi.length} รายการ — ${n(wi.reduce((a,i)=>a+(i.amount||0),0))} บาท</span>
-    </div>`).join(''):'<span class="tm">ยังไม่มีการเบิก</span>';
+    <td style="font-size:13px">${s}</td><td class="ar tm">${n(v2.bud)}</td><td class="ar tm">${n(v2.spent)}</td>
+    <td class="ar" style="font-weight:600;color:${v2.bud-v2.spent<0?'var(--org)':'#0a6640'};font-size:13px">${n(v2.bud-v2.spent)}</td></tr>`).join('')||
+    '<tr><td colspan="4" style="padding:12px;color:var(--mut);font-size:13px">ยังไม่ได้กำหนดงบ</td></tr>';
+  const wh={};items.filter(i=>i.withdraw_status==='เบิกแล้ว').forEach(i=>{const k=i.withdraw_no||'?';if(!wh[k])wh[k]=[];wh[k].push(i);});
+  q('pd-wh').innerHTML=Object.keys(wh).length?Object.entries(wh).map(([wno,wi])=>`
+    <div style="margin-bottom:10px"><div style="font:500 13px/1 'Sofia Sans',Arial,sans-serif">${wno}</div>
+    <div class="tm">${wi.length} รายการ · ${n(wi.reduce((a,i)=>a+(i.amount||0),0))} บาท</div></div>`).join('')
+    :'<span class="tm">ยังไม่มีการเบิก</span>';
   q('pd-proc').innerHTML=items.length?items.map(i=>`<tr>
     <td><span class="badge ${i.type==='จัดซื้อ'?'bk':'bh'}">${i.type}</span></td>
     <td class="tm">${i.seq||'-'}</td><td>${i.title}</td><td class="tm">${i.budget_source||'-'}</td>
     <td class="ar">${n(i.amount)}</td>
-    <td><span class="badge ${i.withdraw_status==='เบิกแล้ว'?'bd2':'bp2'}">${i.withdraw_status||'ยังไม่เบิก'}</span></td>
+    <td><span class="badge ${i.withdraw_status==='เบิกแล้ว'?'bd':'bp'}" onclick="toggleStatus('${i.id}','${i.withdraw_status}','${i.withdraw_no||''}')" title="คลิกเพื่อเปลี่ยนสถานะ">${i.withdraw_status||'ยังไม่เบิก'}</span></td>
     <td class="tm">${i.withdraw_no||'-'}</td></tr>`).join('')
     :'<tr><td colspan="7" class="empty">ยังไม่มีรายการพัสดุ</td></tr>';
   show('pdet');q('pdet').scrollIntoView({behavior:'smooth',block:'start'});
@@ -551,26 +502,24 @@ function hideDet(){hide('pdet');CurPJ=null;}
 
 function openProjForm(id){
   const p=id?PJ.find(x=>x.id===id):null;
-  q('pft').textContent=p?'EDIT PROJECT':'NEW PROJECT';
-  q('pf-id').value=p?p.id:'';
-  q('pf-name').value=p?p.name:'';
-  q('pf-teacher').value=p?p.teacher_name||'':'';
+  q('pft').textContent=p?'แก้ไขโครงการ':'โครงการใหม่';
+  q('pf-id').value=p?p.id:'';q('pf-name').value=p?p.name:'';q('pf-teacher').value=p?p.teacher_name||'':'';
   q('brows').innerHTML='';
   const bs=p?PB.filter(b=>b.project_id===p.id):[];
   if(bs.length)bs.forEach(b=>addBRow(b.budget_source,b.amount));else addBRow();
-  q('pf-del').style.display=p?'inline-block':'none';
-  if(p)q('pf-del').dataset.id=p.id;
+  q('pf-del').style.display=p?'inline-block':'none';if(p)q('pf-del').dataset.id=p.id;
   openMo('mo-proj');
 }
 function addBRow(src='',amt=''){
-  const d=document.createElement('div');d.className='r2';d.style.marginBottom='8px';
-  d.innerHTML=`<select style="width:100%;border:1px solid var(--K);padding:5px 8px"><option value="">-- SELECT SOURCE --</option>
+  const d=document.createElement('div');d.className='r2';d.style.marginBottom='10px';
+  d.innerHTML=`<div class="fi" style="margin:0"><select style="border:1.5px solid rgba(0,0,0,.15);border-radius:var(--r1);padding:10px 14px;background:var(--W);width:100%">
+    <option value="">-- เลือกแหล่งเงิน --</option>
     <option${src==='อุดหนุน'?' selected':''}>อุดหนุน</option>
     <option${src==='พัฒนาผู้เรียน'?' selected':''}>พัฒนาผู้เรียน</option>
-    <option${src==='อื่นๆ'?' selected':''}>อื่นๆ</option></select>
-    <div style="display:flex;gap:6px">
-      <input type="number" placeholder="จำนวนเงิน" value="${amt}" style="flex:1;border:1px solid var(--K);padding:5px 8px">
-      <button class="btn bo sm" onclick="this.closest('.r2').remove()" type="button">✕</button>
+    <option${src==='อื่นๆ'?' selected':''}>อื่นๆ</option></select></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input type="number" value="${amt}" placeholder="จำนวนเงิน" style="border:1.5px solid rgba(0,0,0,.15);border-radius:var(--r1);padding:10px 14px;background:var(--W);flex:1">
+      <button class="btn bo rp sm" onclick="this.closest('.r2').remove()" type="button">✕</button>
     </div>`;
   q('brows').appendChild(d);
 }
@@ -583,15 +532,14 @@ async function saveProj(){
     const pid=id||res[0].id;
     await DEL('project_budgets',`project_id=eq.${pid}`);
     for(const row of q('brows').querySelectorAll('.r2')){
-      const src=row.querySelector('select').value;
-      const amt=parseFloat(row.querySelector('input[type=number]').value)||0;
+      const src=row.querySelector('select').value;const amt=parseFloat(row.querySelector('input').value)||0;
       if(src&&amt)await POST('project_budgets',{project_id:pid,budget_source:src,amount:amt});
     }
     closeMo('mo-proj');await loadAll();if(pid)openDet(pid);
   }catch(e){alert(e.message);}
 }
 async function delProj(){
-  if(!confirm('DELETE this project?'))return;
+  if(!confirm('ลบโครงการนี้?'))return;
   try{await DEL('projects',`id=eq.${q('pf-del').dataset.id}`);closeMo('mo-proj');hideDet();await loadAll();}
   catch(e){alert(e.message);}
 }
@@ -600,11 +548,7 @@ async function delProj(){
 function renderProc(){
   const ty=q('ft').value,st=q('fs').value,sr=q('fsr').value,pj=q('fpj').value;
   const qw=(q('fq').value||'').toLowerCase();
-  const rows=PR.filter(p=>
-    (!ty||p.type===ty)&&(!st||p.withdraw_status===st)&&
-    (!sr||p.budget_source===sr)&&(!pj||p.project_id===pj)&&
-    (!qw||(p.title||'').toLowerCase().includes(qw)||(p.person||'').toLowerCase().includes(qw))
-  );
+  const rows=PR.filter(p=>(!ty||p.type===ty)&&(!st||p.withdraw_status===st)&&(!sr||p.budget_source===sr)&&(!pj||p.project_id===pj)&&(!qw||(p.title||'').toLowerCase().includes(qw)||(p.person||'').toLowerCase().includes(qw)));
   const sum=rows.reduce((a,p)=>a+(p.amount||0),0);
   const pm=Object.fromEntries(PJ.map(p=>[p.id,p.name]));
   q('ptb').innerHTML=rows.length?rows.map(p=>`<tr>
@@ -612,46 +556,56 @@ function renderProc(){
     <td class="tm">${p.seq||'-'}</td><td>${p.title}</td><td class="tm">${p.person||'-'}</td>
     <td class="tm">${p.budget_source||'-'}</td><td class="tm">${pm[p.project_id]||'-'}</td>
     <td class="tm">${fd(p.report_date)}</td><td class="ar">${n(p.amount)}</td>
-    <td><span class="badge ${p.withdraw_status==='เบิกแล้ว'?'bd2':'bp2'}">${p.withdraw_status||'ยังไม่เบิก'}</span></td>
+    <td><span class="badge ${p.withdraw_status==='เบิกแล้ว'?'bd':'bp'}" onclick="toggleStatus('${p.id}','${p.withdraw_status}','${p.withdraw_no||''}')" title="คลิกเพื่อเปลี่ยนสถานะ">${p.withdraw_status||'ยังไม่เบิก'}</span></td>
     <td class="tm">${p.withdraw_no||'-'}</td>
-    <td><button class="btn bo sm" onclick="openProcForm('${p.id}')">EDIT</button></td>
-  </tr>`).join(''):'<tr><td colspan="11" class="empty">— NO RECORDS FOUND —</td></tr>';
-  q('ptf').innerHTML=rows.length?`<tr>
-    <td colspan="7" style="text-align:right;font-family:Helvetica,Arial,sans-serif;font-size:12px">${rows.length} RECORDS</td>
-    <td class="ar">${n(sum)}</td><td colspan="3"></td></tr>`:'';
+    <td><button class="btn bo rp sm" onclick="openProcForm('${p.id}')">แก้ไข</button></td>
+  </tr>`).join(''):'<tr><td colspan="11" class="empty">ไม่พบข้อมูล</td></tr>';
+  q('ptf').innerHTML=rows.length?`<tr><td colspan="7" style="text-align:right;font-size:13px;color:var(--mut)">${rows.length} รายการ</td><td class="ar">${n(sum)}</td><td colspan="3"></td></tr>`:'';
 }
+
+// ─── TOGGLE STATUS (คลิกที่ badge ได้เลย) ─────────────
+async function toggleStatus(id, status, wno){
+  if(status==='ยังไม่เบิก'){
+    const num=prompt('กรอกเลขใบเบิก (ไม่กรอกก็ได้):',wno||'');
+    if(num===null)return; // cancelled
+    await PATCH('procurement_items',`id=eq.${id}`,{withdraw_status:'เบิกแล้ว',withdraw_no:num||null});
+  }else{
+    if(!confirm('เปลี่ยนกลับเป็น "ยังไม่เบิก"?'))return;
+    await PATCH('procurement_items',`id=eq.${id}`,{withdraw_status:'ยังไม่เบิก',withdraw_no:null});
+  }
+  await loadAll();
+  if(CurPJ)openDet(CurPJ.id);
+}
+
 function openProcForm(id){
   const p=id?PR.find(x=>x.id===id):null;
-  q('prft').textContent=p?'EDIT PROCUREMENT ITEM':'ADD PROCUREMENT ITEM';
+  q('prft').textContent=p?'แก้ไขรายการ':'เพิ่มรายการพัสดุ';
   q('prf-id').value=p?p.id:'';
   if(p){
-    q('prf-type').value=p.type||'จัดซื้อ';q('prf-seq').value=p.seq||'';
-    q('prf-title').value=p.title||'';q('prf-person').value=p.person||'';
-    q('prf-amt').value=p.amount||'';q('prf-src').value=p.budget_source||'';
+    q('prf-type').value=p.type||'จัดซื้อ';q('prf-seq').value=p.seq||'';q('prf-title').value=p.title||'';
+    q('prf-person').value=p.person||'';q('prf-amt').value=p.amount||'';q('prf-src').value=p.budget_source||'';
     q('prf-date').value=p.report_date||'';q('prf-proj').value=p.project_id||'';
     q('prf-st').value=p.withdraw_status||'ยังไม่เบิก';q('prf-wno').value=p.withdraw_no||'';
     q('prf-del').style.display='inline-block';q('prf-del').dataset.id=p.id;
   }else{
     ['prf-seq','prf-title','prf-person','prf-amt','prf-date','prf-wno'].forEach(i=>q(i).value='');
     ['prf-src','prf-proj'].forEach(i=>q(i).value='');
-    q('prf-type').value='จัดซื้อ';q('prf-st').value='ยังไม่เบิก';
-    q('prf-del').style.display='none';
+    q('prf-type').value='จัดซื้อ';q('prf-st').value='ยังไม่เบิก';q('prf-del').style.display='none';
   }
   openMo('mo-proc');
 }
 async function saveProc(){
   const id=q('prf-id').value;
-  const body={year_id:CY,type:q('prf-type').value,seq:q('prf-seq').value.trim()||null,
-    title:q('prf-title').value.trim(),person:q('prf-person').value.trim()||null,
-    amount:parseFloat(q('prf-amt').value)||0,budget_source:q('prf-src').value||null,
-    report_date:q('prf-date').value||null,project_id:q('prf-proj').value||null,
-    withdraw_status:q('prf-st').value,withdraw_no:q('prf-wno').value.trim()||null};
+  const body={year_id:CY,type:q('prf-type').value,seq:q('prf-seq').value.trim()||null,title:q('prf-title').value.trim(),
+    person:q('prf-person').value.trim()||null,amount:parseFloat(q('prf-amt').value)||0,
+    budget_source:q('prf-src').value||null,report_date:q('prf-date').value||null,
+    project_id:q('prf-proj').value||null,withdraw_status:q('prf-st').value,withdraw_no:q('prf-wno').value.trim()||null};
   if(!body.title)return alert('กรุณากรอกหัวข้อ');
   try{id?await PATCH('procurement_items',`id=eq.${id}`,body):await POST('procurement_items',body);closeMo('mo-proc');await loadAll();}
   catch(e){alert(e.message);}
 }
 async function delProc(){
-  if(!confirm('DELETE this item?'))return;
+  if(!confirm('ลบรายการนี้?'))return;
   try{await DEL('procurement_items',`id=eq.${q('prf-del').dataset.id}`);closeMo('mo-proc');await loadAll();}
   catch(e){alert(e.message);}
 }
@@ -661,20 +615,14 @@ function renderFin(){
   SEL.clear();updBar();
   const sm={};
   PB.forEach(b=>{if(!sm[b.budget_source])sm[b.budget_source]={bud:0,spent:0,wd:0};sm[b.budget_source].bud+=b.amount||0;});
-  PR.forEach(i=>{
-    const k=i.budget_source||'(ไม่ระบุ)';
-    if(!sm[k])sm[k]={bud:0,spent:0,wd:0};
-    sm[k].spent+=i.amount||0;
-    if(i.withdraw_status==='เบิกแล้ว')sm[k].wd+=i.amount||0;
-  });
+  PR.forEach(i=>{const k=i.budget_source||'(ไม่ระบุ)';if(!sm[k])sm[k]={bud:0,spent:0,wd:0};sm[k].spent+=i.amount||0;if(i.withdraw_status==='เบิกแล้ว')sm[k].wd+=i.amount||0;});
   const tot=f=>Object.values(sm).reduce((a,x)=>a+x[f],0);
-  q('fin-cards').innerHTML=`
-    <div class="sc"><div class="slbl">งบรวมทั้งหมด</div><div class="sval">${n(tot('bud'))}</div><div class="ssub">บาท</div></div>
-    <div class="sc" style="background:var(--sal)"><div class="slbl">ใช้ไปแล้ว</div><div class="sval">${n(tot('spent'))}</div><div class="ssub">${PR.length} รายการ</div></div>
-    <div class="sc" style="background:var(--lim)"><div class="slbl">เบิกแล้ว</div><div class="sval">${n(tot('wd'))}</div><div class="ssub">บาท</div></div>
-    <div class="sc" style="background:${tot('bud')-tot('spent')<0?'var(--sal)':'var(--sage)'}"><div class="slbl">คงเหลือ</div><div class="sval">${n(tot('bud')-tot('spent'))}</div><div class="ssub">บาท</div></div>`;
-  const pbSrc={};
-  PR.forEach(i=>{const k=i.budget_source||'(ไม่ระบุแหล่งเงิน)';if(!pbSrc[k])pbSrc[k]=[];pbSrc[k].push(i);});
+  q('fin-sum').innerHTML=`
+    <div class="scard"><div class="scl">งบรวมทั้งหมด</div><div class="scv">${n(tot('bud'))}</div><div class="scs">บาท</div></div>
+    <div class="scard"><div class="scl">ใช้ไปแล้ว</div><div class="scv" style="color:var(--org)">${n(tot('spent'))}</div><div class="scs">${PR.length} รายการ</div></div>
+    <div class="scard"><div class="scl">เบิกแล้ว</div><div class="scv" style="color:#0a6640">${n(tot('wd'))}</div><div class="scs">บาท</div></div>
+    <div class="scard"><div class="scl">คงเหลือ</div><div class="scv" style="color:${tot('bud')-tot('spent')<0?'var(--org)':'#0a6640'}">${n(tot('bud')-tot('spent'))}</div><div class="scs">บาท</div></div>`;
+  const pbSrc={};PR.forEach(i=>{const k=i.budget_source||'(ไม่ระบุแหล่งเงิน)';if(!pbSrc[k])pbSrc[k]=[];pbSrc[k].push(i);});
   const pm=Object.fromEntries(PJ.map(p=>[p.id,p.name]));
   const allSrcs=[...new Set([...Object.keys(sm),...Object.keys(pbSrc)])];
   q('fin-src').innerHTML=allSrcs.map(src=>{
@@ -685,50 +633,48 @@ function renderFin(){
     const sPend=items.filter(i=>i.withdraw_status!=='เบิกแล้ว').reduce((a,i)=>a+(i.amount||0),0);
     const rem=sv.bud-sv.spent;
     const wh={};done.forEach(i=>{const k=i.withdraw_no||'?';if(!wh[k])wh[k]=[];wh[k].push(i);});
-    const whHtml=Object.keys(wh).length?`<div class="wh"><b style="font-family:Helvetica,Arial,sans-serif;font-size:12px">📄 WITHDRAWAL HISTORY: </b>`+
-      Object.entries(wh).map(([wno,wi])=>`<span class="chip">${wno} — ${wi.length} items — ${n(wi.reduce((a,i)=>a+(i.amount||0),0))} บาท</span>`).join('')+'</div>':'';
-    return `<div class="src" data-src="${src}">
-      <div class="srch">
-        <h4>${src}</h4>
-        <span class="badge bd2">เบิกแล้ว ${n(sDone)}</span>
-        <span class="badge bp2">ค้างเบิก ${n(sPend)}</span>
-        ${sv.bud?`<span style="font-size:12px;font-family:Helvetica,Arial,sans-serif">งบ ${n(sv.bud)} | คงเหลือ <b style="color:${rem<0?'#ffaaaa':'var(--ylw)'}">${n(rem)}</b></span>`:''}
+    const whHtml=Object.keys(wh).length?`<div class="wh-row"><span style="font:700 11px/1 'Sofia Sans',Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin-right:4px">ใบเบิก:</span>`+
+      Object.entries(wh).map(([wno,wi])=>`<span class="whchip">${wno} · ${wi.length} รายการ · ${n(wi.reduce((a,i)=>a+(i.amount||0),0))} บาท</span>`).join('')+'</div>':'';
+    return `<div class="fcard" data-src="${src}">
+      <div class="fhead">
+        <div><div class="eyebrow">${src}</div>
+          ${sv.bud?`<p style="font:500 14px/1 'Sofia Sans',Arial,sans-serif;color:var(--mut);margin-top:4px">งบ ${n(sv.bud)} บาท · คงเหลือ <b style="color:${rem<0?'var(--org)':'#0a6640'}">${n(rem)} บาท</b></p>`:''}
+        </div>
+        <span class="badge bd" style="cursor:default">${n(sDone)} บาท เบิกแล้ว</span>
+        <span class="badge bp" style="cursor:default">ค้างเบิก ${n(sPend)} บาท</span>
       </div>
-      <div class="finb">
-        <span>ทั้งหมด <b>${items.length}</b> รายการ</span>
-        <span>|</span><span>เบิกแล้ว <b>${n(sDone)}</b> บาท</span>
-        <span>|</span><span>ค้างเบิก <b>${n(sPend)}</b> บาท</span>
+      <div class="fstats">
+        <div class="fsi"><div class="fl">ทั้งหมด</div><div class="fv">${items.length} รายการ</div></div>
+        <div class="fsi"><div class="fl">เบิกแล้ว</div><div class="fv" style="color:#0a6640">${n(sDone)}</div></div>
+        <div class="fsi"><div class="fl">ค้างเบิก</div><div class="fv" style="color:var(--org)">${n(sPend)}</div></div>
       </div>
-      <div style="overflow:auto"><table>
+      <div class="tw"><table>
         <thead><tr>
-          <th style="width:32px"><input type="checkbox" onchange="togAll(this,'${src}')"></th>
-          <th>ประเภท</th><th>เลข</th><th>หัวข้อ</th><th>โครงการ</th>
-          <th>วันที่</th><th class="ar">ยอดเงิน</th><th>สถานะ</th><th>ใบเบิก</th>
+          <th style="width:34px"><input type="checkbox" onchange="togAll(this,'${src}')"></th>
+          <th>ประเภท</th><th>เลข</th><th>หัวข้อ</th><th>โครงการ</th><th>วันที่</th>
+          <th class="ar">ยอดเงิน</th><th>สถานะ</th><th>ใบเบิก</th>
         </tr></thead>
         <tbody>${items.map(i=>`<tr>
-          <td>${i.withdraw_status!=='เบิกแล้ว'
-            ?`<input type="checkbox" data-id="${i.id}" data-amt="${i.amount||0}" onchange="togSel(this)">`
-            :'<b style="color:green">✓</b>'}</td>
+          <td>${i.withdraw_status!=='เบิกแล้ว'?`<input type="checkbox" data-id="${i.id}" data-amt="${i.amount||0}" onchange="togSel(this)">`:'<span style="color:#0a6640;font-size:16px">✓</span>'}</td>
           <td><span class="badge ${i.type==='จัดซื้อ'?'bk':'bh'}">${i.type}</span></td>
           <td class="tm">${i.seq||'-'}</td><td>${i.title}</td>
           <td class="tm">${pm[i.project_id]||'-'}</td><td class="tm">${fd(i.report_date)}</td>
           <td class="ar">${n(i.amount)}</td>
-          <td><span class="badge ${i.withdraw_status==='เบิกแล้ว'?'bd2':'bp2'}">${i.withdraw_status||'ยังไม่เบิก'}</span></td>
+          <td><span class="badge ${i.withdraw_status==='เบิกแล้ว'?'bd':'bp'}" onclick="toggleStatus('${i.id}','${i.withdraw_status}','${i.withdraw_no||''}')" title="คลิกเพื่อเปลี่ยนสถานะ">${i.withdraw_status||'ยังไม่เบิก'}</span></td>
           <td class="tm">${i.withdraw_no||'-'}</td>
         </tr>`).join('')||'<tr><td colspan="9" class="empty">ยังไม่มีรายการ</td></tr>'}
         </tbody>
-        <tfoot><tr>
-          <td colspan="6" style="text-align:right;font-family:Helvetica,Arial,sans-serif;font-size:11px">${items.length} RECORDS</td>
-          <td class="ar">${n(sv.spent)}</td><td colspan="2"></td>
-        </tr></tfoot>
+        <tfoot><tr><td colspan="6" style="text-align:right;font-size:12px;color:var(--mut)">${items.length} รายการ</td>
+          <td class="ar">${n(sv.spent)}</td><td colspan="2"></td></tr></tfoot>
       </table></div>
       ${whHtml}
     </div>`;
-  }).join('')||'<div class="empty">— NO DATA —</div>';
+  }).join('')||'<div class="empty">ยังไม่มีข้อมูล</div>';
 }
+
 function togSel(cb){cb.checked?SEL.set(cb.dataset.id,+cb.dataset.amt):SEL.delete(cb.dataset.id);updBar();}
 function togAll(cb,src){
-  document.querySelector(`.src[data-src="${src}"]`).querySelectorAll('input[data-id]').forEach(b=>{
+  document.querySelector(`.fcard[data-src="${src}"]`).querySelectorAll('input[data-id]').forEach(b=>{
     b.checked=cb.checked;cb.checked?SEL.set(b.dataset.id,+b.dataset.amt):SEL.delete(b.dataset.id);
   });updBar();
 }
@@ -742,7 +688,7 @@ async function doWithdraw(){
   if(!SEL.size)return;
   const wno=q('wno').value.trim();if(!wno)return alert('กรุณากรอกเลขใบเบิก');
   const tot=[...SEL.values()].reduce((a,v)=>a+v,0);
-  if(!confirm(`CONFIRM WITHDRAWAL\n${SEL.size} items | ${n(tot)} บาท\nเลขใบเบิก: ${wno}`))return;
+  if(!confirm(`บันทึกเบิก ${SEL.size} รายการ\nยอด ${n(tot)} บาท\nเลขใบเบิก: ${wno}`))return;
   try{
     await PATCH('procurement_items',`id=in.(${[...SEL.keys()].join(',')})`,{withdraw_status:'เบิกแล้ว',withdraw_no:wno});
     q('wno').value='';await loadAll();go('fin');
@@ -755,12 +701,10 @@ async function changeYear(){
   const input=prompt(`ปีงบประมาณที่มีอยู่: ${list}\nพิมพ์ปีที่ต้องการ (หรือปีใหม่เพื่อเพิ่ม):`);
   if(!input)return;const yr=parseInt(input);if(isNaN(yr))return;
   let found=YEARS.find(y=>y.year_be===yr);
-  if(!found){if(!confirm(`ADD year ${yr}?`))return;
+  if(!found){if(!confirm(`เพิ่มปีงบประมาณ ${yr}?`))return;
     await POST('years',{year_be:yr,note:`ปีงบประมาณ ${yr}`});
     YEARS=await GET('years','order=year_be.desc');found=YEARS.find(y=>y.year_be===yr);}
-  if(found){CY=found.id;CYbe=found.year_be;
-    q('yrbtn').innerHTML=`<span class="sp">ปีงบประมาณ</span>${CYbe}`;
-    q('ft-yr').textContent=CYbe;await loadAll();}
+  if(found){CY=found.id;CYbe=found.year_be;q('yrbtn').textContent=CYbe;q('proj-yr').textContent=CYbe;await loadAll();}
 }
 
 // ─── UTILS ────────────────────────────────────────────
