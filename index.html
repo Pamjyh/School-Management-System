@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>งานพัสดุ & การเงิน</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--a:#4361ee;--g:#06d6a0;--r:#ef233c;--m:#6c757d;--bd:#dee2e6;--bg:#f0f2f5;--W:#fff;--sh:0 2px 12px rgba(0,0,0,.08);--ra:14px;--rb:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:15px/1.5 'Sarabun',sans-serif;background:var(--bg);color:#1a1a2e}
+input,select,button,textarea{font-family:inherit;font-size:14px}
+
+/* NAV */
+nav{background:var(--W);border-bottom:1px solid var(--bd);padding:0 16px;display:flex;align-items:center;gap:2px;position:sticky;top:0;z-index:40}
+.nt{font-weight:700;font-size:15px;margin-right:auto;padding:14px 0;white-space:nowrap}
+.tab{padding:13px 14px;border:none;background:none;cursor:pointer;color:var(--m);border-bottom:3px solid transparent}
+.tab.on{color:var(--a);border-bottom-color:var(--a);font-weight:700}
+.yrbtn{background:var(--a);color:#fff;border-radius:999px;padding:3px 13px;font-size:13px;font-weight:700;cursor:pointer;border:none;margin-left:4px}
+
+/* LAYOUT */
+main{padding:20px 16px;max-width:1100px;margin:0 auto}
+.page{display:none}.page.on{display:block}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px;margin-bottom:20px}
+.card{background:var(--W);border-radius:var(--ra);padding:18px;box-shadow:var(--sh)}
+.lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--m);margin-bottom:6px}
+.val{font-size:26px;font-weight:700}.sub{font-size:12px;color:var(--m);margin-top:3px}
+.ca .val{color:var(--a)}.cg .val{color:var(--g)}.cr .val{color:var(--r)}
+
+/* TABLE */
+.tw{background:var(--W);border-radius:var(--ra);box-shadow:var(--sh);overflow:auto}
+table{width:100%;border-collapse:collapse}
+th{background:#f8f9fa;padding:11px 13px;text-align:left;font-size:12px;color:var(--m);font-weight:700;white-space:nowrap;border-bottom:2px solid var(--bd)}
+td{padding:10px 13px;border-bottom:1px solid var(--bd);font-size:14px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8f9ff}
+tfoot td{background:#f8f9fa;font-weight:700;border-top:2px solid var(--bd)}
+.ar{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.tm{color:var(--m);font-size:13px}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700}
+.bk{background:#e8f0fe;color:#1a73e8}.bh{background:#fce8b2;color:#e37400}
+.bd2{background:#e6f4ea;color:#137333}.bp2{background:#fce8e6;color:#c5221f}
+
+/* TOOLBAR */
+.tb{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
+.tb h3{font-size:16px;font-weight:700;margin-right:auto}
+
+/* FORM */
+.fi{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fi label{font-size:12px;font-weight:700;color:var(--m)}
+input[type=text],input[type=number],input[type=date],select{border:1px solid var(--bd);border-radius:var(--rb);padding:8px 11px;background:var(--W);width:100%}
+input:focus,select:focus{outline:2px solid var(--a);border-color:transparent}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:var(--rb);border:none;cursor:pointer;font-weight:700;white-space:nowrap}
+.btn:hover{opacity:.85}
+.ba{background:var(--a);color:#fff}.bg{background:var(--g);color:#fff}
+.br{background:var(--r);color:#fff}.bo{background:transparent;border:1px solid var(--bd);color:#1a1a2e}
+.sm{padding:5px 11px;font-size:13px}
+
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:80;align-items:center;justify-content:center;padding:16px}
+.ov.on{display:flex}
+.modal{background:var(--W);border-radius:var(--ra);padding:24px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto}
+.modal h3{margin-bottom:18px}
+.mf{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+
+/* PROJECTS GRID */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px}
+.pcard{background:var(--W);border-radius:var(--ra);box-shadow:var(--sh);padding:18px;cursor:pointer;border:2px solid transparent;transition:.15s}
+.pcard:hover{border-color:var(--a)}
+.pcard h4{font-size:15px;font-weight:700;margin-bottom:3px}
+.pstats{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.ps{font-size:12px;font-weight:700;padding:3px 9px;border-radius:7px;background:#f0f2f5}
+
+/* PROJECT DETAIL */
+.pdet{background:var(--W);border-radius:var(--ra);box-shadow:var(--sh);padding:20px;margin-bottom:20px}
+.pdh{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.pdh h3{font-size:17px;font-weight:700;flex:1}
+
+/* FINANCE SECTION */
+.src{background:var(--W);border-radius:var(--ra);box-shadow:var(--sh);margin-bottom:18px;overflow:hidden}
+.srch{padding:14px 18px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--bd);background:#f8f9fa;flex-wrap:wrap}
+.srch h4{font-size:15px;font-weight:700;margin-right:auto}
+.finb{display:flex;gap:12px;padding:9px 18px;background:#f0f7ff;border-bottom:1px solid var(--bd);font-size:13px;flex-wrap:wrap}
+.finb span{color:var(--m)}.finb strong{color:#1a1a2e}
+
+/* WITHDRAW BAR */
+#wbar{display:none;position:sticky;bottom:0;background:var(--a);color:#fff;padding:12px 18px;border-radius:var(--ra) var(--ra) 0 0;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+#wbar.on{display:flex}
+#wbar input{border:none;border-radius:6px;padding:7px 11px;width:180px;color:#1a1a2e}
+
+/* LOADING / SETUP */
+#load{position:fixed;inset:0;background:var(--W);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:10px}
+.spin{width:38px;height:38px;border:4px solid var(--bd);border-top-color:var(--a);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+#setup{display:none;position:fixed;inset:0;background:var(--bg);z-index:98;align-items:center;justify-content:center;padding:20px}
+.sbox{background:var(--W);border-radius:var(--ra);padding:28px;max-width:420px;width:100%;box-shadow:var(--sh)}
+.sbox h2{margin-bottom:16px;color:var(--a)}
+
+/* UTILS */
+.empty{text-align:center;padding:40px;color:var(--m);font-size:14px}
+.wh{padding:10px 18px;background:#f0fdf4;border-top:1px solid var(--bd);font-size:13px}
+.chip{display:inline-block;margin:2px 4px;background:#d1fae5;padding:2px 10px;border-radius:6px;color:#065f46;font-weight:700}
+
+@media(max-width:640px){
+  .r2{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr 1fr}
+  .tab{padding:11px 9px;font-size:13px}
+  nav{padding:0 8px}
+  .pgrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="load"><div class="spin"></div><span>กำลังโหลด...</span></div>
+<div id="setup">
+  <div class="sbox">
+    <h2>⚙️ ตั้งค่า Supabase</h2>
+    <p style="font-size:13px;color:var(--m);margin-bottom:16px">กรอกข้อมูลจาก Supabase project ของคุณ ระบบจะจำการตั้งค่าไว้</p>
+    <div class="fi"><label>Project URL</label><input id="cu" placeholder="https://xxxx.supabase.co"></div>
+    <div class="fi"><label>Anon Key</label><input id="ck" placeholder="eyJ..."></div>
+    <button class="btn ba" style="width:100%" onclick="saveCfg()">เชื่อมต่อ</button>
+  </div>
+</div>
+
+<nav>
+  <span class="nt">📋 พัสดุ &amp; การเงิน</span>
+  <button class="tab on" onclick="go('proj')">🏫 โครงการ</button>
+  <button class="tab" onclick="go('proc')">📦 พัสดุ</button>
+  <button class="tab" onclick="go('fin')">💰 การเงิน</button>
+  <button class="yrbtn" id="yrbtn">2569</button>
+</nav>
+
+<main>
+
+<!-- ① โครงการ -->
+<div id="page-proj" class="page on">
+  <div class="tb">
+    <h3>โครงการทั้งหมด</h3>
+    <button class="btn ba sm" onclick="openProjForm()">+ โครงการ</button>
+  </div>
+  <div class="pgrid" id="pgrid"></div>
+  <div id="pdet" style="display:none">
+    <div class="pdet">
+      <div class="pdh">
+        <h3 id="pd-name"></h3>
+        <span class="tm" id="pd-teacher"></span>
+        <button class="btn bo sm" onclick="editCurProj()">✏️ แก้ไข</button>
+        <button class="btn bo sm" onclick="hideDet()">✕</button>
+      </div>
+      <div class="cards" id="pd-cards"></div>
+      <div class="r2" style="gap:14px;margin-bottom:14px">
+        <div class="tw"><table>
+          <thead><tr><th>แหล่งเงิน</th><th class="ar">งบ</th><th class="ar">ใช้ไป</th><th class="ar">คงเหลือ</th></tr></thead>
+          <tbody id="pd-src"></tbody>
+        </table></div>
+        <div style="display:flex;flex-direction:column;gap:8px" id="pd-wh"></div>
+      </div>
+      <div class="tw"><table>
+        <thead><tr><th>ประเภท</th><th>เลข</th><th>หัวข้อ</th><th>แหล่งเงิน</th><th class="ar">ยอดเงิน</th><th>สถานะ</th><th>ใบเบิก</th></tr></thead>
+        <tbody id="pd-proc"></tbody>
+      </table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ② พัสดุ -->
+<div id="page-proc" class="page">
+  <div class="tb">
+    <h3>จัดซื้อ-จัดจ้าง</h3>
+    <select id="ft" onchange="renderProc()" style="width:auto"><option value="">ทุกประเภท</option><option>จัดซื้อ</option><option>จัดจ้าง</option></select>
+    <select id="fs" onchange="renderProc()" style="width:auto"><option value="">ทุกสถานะ</option><option>เบิกแล้ว</option><option>ยังไม่เบิก</option></select>
+    <select id="fsr" onchange="renderProc()" style="width:auto"><option value="">ทุกแหล่งเงิน</option></select>
+    <select id="fpj" onchange="renderProc()" style="width:auto"><option value="">ทุกโครงการ</option></select>
+    <input id="fq" type="text" placeholder="🔍 ค้นหา..." oninput="renderProc()" style="width:130px">
+    <button class="btn ba sm" onclick="openProcForm()">+ เพิ่ม</button>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>ประเภท</th><th>เลข</th><th>หัวข้อ</th><th>คนทำ</th><th>แหล่งเงิน</th><th>โครงการ</th><th>วันที่</th><th class="ar">ยอดเงิน</th><th>สถานะ</th><th>ใบเบิก</th><th></th></tr></thead>
+    <tbody id="ptb"></tbody>
+    <tfoot id="ptf"></tfoot>
+  </table></div>
+</div>
+
+<!-- ③ การเงิน -->
+<div id="page-fin" class="page">
+  <div class="tb">
+    <h3>การเงิน — ยอดคงเหลือ</h3>
+    <button class="btn bo sm" onclick="loadAll()">🔄 รีเฟรช</button>
+  </div>
+  <div class="cards" id="fin-cards"></div>
+  <div id="fin-src"></div>
+  <div id="wbar">
+    <span>เลือก <b id="wn">0</b> รายการ | <b id="ws">0</b> บาท</span>
+    <input id="wno" type="text" placeholder="เลขใบเบิก เช่น ใบเบิก 5/2569">
+    <button class="btn sm" style="background:#fff;color:var(--a)" onclick="doWithdraw()">✅ บันทึกเบิก</button>
+    <button class="btn sm" style="border:1px solid rgba(255,255,255,.4);color:#fff;background:transparent" onclick="clrSel()">ล้าง</button>
+  </div>
+</div>
+
+</main>
+
+<!-- MODAL: โครงการ -->
+<div id="mo-proj" class="ov">
+<div class="modal">
+  <h3 id="pft">เพิ่มโครงการ</h3>
+  <input type="hidden" id="pf-id">
+  <div class="r2">
+    <div class="fi"><label>ชื่อโครงการ *</label><input id="pf-name" type="text"></div>
+    <div class="fi"><label>ชื่อครูรับผิดชอบ</label><input id="pf-teacher" type="text"></div>
+  </div>
+  <div style="font-size:12px;font-weight:700;color:var(--m);margin-bottom:8px">💰 งบประมาณแยกตามแหล่งเงิน</div>
+  <div id="brows"></div>
+  <button class="btn bo sm" onclick="addBRow()">+ เพิ่มแหล่งเงิน</button>
+  <div class="mf">
+    <button class="btn bo" onclick="closeMo('mo-proj')">ยกเลิก</button>
+    <button class="btn br sm" id="pf-del" style="display:none" onclick="delProj()">🗑 ลบ</button>
+    <button class="btn ba" onclick="saveProj()">💾 บันทึก</button>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: พัสดุ -->
+<div id="mo-proc" class="ov">
+<div class="modal">
+  <h3 id="prft">เพิ่มรายการพัสดุ</h3>
+  <input type="hidden" id="prf-id">
+  <div class="r2">
+    <div class="fi"><label>ประเภท *</label><select id="prf-type"><option>จัดซื้อ</option><option>จัดจ้าง</option></select></div>
+    <div class="fi"><label>เลขที่</label><input id="prf-seq" type="text" placeholder="จ.1"></div>
+  </div>
+  <div class="fi"><label>หัวข้อ *</label><input id="prf-title" type="text"></div>
+  <div class="r2">
+    <div class="fi"><label>คนทำ</label><input id="prf-person" type="text" placeholder="ภาม, ส้ม..."></div>
+    <div class="fi"><label>ยอดเงิน (บาท) *</label><input id="prf-amt" type="number" min="0" step="0.01"></div>
+  </div>
+  <div class="r2">
+    <div class="fi"><label>แหล่งงบประมาณ</label>
+      <select id="prf-src"><option value="">-- เลือก --</option><option>อุดหนุน</option><option>พัฒนาผู้เรียน</option><option>อื่นๆ</option></select>
+    </div>
+    <div class="fi"><label>วันที่รายงาน</label><input id="prf-date" type="date"></div>
+  </div>
+  <div class="r2">
+    <div class="fi"><label>โครงการ</label><select id="prf-proj"><option value="">-- ไม่ระบุ --</option></select></div>
+    <div class="fi"><label>สถานะ</label>
+      <select id="prf-st"><option value="ยังไม่เบิก">ยังไม่เบิก</option><option value="เบิกแล้ว">เบิกแล้ว</option></select>
+    </div>
+  </div>
+  <div class="fi"><label>เลขใบเบิก</label><input id="prf-wno" type="text"></div>
+  <div class="mf">
+    <button class="btn bo" onclick="closeMo('mo-proc')">ยกเลิก</button>
+    <button class="btn br sm" id="prf-del" style="display:none" onclick="delProc()">🗑 ลบ</button>
+    <button class="btn ba" onclick="saveProc()">💾 บันทึก</button>
+  </div>
+</div>
+</div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────
+const _URL='https://siprnicwslbqtkwacegf.supabase.co';
+const _KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcHJuaWN3c2xicXRrd2FjZWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NjgwMjksImV4cCI6MjA5NjE0NDAyOX0.64jpT394LRUOC6ADqNSStM7LWJyfRsi3TuGWxVoMLuw';
+function getCfg(){return{url:ls('su')||_URL,key:ls('sk')||_KEY}}
+function saveCfg(){
+  const u=v('cu'),k=v('ck');
+  if(!u||!k)return alert('กรอกให้ครบ');
+  ls('su',u);ls('sk',k);location.reload();
+}
+
+// ─── SUPABASE ─────────────────────────────────────────
+let U,H;
+function initSB(url,key){
+  U=url+'/rest/v1';
+  H={'apikey':key,'Authorization':'Bearer '+key,'Content-Type':'application/json','Prefer':'return=representation'};
+}
+async function api(m,t,q='',b){
+  const r=await fetch(`${U}/${t}?${q}`,{method:m,headers:H,...(b?{body:JSON.stringify(b)}:{})});
+  if(!r.ok)throw new Error(await r.text());
+  return m==='DELETE'?null:r.json();
+}
+const GET=(t,q)=>api('GET',t,q);
+const POST=(t,b)=>api('POST',t,'',b);
+const PATCH=(t,q,b)=>api('PATCH',t,q,b);
+const DEL=(t,q)=>api('DELETE',t,q);
+
+// ─── STATE ────────────────────────────────────────────
+let CY,CYbe=2569,YEARS=[],PJ=[],PB=[],PR=[];
+let SEL=new Map(),CurPJ=null;
+
+// ─── INIT ─────────────────────────────────────────────
+async function init(){
+  const c=getCfg();
+  if(!c.url||!c.key){show('setup');hide('load');return;}
+  initSB(c.url,c.key);
+  try{
+    YEARS=await GET('years','order=year_be.desc');
+    if(!YEARS.length){await POST('years',{year_be:2569,note:'ปีงบประมาณ 2569'});YEARS=await GET('years','order=year_be.desc');}
+    CY=YEARS[0].id;CYbe=YEARS[0].year_be;
+    q('yrbtn').textContent=CYbe;
+    q('yrbtn').onclick=changeYear;
+    await loadAll();hide('load');
+  }catch(e){console.error(e);hide('load');show('setup');}
+}
+
+async function loadAll(){
+  PJ=await GET('projects',`year_id=eq.${CY}&order=sort_order`);
+  const ids=PJ.map(p=>p.id);
+  [PB,PR]=await Promise.all([
+    ids.length?GET('project_budgets',`project_id=in.(${ids.join(',')})`):[],
+    GET('procurement_items',`year_id=eq.${CY}&order=type,seq`)
+  ]);
+  renderProjs();renderProc();renderFin();
+  // populate selects
+  const ps=q('prf-proj');
+  ps.innerHTML='<option value="">-- ไม่ระบุ --</option>';
+  PJ.forEach(p=>ps.innerHTML+=`<option value="${p.id}">${p.name}</option>`);
+  const fp=q('fpj');
+  fp.innerHTML='<option value="">ทุกโครงการ</option>';
+  PJ.forEach(p=>fp.innerHTML+=`<option value="${p.id}">${p.name}</option>`);
+  const srcs=[...new Set(PR.map(p=>p.budget_source).filter(Boolean))].sort();
+  const fsr=q('fsr');const cv=fsr.value;
+  fsr.innerHTML='<option value="">ทุกแหล่งเงิน</option>';
+  srcs.forEach(s=>fsr.innerHTML+=`<option${s===cv?' selected':''}>${s}</option>`);
+}
+
+// ─── PROJECTS ─────────────────────────────────────────
+function renderProjs(){
+  if(!PJ.length){q('pgrid').innerHTML='<div class="empty">ยังไม่มีโครงการ — กดปุ่ม + เพื่อเพิ่ม</div>';return;}
+  q('pgrid').innerHTML=PJ.map(p=>{
+    const bud=PB.filter(b=>b.project_id===p.id).reduce((a,b)=>a+(b.amount||0),0);
+    const spent=PR.filter(i=>i.project_id===p.id).reduce((a,i)=>a+(i.amount||0),0);
+    const rem=bud-spent;
+    return `<div class="pcard" onclick="openDet('${p.id}')">
+      <h4>${p.name}</h4>
+      <div class="tm" style="margin-bottom:8px">${p.teacher_name||'ไม่ระบุครู'}</div>
+      <div class="pstats">
+        <span class="ps" style="color:var(--a)">งบ ${n(bud)}</span>
+        <span class="ps" style="color:var(--r)">ใช้ ${n(spent)}</span>
+        <span class="ps" style="color:${rem<0?'var(--r)':'var(--g)'}">คงเหลือ ${n(rem)}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openDet(id){
+  CurPJ=PJ.find(p=>p.id===id);if(!CurPJ)return;
+  const items=PR.filter(i=>i.project_id===id);
+  const bs=PB.filter(b=>b.project_id===id);
+  const bud=bs.reduce((a,b)=>a+(b.amount||0),0);
+  const spent=items.reduce((a,i)=>a+(i.amount||0),0);
+  const wdone=items.filter(i=>i.withdraw_status==='เบิกแล้ว').reduce((a,i)=>a+(i.amount||0),0);
+  const rem=bud-spent;
+  q('pd-name').textContent=CurPJ.name;
+  q('pd-teacher').textContent=CurPJ.teacher_name||'';
+  q('pd-cards').innerHTML=`
+    <div class="card ca"><div class="lbl">งบทั้งหมด</div><div class="val">${n(bud)}</div><div class="sub">บาท</div></div>
+    <div class="card cr"><div class="lbl">ใช้ไปแล้ว</div><div class="val">${n(spent)}</div><div class="sub">บาท</div></div>
+    <div class="card cg"><div class="lbl">เบิกแล้ว</div><div class="val">${n(wdone)}</div><div class="sub">บาท</div></div>
+    <div class="card ${rem<0?'cr':'cg'}"><div class="lbl">คงเหลือ</div><div class="val">${n(rem)}</div><div class="sub">บาท</div></div>`;
+  // budget by source
+  const sm={};
+  bs.forEach(b=>{sm[b.budget_source]={bud:b.amount||0,spent:0};});
+  items.forEach(i=>{if(i.budget_source&&sm[i.budget_source])sm[i.budget_source].spent+=i.amount||0;});
+  q('pd-src').innerHTML=Object.entries(sm).map(([s,v])=>`<tr>
+    <td>${s}</td><td class="ar">${n(v.bud)}</td><td class="ar">${n(v.spent)}</td>
+    <td class="ar" style="color:${v.bud-v.spent<0?'var(--r)':'var(--g)'}">${n(v.bud-v.spent)}</td></tr>`).join('')||
+    '<tr><td colspan="4" class="empty">ยังไม่ได้กำหนดงบ</td></tr>';
+  // withdrawal summary
+  const wh={};
+  items.filter(i=>i.withdraw_status==='เบิกแล้ว').forEach(i=>{const k=i.withdraw_no||'?';if(!wh[k])wh[k]=[];wh[k].push(i);});
+  q('pd-wh').innerHTML=Object.keys(wh).length?
+    '<div style="font-size:12px;font-weight:700;color:var(--m);margin-bottom:6px">📄 ประวัติใบเบิก</div>'+
+    Object.entries(wh).map(([wno,wi])=>`<div style="background:#f0fdf4;border-radius:8px;padding:10px 14px">
+      <div style="font-weight:700;color:#065f46">${wno}</div>
+      <div class="tm">${wi.length} รายการ รวม ${n(wi.reduce((a,i)=>a+(i.amount||0),0))} บาท</div>
+    </div>`).join(''):'<div class="tm" style="padding:10px">ยังไม่มีการเบิก</div>';
+  // items table
+  q('pd-proc').innerHTML=items.length?items.map(i=>`<tr>
+    <td><span class="badge ${i.type==='จัดซื้อ'?'bk':'bh'}">${i.type}</span></td>
+    <td class="tm">${i.seq||'-'}</td><td>${i.title}</td><td class="tm">${i.budget_source||'-'}</td>
+    <td class="ar">${n(i.amount)}</td>
+    <td><span class="badge ${i.withdraw_status==='เบิกแล้ว'?'bd2':'bp2'}">${i.withdraw_status||'ยังไม่เบิก'}</span></td>
+    <td class="tm">${i.withdraw_no||'-'}</td></tr>`).join('')
+    :'<tr><td colspan="7" class="empty">ยังไม่มีรายการพัสดุ</td></tr>';
+  show('pdet');q('pdet').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function editCurProj(){if(CurPJ)openProjForm(CurPJ.id);}
+function hideDet(){hide('pdet');CurPJ=null;}
+
+function openProjForm(id){
+  const p=id?PJ.find(x=>x.id===id):null;
+  q('pft').textContent=p?'แก้ไขโครงการ':'เพิ่มโครงการ';
+  q('pf-id').value=p?p.id:'';
+  q('pf-name').value=p?p.name:'';
+  q('pf-teacher').value=p?p.teacher_name||'':'';
+  q('brows').innerHTML='';
+  const bs=p?PB.filter(b=>b.project_id===p.id):[];
+  if(bs.length)bs.forEach(b=>addBRow(b.budget_source,b.amount));else addBRow();
+  q('pf-del').style.display=p?'inline-block':'none';
+  if(p)q('pf-del').dataset.id=p.id;
+  openMo('mo-proj');
+}
+function addBRow(src='',amt=''){
+  const d=document.createElement('div');
+  d.className='r2';d.style.marginBottom='8px';
+  d.innerHTML=`<select style="width:100%"><option value="">เลือกแหล่งเงิน</option>
+    <option${src==='อุดหนุน'?' selected':''}>อุดหนุน</option>
+    <option${src==='พัฒนาผู้เรียน'?' selected':''}>พัฒนาผู้เรียน</option>
+    <option${src==='อื่นๆ'?' selected':''}>อื่นๆ</option></select>
+    <div style="display:flex;gap:6px">
+      <input type="number" placeholder="จำนวนเงิน" value="${amt}" style="flex:1">
+      <button class="btn bo sm" onclick="this.closest('.r2').remove()" type="button">✕</button>
+    </div>`;
+  q('brows').appendChild(d);
+}
+async function saveProj(){
+  const id=q('pf-id').value;
+  const body={year_id:CY,name:q('pf-name').value.trim(),teacher_name:q('pf-teacher').value.trim()||null};
+  if(!body.name)return alert('กรุณากรอกชื่อโครงการ');
+  try{
+    const res=id?await PATCH('projects',`id=eq.${id}`,body):await POST('projects',body);
+    const pid=id||res[0].id;
+    await DEL('project_budgets',`project_id=eq.${pid}`);
+    for(const row of q('brows').querySelectorAll('.r2')){
+      const src=row.querySelector('select').value;
+      const amt=parseFloat(row.querySelector('input[type=number]').value)||0;
+      if(src&&amt)await POST('project_budgets',{project_id:pid,budget_source:src,amount:amt});
+    }
+    closeMo('mo-proj');await loadAll();if(pid)openDet(pid);
+  }catch(e){alert('เกิดข้อผิดพลาด: '+e.message);}
+}
+async function delProj(){
+  if(!confirm('ลบโครงการนี้?'))return;
+  try{await DEL('projects',`id=eq.${q('pf-del').dataset.id}`);closeMo('mo-proj');hideDet();await loadAll();}
+  catch(e){alert(e.message);}
+}
+
+// ─── PROCUREMENT ──────────────────────────────────────
+function renderProc(){
+  const ty=q('ft').value,st=q('fs').value,sr=q('fsr').value,pj=q('fpj').value;
+  const qw=(q('fq').value||'').toLowerCase();
+  const rows=PR.filter(p=>
+    (!ty||p.type===ty)&&(!st||p.withdraw_status===st)&&
+    (!sr||p.budget_source===sr)&&(!pj||p.project_id===pj)&&
+    (!qw||(p.title||'').toLowerCase().includes(qw)||(p.person||'').toLowerCase().includes(qw))
+  );
+  const sum=rows.reduce((a,p)=>a+(p.amount||0),0);
+  const pm=Object.fromEntries(PJ.map(p=>[p.id,p.name]));
+  q('ptb').innerHTML=rows.length?rows.map(p=>`<tr>
+    <td><span class="badge ${p.type==='จัดซื้อ'?'bk':'bh'}">${p.type}</span></td>
+    <td class="tm">${p.seq||'-'}</td><td>${p.title}</td><td class="tm">${p.person||'-'}</td>
+    <td class="tm">${p.budget_source||'-'}</td><td class="tm">${pm[p.project_id]||'-'}</td>
+    <td class="tm">${fd(p.report_date)}</td><td class="ar">${n(p.amount)}</td>
+    <td><span class="badge ${p.withdraw_status==='เบิกแล้ว'?'bd2':'bp2'}">${p.withdraw_status||'ยังไม่เบิก'}</span></td>
+    <td class="tm">${p.withdraw_no||'-'}</td>
+    <td><button class="btn bo sm" onclick="openProcForm('${p.id}')">แก้ไข</button></td>
+  </tr>`).join(''):'<tr><td colspan="11" class="empty">ไม่พบข้อมูล</td></tr>';
+  q('ptf').innerHTML=rows.length?`<tr>
+    <td colspan="7" style="text-align:right">${rows.length} รายการ</td>
+    <td class="ar" style="color:var(--a)">${n(sum)}</td><td colspan="3"></td></tr>`:'';
+}
+function openProcForm(id){
+  const p=id?PR.find(x=>x.id===id):null;
+  q('prft').textContent=p?'แก้ไขรายการ':'เพิ่มรายการพัสดุ';
+  q('prf-id').value=p?p.id:'';
+  if(p){
+    q('prf-type').value=p.type||'จัดซื้อ';q('prf-seq').value=p.seq||'';
+    q('prf-title').value=p.title||'';q('prf-person').value=p.person||'';
+    q('prf-amt').value=p.amount||'';q('prf-src').value=p.budget_source||'';
+    q('prf-date').value=p.report_date||'';q('prf-proj').value=p.project_id||'';
+    q('prf-st').value=p.withdraw_status||'ยังไม่เบิก';q('prf-wno').value=p.withdraw_no||'';
+    q('prf-del').style.display='inline-block';q('prf-del').dataset.id=p.id;
+  }else{
+    ['prf-seq','prf-title','prf-person','prf-amt','prf-date','prf-wno'].forEach(i=>q(i).value='');
+    ['prf-src','prf-proj'].forEach(i=>q(i).value='');
+    q('prf-type').value='จัดซื้อ';q('prf-st').value='ยังไม่เบิก';
+    q('prf-del').style.display='none';
+  }
+  openMo('mo-proc');
+}
+async function saveProc(){
+  const id=q('prf-id').value;
+  const body={year_id:CY,type:q('prf-type').value,seq:q('prf-seq').value.trim()||null,
+    title:q('prf-title').value.trim(),person:q('prf-person').value.trim()||null,
+    amount:parseFloat(q('prf-amt').value)||0,budget_source:q('prf-src').value||null,
+    report_date:q('prf-date').value||null,project_id:q('prf-proj').value||null,
+    withdraw_status:q('prf-st').value,withdraw_no:q('prf-wno').value.trim()||null};
+  if(!body.title)return alert('กรุณากรอกหัวข้อ');
+  try{
+    id?await PATCH('procurement_items',`id=eq.${id}`,body):await POST('procurement_items',body);
+    closeMo('mo-proc');await loadAll();
+  }catch(e){alert(e.message);}
+}
+async function delProc(){
+  if(!confirm('ลบรายการนี้?'))return;
+  try{await DEL('procurement_items',`id=eq.${q('prf-del').dataset.id}`);closeMo('mo-proc');await loadAll();}
+  catch(e){alert(e.message);}
+}
+
+// ─── FINANCE ──────────────────────────────────────────
+function renderFin(){
+  SEL.clear();updBar();
+  // aggregate by source
+  const sm={};
+  PB.forEach(b=>{if(!sm[b.budget_source])sm[b.budget_source]={bud:0,spent:0,wd:0};sm[b.budget_source].bud+=b.amount||0;});
+  PR.forEach(i=>{
+    const k=i.budget_source||'(ไม่ระบุ)';
+    if(!sm[k])sm[k]={bud:0,spent:0,wd:0};
+    sm[k].spent+=i.amount||0;
+    if(i.withdraw_status==='เบิกแล้ว')sm[k].wd+=i.amount||0;
+  });
+  const tot=v=>Object.values(sm).reduce((a,x)=>a+x[v],0);
+  q('fin-cards').innerHTML=`
+    <div class="card ca"><div class="lbl">งบรวมทั้งหมด</div><div class="val">${n(tot('bud'))}</div><div class="sub">บาท</div></div>
+    <div class="card cr"><div class="lbl">ใช้ไปแล้ว</div><div class="val">${n(tot('spent'))}</div><div class="sub">${PR.length} รายการ</div></div>
+    <div class="card cg"><div class="lbl">เบิกแล้ว</div><div class="val">${n(tot('wd'))}</div><div class="sub">บาท</div></div>
+    <div class="card ${tot('bud')-tot('spent')<0?'cr':'cg'}"><div class="lbl">คงเหลือ</div><div class="val">${n(tot('bud')-tot('spent'))}</div><div class="sub">บาท</div></div>`;
+
+  // group proc items by source
+  const pbSrc={};
+  PR.forEach(i=>{const k=i.budget_source||'(ไม่ระบุแหล่งเงิน)';if(!pbSrc[k])pbSrc[k]=[];pbSrc[k].push(i);});
+  const pm=Object.fromEntries(PJ.map(p=>[p.id,p.name]));
+  const allSrcs=[...new Set([...Object.keys(sm),...Object.keys(pbSrc)])];
+
+  q('fin-src').innerHTML=allSrcs.map(src=>{
+    const sv=sm[src]||{bud:0,spent:0,wd:0};
+    const items=pbSrc[src]||[];
+    const pend=items.filter(i=>i.withdraw_status!=='เบิกแล้ว');
+    const done=items.filter(i=>i.withdraw_status==='เบิกแล้ว');
+    const sDone=done.reduce((a,i)=>a+(i.amount||0),0);
+    const sPend=pend.reduce((a,i)=>a+(i.amount||0),0);
+    const rem=sv.bud-sv.spent;
+    const wh={};done.forEach(i=>{const k=i.withdraw_no||'?';if(!wh[k])wh[k]=[];wh[k].push(i);});
+    const whHtml=Object.keys(wh).length?`<div class="wh"><b style="color:var(--m);font-size:12px">📄 ประวัติใบเบิก:</b> `+
+      Object.entries(wh).map(([wno,wi])=>`<span class="chip">${wno} — ${wi.length} รายการ ${n(wi.reduce((a,i)=>a+(i.amount||0),0))} บาท</span>`).join('')+'</div>':'';
+
+    return `<div class="src" data-src="${src}">
+      <div class="srch">
+        <h4>💰 ${src}</h4>
+        <span class="badge bd2">เบิกแล้ว ${n(sDone)}</span>
+        <span class="badge bp2">ค้างเบิก ${n(sPend)}</span>
+        ${sv.bud?`<span class="tm">งบ ${n(sv.bud)} | <b style="color:${rem<0?'var(--r)':'var(--g)'}">คงเหลือ ${n(rem)}</b> บาท</span>`:''}
+      </div>
+      <div style="overflow:auto"><table>
+        <thead><tr>
+          <th style="width:34px"><input type="checkbox" onchange="togAll(this,'${src}')"></th>
+          <th>ประเภท</th><th>เลข</th><th>หัวข้อ</th><th>โครงการ</th><th>วันที่</th>
+          <th class="ar">ยอดเงิน</th><th>สถานะ</th><th>ใบเบิก</th>
+        </tr></thead>
+        <tbody>${items.map(i=>`<tr>
+          <td>${i.withdraw_status!=='เบิกแล้ว'
+            ?`<input type="checkbox" data-id="${i.id}" data-amt="${i.amount||0}" onchange="togSel(this)">`
+            :'<span style="color:var(--g)">✓</span>'}</td>
+          <td><span class="badge ${i.type==='จัดซื้อ'?'bk':'bh'}">${i.type}</span></td>
+          <td class="tm">${i.seq||'-'}</td><td>${i.title}</td>
+          <td class="tm">${pm[i.project_id]||'-'}</td><td class="tm">${fd(i.report_date)}</td>
+          <td class="ar">${n(i.amount)}</td>
+          <td><span class="badge ${i.withdraw_status==='เบิกแล้ว'?'bd2':'bp2'}">${i.withdraw_status||'ยังไม่เบิก'}</span></td>
+          <td class="tm">${i.withdraw_no||'-'}</td>
+        </tr>`).join('')||'<tr><td colspan="9" class="empty">ยังไม่มีรายการ</td></tr>'}
+        </tbody>
+        <tfoot><tr><td colspan="6" style="text-align:right">${items.length} รายการ</td>
+          <td class="ar">${n(sv.spent)}</td><td colspan="2"></td></tr></tfoot>
+      </table></div>
+      ${whHtml}
+    </div>`;
+  }).join('')||'<div class="empty">ยังไม่มีข้อมูล</div>';
+}
+
+function togSel(cb){cb.checked?SEL.set(cb.dataset.id,+cb.dataset.amt):SEL.delete(cb.dataset.id);updBar();}
+function togAll(cb,src){
+  document.querySelector(`.src[data-src="${src}"]`).querySelectorAll('input[data-id]').forEach(b=>{
+    b.checked=cb.checked;cb.checked?SEL.set(b.dataset.id,+b.dataset.amt):SEL.delete(b.dataset.id);
+  });updBar();
+}
+function clrSel(){SEL.clear();document.querySelectorAll('input[data-id]').forEach(b=>b.checked=false);updBar();}
+function updBar(){
+  const tot=[...SEL.values()].reduce((a,v)=>a+v,0);
+  q('wn').textContent=SEL.size;q('ws').textContent=n(tot);
+  q('wbar').classList.toggle('on',SEL.size>0);
+}
+async function doWithdraw(){
+  if(!SEL.size)return;
+  const wno=q('wno').value.trim();if(!wno)return alert('กรุณากรอกเลขใบเบิก');
+  const tot=[...SEL.values()].reduce((a,v)=>a+v,0);
+  if(!confirm(`บันทึกเบิก ${SEL.size} รายการ\nยอด ${n(tot)} บาท\nเลขใบเบิก: ${wno}`))return;
+  try{
+    await PATCH('procurement_items',`id=in.(${[...SEL.keys()].join(',')})`,{withdraw_status:'เบิกแล้ว',withdraw_no:wno});
+    q('wno').value='';await loadAll();go('fin');
+  }catch(e){alert(e.message);}
+}
+
+// ─── YEAR ─────────────────────────────────────────────
+async function changeYear(){
+  const list=YEARS.map(y=>y.year_be).join(', ');
+  const input=prompt(`ปีงบประมาณที่มีอยู่: ${list}\nพิมพ์ปีที่ต้องการ (หรือปีใหม่เพื่อเพิ่ม):`);
+  if(!input)return;
+  const yr=parseInt(input);if(isNaN(yr))return;
+  let found=YEARS.find(y=>y.year_be===yr);
+  if(!found){
+    if(!confirm(`เพิ่มปีงบประมาณ ${yr}?`))return;
+    await POST('years',{year_be:yr,note:`ปีงบประมาณ ${yr}`});
+    YEARS=await GET('years','order=year_be.desc');
+    found=YEARS.find(y=>y.year_be===yr);
+  }
+  if(found){CY=found.id;CYbe=found.year_be;q('yrbtn').textContent=CYbe;await loadAll();}
+}
+
+// ─── UTILS ────────────────────────────────────────────
+const q=id=>document.getElementById(id);
+const v=id=>{const e=q(id);return e?e.value.trim():''};
+const n=x=>x?Number(x).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:2}):'0';
+const fd=d=>{if(!d)return'-';const[y,m,dy]=d.split('-');return`${dy}/${m}/${+y+543}`;};
+const ls=(k,val)=>val===undefined?localStorage.getItem(k):localStorage.setItem(k,val);
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  q('page-'+id).classList.add('on');
+  document.querySelectorAll('.tab')[{proj:0,proc:1,fin:2}[id]].classList.add('on');
+}
+function openMo(id){q(id).classList.add('on');}
+function closeMo(id){q(id).classList.remove('on');}
+function show(id){q(id).style.display='flex';}
+function hide(id){q(id).style.display='none';}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on');}));
+window.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
