@@ -149,6 +149,7 @@
       </div>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="btn-outline-sm" onclick="exportProcCSV()">↓ Export CSV</button>
+        <button class="btn-outline-sm" onclick="openImportModal()">↑ นำเข้า CSV</button>
         <button class="btn-sm" onclick="openProcForm()">+ เพิ่มรายการ</button>
       </div>
     </div>
@@ -208,6 +209,7 @@
       </div>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="btn-outline-sm" onclick="loadFinanceData()">รีเฟรช</button>
+        <button class="btn-outline-sm" onclick="openImportExcelModal()">↑ นำเข้า Excel</button>
         <button class="btn-sm" onclick="openFinanceForm()">+ เพิ่มรายการ</button>
       </div>
     </div>
@@ -506,6 +508,59 @@
   </div>
 </div>
 
+<!-- ======= IMPORT EXCEL MODAL ======= -->
+<div class="overlay" id="importExcelOverlay">
+  <div class="modal" style="max-width:760px">
+    <div class="modal-head">
+      <h2>นำเข้าข้อมูลการเงิน (Excel)</h2>
+      <button class="modal-x" onclick="closeImportExcelModal()">✕</button>
+    </div>
+    <div style="margin-bottom:12px">
+      <p style="font-size:13px;color:var(--slate);margin-bottom:10px">เลือกไฟล์ Excel (.xlsx) — อ่านจาก sheet <strong>"เงินคงเหลือประจำวัน"</strong> แล้วสร้างรายการ <strong>ยอดยกมา</strong> แยกตามหมวดเงิน × ที่เก็บเงิน</p>
+      <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <label style="font-size:12px;color:var(--slate);display:block;margin-bottom:4px">ไฟล์ Excel (.xlsx)</label>
+          <input type="file" id="importExcelFile" accept=".xlsx,.xls" class="fc" style="padding:10px 14px;font-size:13px" onchange="onExcelFileChange(this)">
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--slate);display:block;margin-bottom:4px">วันที่ยอดยกมา</label>
+          <input type="date" id="importExcelDate" class="fc" style="width:160px">
+        </div>
+      </div>
+    </div>
+    <div id="importExcelPreview" style="margin-bottom:12px">
+      <p style="color:var(--muted);font-size:13px">เลือกไฟล์เพื่อดูตัวอย่างข้อมูล</p>
+    </div>
+    <p id="importExcelStatus" style="font-size:13px;color:var(--slate);margin-bottom:12px"></p>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeImportExcelModal()">ยกเลิก</button>
+      <button id="importExcelConfirmBtn" class="btn-sm" style="padding:10px 24px;font-size:13px;display:none" onclick="confirmExcelImport()">นำเข้าข้อมูล</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= IMPORT MODAL ======= -->
+<div class="overlay" id="importOverlay">
+  <div class="modal" style="max-width:720px">
+    <div class="modal-head">
+      <h2>นำเข้าข้อมูลพัสดุ</h2>
+      <button class="modal-x" onclick="closeImportModal()">✕</button>
+    </div>
+    <div style="margin-bottom:16px">
+      <p style="font-size:13px;color:var(--slate);margin-bottom:12px">เลือกไฟล์ CSV (download จาก Google Drive หรือ export จากระบบนี้) คอลัมน์ต้องมีอย่างน้อย: <strong>รายการ, ประเภท, วงเงิน</strong></p>
+      <input type="file" id="importFile" accept=".csv,text/csv" class="fc" style="padding:10px 14px;font-size:13px" onchange="onImportFileChange(this)">
+    </div>
+    <div id="importPreview" style="margin-bottom:12px">
+      <p style="color:var(--muted);font-size:13px">เลือกไฟล์ CSV เพื่อดูตัวอย่างข้อมูล</p>
+    </div>
+    <p id="importStatus" style="font-size:13px;color:var(--slate);margin-bottom:12px"></p>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeImportModal()">ยกเลิก</button>
+      <button id="importConfirmBtn" class="btn-sm" style="padding:10px 24px;font-size:13px;display:none" onclick="confirmImport()">นำเข้าข้อมูล</button>
+    </div>
+  </div>
+</div>
+
 <!-- ======= CONFIRM MODAL ======= -->
 <div class="overlay" id="confirmOverlay">
   <div class="confirm-modal">
@@ -530,6 +585,8 @@
 <script src="./js/delete.js"></script>
 <script src="./js/navigation.js"></script>
 <script src="./js/export.js"></script>
+<script src="./js/import.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="./js/init.js"></script>
 <script src="./js/events.js"></script>
 <script src="./js/app.js"></script>

@@ -23,16 +23,18 @@ if(finProjectEl) finProjectEl.addEventListener('change', ()=>{ if(document.getEl
   const el=document.getElementById(id);
   if(el){ el.addEventListener('input',renderProc); el.addEventListener('change',renderProc); }
 });
-['procOverlay','projOverlay','yearOverlay','confirmOverlay','finOverlay'].forEach(id=>{
+['procOverlay','projOverlay','yearOverlay','confirmOverlay','finOverlay','importOverlay','importExcelOverlay'].forEach(id=>{
   document.getElementById(id)?.addEventListener('click',function(e){
     if(e.target!==this)return;
-    if(id==='confirmOverlay')  closeConfirm();
-    else if(id==='yearOverlay') closeYearModal();
-    else if(id==='projOverlay') closeProjForm();
-    else if(id==='finOverlay')  closeFinanceForm();
+    if(id==='confirmOverlay')       closeConfirm();
+    else if(id==='yearOverlay')     closeYearModal();
+    else if(id==='projOverlay')     closeProjForm();
+    else if(id==='finOverlay')      closeFinanceForm();
+    else if(id==='importOverlay')   closeImportModal();
+    else if(id==='importExcelOverlay') closeImportExcelModal();
     else closeProcForm();
   });
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeProcForm();closeProjForm();closeYearModal();closeConfirm();closeFinanceForm();}
+  if(e.key==='Escape'){closeProcForm();closeProjForm();closeYearModal();closeConfirm();closeFinanceForm();closeImportModal();closeImportExcelModal();}
 });
