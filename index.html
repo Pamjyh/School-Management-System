@@ -147,7 +147,10 @@
         <h2 class="page-title">จัดซื้อ-จัดจ้าง</h2>
         <p class="page-sub">รายการพัสดุ สถานะการเบิกจ่าย และวงเงิน</p>
       </div>
-      <button class="btn-sm" onclick="openProcForm()">+ เพิ่มรายการ</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-outline-sm" onclick="exportProcCSV()">↓ Export CSV</button>
+        <button class="btn-sm" onclick="openProcForm()">+ เพิ่มรายการ</button>
+      </div>
     </div>
 
     <div class="toolbar">
@@ -245,6 +248,7 @@
     <div id="fin-tab-balance" class="table-card">
       <div class="table-meta">
         <span class="meta-txt" id="fin-info">ยังไม่ได้โหลดข้อมูลการเงิน</span>
+        <button class="btn-outline-sm" onclick="exportBalanceCSV()" style="font-size:12px;padding:5px 14px">↓ Export CSV</button>
       </div>
       <table>
         <thead><tr>
@@ -262,6 +266,7 @@
     <div id="fin-tab-daily" class="table-card" style="display:none">
       <div class="table-meta">
         <span class="meta-txt" id="fin-daily-info">—</span>
+        <button class="btn-outline-sm" onclick="exportBalanceCSV()" style="font-size:12px;padding:5px 14px">↓ Export CSV</button>
       </div>
       <div style="overflow-x:auto">
         <table id="fin-daily-table">
@@ -293,6 +298,7 @@
             <option value="จ่าย">จ่าย</option>
             <option value="ยอดยกมา">ยอดยกมา</option>
           </select>
+          <button class="btn-outline-sm" onclick="exportFinanceCSV()" style="font-size:12px;padding:5px 14px">↓ Export CSV</button>
         </div>
       </div>
       <table>
@@ -523,6 +529,7 @@
 <script src="./js/finance.js"></script>
 <script src="./js/delete.js"></script>
 <script src="./js/navigation.js"></script>
+<script src="./js/export.js"></script>
 <script src="./js/init.js"></script>
 <script src="./js/events.js"></script>
 <script src="./js/app.js"></script>
