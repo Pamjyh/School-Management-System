@@ -265,7 +265,8 @@ function _defaultYodYokDate(){
 // ---------- keyword match fund name → fund_category_id ----------
 var _FUND_KEY_MAP = [
   {keys:['บริจาค','กรุงไทย'],           code:'donation-ktb'},
-  {keys:['บริจาค','ธกส','ธ.ก.ส'],       code:'donation-baac'},
+  {keys:['บริจาค','ธ.ก.ส'],             code:'donation-baac'}, // ธ.ก.ส. (มีจุด)
+  {keys:['บริจาค','ธกส'],               code:'donation-baac'}, // ธกส (ไม่มีจุด)
   {keys:['โครงการลูกเสือ','ลูกเสือสำรอง'], code:'scout-project'},
   {keys:['ลูกเสือ','บำรุง'],             code:'scout'},       // บำรุงลูกเสือ
   {keys:['รายหัว'],                      code:'per-head'},     // ครอบคลุมทั้ง จัดการเรียน และ จัดการศึกษา
