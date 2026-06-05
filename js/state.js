@@ -14,3 +14,8 @@ let FINANCE_BALANCES = [];
 let FINANCE_TRANSACTIONS = [];
 let FINANCE_LOADED = false;
 let FIN_TAB = 'balance'; // 'balance' | 'transactions'
+
+// External Expenses (เงินนอก)
+let EXT_CATEGORIES   = [];
+let EXT_TRANSACTIONS = [];
+let EXT_LOADED       = false;

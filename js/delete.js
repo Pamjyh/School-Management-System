@@ -15,9 +15,12 @@ async function confirmDel(){
     }
     else if(type==='project')        await DEL('projects',`id=eq.${id}`);
     else if(type==='finance_transaction'){ await DEL('finance_transactions',`id=eq.${id}`); FINANCE_LOADED=false; }
+    else if(type==='external_transaction'){ await DEL('external_transactions',`id=eq.${id}`); EXT_LOADED=false; }
     if(type==='finance_transaction'){
       await loadFinanceData();
       if(FIN_TAB==='transactions') loadTransactions();
+    } else if(type==='external_transaction'){
+      await loadExternalData();
     } else {
       await loadAll();
     }

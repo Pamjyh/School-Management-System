@@ -23,18 +23,23 @@ if(finProjectEl) finProjectEl.addEventListener('change', ()=>{ if(document.getEl
   const el=document.getElementById(id);
   if(el){ el.addEventListener('input',renderProc); el.addEventListener('change',renderProc); }
 });
-['procOverlay','projOverlay','yearOverlay','confirmOverlay','finOverlay','importOverlay','importExcelOverlay'].forEach(id=>{
+['procOverlay','projOverlay','yearOverlay','confirmOverlay','finOverlay','importOverlay','importExcelOverlay','extOverlay','extCatOverlay'].forEach(id=>{
   document.getElementById(id)?.addEventListener('click',function(e){
     if(e.target!==this)return;
-    if(id==='confirmOverlay')       closeConfirm();
-    else if(id==='yearOverlay')     closeYearModal();
-    else if(id==='projOverlay')     closeProjForm();
-    else if(id==='finOverlay')      closeFinanceForm();
-    else if(id==='importOverlay')   closeImportModal();
+    if(id==='confirmOverlay')          closeConfirm();
+    else if(id==='yearOverlay')        closeYearModal();
+    else if(id==='projOverlay')        closeProjForm();
+    else if(id==='finOverlay')         closeFinanceForm();
+    else if(id==='importOverlay')      closeImportModal();
     else if(id==='importExcelOverlay') closeImportExcelModal();
+    else if(id==='extOverlay')         closeExtForm();
+    else if(id==='extCatOverlay')      closeExtCatModal();
     else closeProcForm();
   });
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeProcForm();closeProjForm();closeYearModal();closeConfirm();closeFinanceForm();closeImportModal();closeImportExcelModal();}
+  if(e.key==='Escape'){closeProcForm();closeProjForm();closeYearModal();closeConfirm();closeFinanceForm();closeImportModal();closeImportExcelModal();closeExtForm();closeExtCatModal();}
 });
+
+// External tab buttons
+document.querySelectorAll('[data-etab]').forEach(t=>t.addEventListener('click',()=>switchExtTab(t.dataset.etab)));

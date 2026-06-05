@@ -57,6 +57,7 @@
         <button class="nav-tab" data-page="projects">โครงการ</button>
         <button class="nav-tab" data-page="procurement">พัสดุ</button>
         <button class="nav-tab" data-page="finance">การเงิน</button>
+        <button class="nav-tab" data-page="external">เงินนอก</button>
       </div>
       <div class="nav-right">
         <select class="year-sel" id="yearSel" onchange="switchYear()"></select>
@@ -363,6 +364,152 @@
     </div>
   </div>
 
+
+  <!-- ======= PAGE: EXTERNAL (ค่าใช้จ่าย เงินนอก) ======= -->
+  <div class="page" id="page-external">
+    <div class="page-header">
+      <div>
+        <div class="eyebrow"><span class="eyebrow-dot"></span>ค่าใช้จ่าย (เงินนอก)</div>
+        <h2 class="page-title">รายรับ-รายจ่ายทั่วไป</h2>
+        <p class="page-sub">บันทึกค่าใช้จ่ายและรายรับนอกระบบงบประมาณ แยกตามหมวดหมู่</p>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-outline-sm" onclick="exportExtCSV()">↓ Export CSV</button>
+        <button class="btn-outline-sm" onclick="openExtCatModal()">⚙ จัดการหมวด</button>
+        <button class="btn-sm" onclick="openExtForm()">+ เพิ่มรายการ</button>
+      </div>
+    </div>
+
+    <div class="error-banner" id="extError"></div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#2d9c5c"></div><div class="stat-ey-text">รายรับรวม</div></div>
+        <div class="stat-val" id="ext-in">—</div>
+        <div class="stat-sub">บาท</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#CF4500"></div><div class="stat-ey-text">รายจ่ายรวม</div></div>
+        <div class="stat-val" id="ext-out">—</div>
+        <div class="stat-sub">บาท</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#3860BE"></div><div class="stat-ey-text">ยอดสุทธิ</div></div>
+        <div class="stat-val" id="ext-net">—</div>
+        <div class="stat-sub" id="ext-net-sub">บาท</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:var(--arc)"></div><div class="stat-ey-text">จำนวนรายการ</div></div>
+        <div class="stat-val" id="ext-count">—</div>
+        <div class="stat-sub">รายการ</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="toolbar">
+      <select class="filter-sel" id="ext-fyear" onchange="filterExtData()">
+        <option value="">ทุกปี</option>
+      </select>
+      <select class="filter-sel" id="ext-fmonth" onchange="filterExtData()">
+        <option value="">ทุกเดือน</option>
+        <option value="01">มกราคม</option>
+        <option value="02">กุมภาพันธ์</option>
+        <option value="03">มีนาคม</option>
+        <option value="04">เมษายน</option>
+        <option value="05">พฤษภาคม</option>
+        <option value="06">มิถุนายน</option>
+        <option value="07">กรกฎาคม</option>
+        <option value="08">สิงหาคม</option>
+        <option value="09">กันยายน</option>
+        <option value="10">ตุลาคม</option>
+        <option value="11">พฤศจิกายน</option>
+        <option value="12">ธันวาคม</option>
+      </select>
+      <select class="filter-sel" id="ext-ftype" onchange="filterExtData()">
+        <option value="">ประเภททั้งหมด</option>
+        <option value="รายรับ">รายรับ</option>
+        <option value="รายจ่าย">รายจ่าย</option>
+      </select>
+      <select class="filter-sel" id="ext-fcat" onchange="filterExtData()">
+        <option value="">หมวดทั้งหมด</option>
+      </select>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-etab="list">รายการทั้งหมด</button>
+      <button class="tab-btn" data-etab="monthly">สรุปรายเดือน</button>
+      <button class="tab-btn" data-etab="charts">กราฟ</button>
+    </div>
+
+    <!-- Tab: List -->
+    <div id="ext-tab-list">
+      <div class="table-card">
+        <div class="table-meta">
+          <span class="meta-txt" id="ext-info">—</span>
+        </div>
+        <table>
+          <thead><tr>
+            <th>วันที่</th><th>ประเภท</th><th>หมวด</th><th>หมายเหตุ</th>
+            <th class="r">จำนวน (บาท)</th><th></th>
+          </tr></thead>
+          <tbody id="ext-tbody">
+            <tr><td colspan="6" class="no-data">กำลังโหลด...</td></tr>
+          </tbody>
+          <tfoot id="ext-tfoot"></tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab: Monthly Summary -->
+    <div id="ext-tab-monthly" style="display:none">
+      <div class="table-card" style="margin-bottom:20px">
+        <div class="table-meta">
+          <span class="meta-txt">สรุปรายเดือน (ตามปีและตัวกรองที่เลือก)</span>
+        </div>
+        <table>
+          <thead><tr>
+            <th>เดือน</th>
+            <th class="r">รายรับ (บาท)</th>
+            <th class="r">รายจ่าย (บาท)</th>
+            <th class="r">ยอดสุทธิ</th>
+            <th class="r">จำนวนรายการ</th>
+          </tr></thead>
+          <tbody id="ext-monthly-tbody">
+            <tr><td colspan="5" class="no-data">—</td></tr>
+          </tbody>
+          <tfoot id="ext-monthly-tfoot"></tfoot>
+        </table>
+      </div>
+
+      <div class="table-card" style="padding:20px">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:14px">สัดส่วนรายจ่ายแยกหมวด</div>
+        <div id="ext-cat-breakdown">
+          <p style="color:var(--muted);font-size:13px">—</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Charts -->
+    <div id="ext-tab-charts" style="display:none">
+      <span id="ext-chart-msg" style="display:none;color:var(--muted);font-size:13px"></span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+        <div class="table-card" style="padding:20px">
+          <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:14px">📊 รายรับ vs รายจ่าย รายเดือน</div>
+          <canvas id="ext-chart-bar"></canvas>
+        </div>
+        <div class="table-card" style="padding:20px">
+          <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:14px">🥧 สัดส่วนรายจ่ายแยกหมวด</div>
+          <canvas id="ext-chart-pie"></canvas>
+        </div>
+      </div>
+      <div class="table-card" style="padding:20px">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:14px">📈 แนวโน้มยอดสะสม (รายรับ − รายจ่าย)</div>
+        <canvas id="ext-chart-line" style="max-height:220px"></canvas>
+      </div>
+    </div>
+  </div>
+
 </div><!-- end .app -->
 
 <!-- ======= FINANCE FORM MODAL ======= -->
@@ -613,6 +760,88 @@
   </div>
 </div>
 
+<!-- ======= EXTERNAL FORM MODAL ======= -->
+<div class="overlay" id="extOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="extFormTitle">เพิ่มรายการ</h2>
+      <button class="modal-x" onclick="closeExtForm()">✕</button>
+    </div>
+    <input type="hidden" id="extEditId">
+    <input type="hidden" id="extTypeHidden" value="รายจ่าย">
+    <div class="form-grid">
+      <div class="fg form-full">
+        <label>ประเภท <span style="color:var(--arc)">*</span></label>
+        <div style="display:flex;gap:8px">
+          <button type="button" class="ext-type-btn" data-val="รายรับ" onclick="setExtType('รายรับ')"
+            style="flex:1;padding:9px;border-radius:var(--r-btn);border:1.5px solid var(--dust);background:transparent;color:var(--slate);font-family:var(--font);font-size:14px;cursor:pointer">รายรับ</button>
+          <button type="button" class="ext-type-btn" data-val="รายจ่าย" onclick="setExtType('รายจ่าย')"
+            style="flex:1;padding:9px;border-radius:var(--r-btn);border:1.5px solid var(--signal);background:rgba(207,69,0,.1);color:var(--signal);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer">รายจ่าย</button>
+        </div>
+      </div>
+      <div class="fg">
+        <label>วันที่ <span style="color:var(--arc)">*</span></label>
+        <input class="fc" type="date" id="extDate">
+      </div>
+      <div class="fg">
+        <label>หมวด <span style="color:var(--arc)">*</span></label>
+        <select class="fc" id="extCat">
+          <option value="">— เลือกหมวด —</option>
+        </select>
+      </div>
+      <div class="fg form-full">
+        <label>จำนวนเงิน (บาท) <span style="color:var(--arc)">*</span></label>
+        <input class="fc" type="number" id="extAmount" min="0.01" step="0.01" placeholder="0.00">
+      </div>
+      <div class="fg form-full">
+        <label>หมายเหตุ / รายละเอียด</label>
+        <input class="fc" type="text" id="extNote" placeholder="อธิบายรายการ (ถ้ามี)">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeExtForm()">ยกเลิก</button>
+      <button class="btn-sm" style="padding:10px 24px;font-size:13px" onclick="saveExtTransaction()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= EXTERNAL CATEGORY MODAL ======= -->
+<div class="overlay" id="extCatOverlay">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-head">
+      <h2>จัดการหมวดหมู่</h2>
+      <button class="modal-x" onclick="closeExtCatModal()">✕</button>
+    </div>
+    <div style="margin-bottom:20px">
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px">หมวดที่มีอยู่</div>
+      <ul id="ext-cat-list" style="list-style:none;padding:0;margin:0;max-height:240px;overflow-y:auto">
+        <li style="color:var(--muted);font-size:13px;padding:8px 0">กำลังโหลด...</li>
+      </ul>
+    </div>
+    <div style="border-top:1px solid var(--dust);padding-top:16px">
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px">เพิ่มหมวดใหม่</div>
+      <div class="form-grid">
+        <div class="fg" style="flex:2">
+          <label>ชื่อหมวด <span style="color:var(--arc)">*</span></label>
+          <input class="fc" type="text" id="extCatName" placeholder="ชื่อหมวดหมู่">
+        </div>
+        <div class="fg" style="flex:1">
+          <label>ใช้สำหรับ</label>
+          <select class="fc" id="extCatType">
+            <option value="รายจ่าย">รายจ่าย</option>
+            <option value="รายรับ">รายรับ</option>
+            <option value="ทั้งคู่">ทั้งคู่</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeExtCatModal()">ปิด</button>
+      <button class="btn-sm" style="padding:10px 24px;font-size:13px" onclick="saveExtCategory()">+ เพิ่มหมวด</button>
+    </div>
+  </div>
+</div>
+
 <!-- ======= CONFIRM MODAL ======= -->
 <div class="overlay" id="confirmOverlay">
   <div class="confirm-modal">
@@ -638,7 +867,9 @@
 <script src="./js/navigation.js"></script>
 <script src="./js/export.js"></script>
 <script src="./js/import.js"></script>
+<script src="./js/external.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="./js/init.js"></script>
 <script src="./js/events.js"></script>
 <script src="./js/app.js"></script>
