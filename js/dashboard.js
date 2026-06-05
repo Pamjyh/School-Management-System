@@ -8,14 +8,14 @@ function renderDashboard(){
   const totalDone = PROC.filter(i=>i.withdraw_status==='เบิกแล้ว');
   const totalPend = PROC.filter(i=>i.withdraw_status==='ยังไม่เบิก');
   document.getElementById('db-projects').textContent = PROJECTS.length;
-  document.getElementById('db-projects-sub').textContent = `งบรวม ${fmt(totalBudget)} บาท`;
+  document.getElementById('db-projects-sub').textContent = `งบรวม ${numFmt(totalBudget)} บาท`;
   document.getElementById('db-budget').textContent = numFmt(totalBudget);
   document.getElementById('db-items').textContent = PROC.length;
   document.getElementById('db-items-sub').textContent = `ซื้อ ${PROC.filter(i=>i.type==='จัดซื้อ').length} / จ้าง ${PROC.filter(i=>i.type==='จัดจ้าง').length}`;
   document.getElementById('db-done').textContent = totalDone.length;
-  document.getElementById('db-done-sub').textContent = fmt(totalDone.reduce((s,i)=>s+Number(i.amount||0),0))+' บาท';
+  document.getElementById('db-done-sub').textContent = numFmt(totalDone.reduce((s,i)=>s+Number(i.amount||0),0))+' บาท';
   document.getElementById('db-pend').textContent = totalPend.length;
-  document.getElementById('db-pend-sub').textContent = fmt(totalPend.reduce((s,i)=>s+Number(i.amount||0),0))+' บาท';
+  document.getElementById('db-pend-sub').textContent = numFmt(totalPend.reduce((s,i)=>s+Number(i.amount||0),0))+' บาท';
 
   // project summary table
   const rows = PROJECTS.map(p=>{
