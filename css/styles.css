@@ -300,6 +300,20 @@ textarea.fc{resize:vertical;min-height:60px}
   /* TABLE: เลื่อนซ้าย-ขวาได้ */
   table{min-width:600px}
   .toolbar{gap:7px}
+
+  /* ===== PROCUREMENT เฉพาะ ===== */
+  /* page-header ปุ่ม 3 ตัว — ให้ wrap และเต็มแถว */
+  #page-procurement .page-header{flex-direction:column;align-items:flex-start}
+  #page-procurement .page-header > div:last-child{flex-wrap:wrap;width:100%}
+  #page-procurement .page-header > div:last-child .btn-outline-sm,
+  #page-procurement .page-header > div:last-child .btn-sm{flex:1;text-align:center;justify-content:center}
+
+  /* toolbar — search เต็มแถวก่อน แล้วค่อย selects */
+  #page-procurement .search-pill{flex:0 0 100%;max-width:100%;min-width:0}
+  #page-procurement .filter-sel{flex:1;min-width:0}
+
+  /* table 11 คอลัมน์ — ต้องการ min-width สูงกว่า */
+  #page-procurement table{min-width:920px}
 }
 
 @media(max-width:480px){
