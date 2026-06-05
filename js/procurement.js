@@ -41,6 +41,7 @@ function renderProc(){
       <td class="ink" style="max-width:220px">${i.title}</td>
       <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.projects?.name||'—'}</td>
       <td>${i.person||'—'}</td>
+      <td style="font-size:12px;color:var(--muted)">${i.budget_source||'—'}</td>
       <td style="font-family:var(--mono);font-size:11px">${fmtDate(i.report_date)}</td>
       <td class="r">${fmt(i.amount)}</td>
       <td><button class="st-btn ${isDone?'st-done':'st-pend'}" onclick="toggleStatus('${i.id}','${i.withdraw_status}')"><span class="st-dot ${isDone?'sd-done':'sd-pend'}"></span>${isDone?'เบิกแล้ว':'รอเบิก'}</button></td>
@@ -53,7 +54,7 @@ function renderProc(){
   }).join('');
   const ta=sum(rows), da=sum(rows.filter(i=>i.withdraw_status==='เบิกแล้ว')), pa=sum(rows.filter(i=>i.withdraw_status==='ยังไม่เบิก'));
   tfoot.innerHTML=`<tr class="sum-row">
-    <td colspan="6"><strong>รวม ${rows.length} รายการ</strong></td>
+    <td colspan="7"><strong>รวม ${rows.length} รายการ</strong></td>
     <td class="r"><strong>${fmt(ta)}</strong></td>
     <td colspan="3"><span style="color:var(--up);font-family:var(--mono);font-size:11px">✓ ${fmt(da)}</span> <span style="color:var(--muted)">·</span> <span style="color:var(--arc);font-family:var(--mono);font-size:11px">⏳ ${fmt(pa)}</span></td>
   </tr>`;
