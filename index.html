@@ -545,13 +545,16 @@
 <!-- ======= YEAR MODAL ======= -->
 <div class="overlay" id="yearOverlay">
   <div class="sm-modal">
-    <h2>เพิ่มปีงบประมาณ</h2>
+    <h2>จัดการปีงบประมาณ</h2>
+    <div id="yearList" style="margin-bottom:18px"></div>
+    <div style="border-top:1px solid var(--dust);padding-top:16px;margin-bottom:4px">
+      <label class="form-lbl">เพิ่มปีใหม่ (พ.ศ.)</label>
+    </div>
     <div class="fg" style="margin-bottom:18px">
-      <label class="form-lbl">ปีงบประมาณ (พ.ศ.)</label>
       <input class="fc" type="number" id="newYear" placeholder="เช่น 2570" min="2560" max="2599">
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end">
-      <button class="btn-cancel" onclick="closeYearModal()">ยกเลิก</button>
+      <button class="btn-cancel" onclick="closeYearModal()">ปิด</button>
       <button class="btn-sm" style="padding:10px 20px" onclick="addYear()">เพิ่ม</button>
     </div>
   </div>
