@@ -62,7 +62,7 @@ Claude School Management System/
 | `projects` | id, year_id, name, teacher_name, budget_amount |
 | `procurement_items` | id, year_id, project_id, seq, type, title, person, amount, withdraw_status, withdraw_no |
 | `fund_categories` | id, name, sort_order — seed แล้ว 16 หมวด |
-| `finance_transactions` | id, year_id, transaction_date, transaction_type (รับ/จ่าย/ยอดยกมา), fund_category_id, holding_type (เงินสด/เงินฝากธนาคาร/เงินฝากส่วนราชการผู้เบิก), amount, doc_no, description, project_id, remark |
+| `finance_transactions` | id, year_id, transaction_date, transaction_type (รับ/จ่าย/ยอดยกมา), fund_category_id, holding_type (เงินสด/เงินฝากธนาคาร/เงินฝากส่วนราชการผู้เบิก), amount, doc_no, description, project_id, **procurement_id** (FK → procurement_items), remark |
 
 ### Views
 
@@ -96,7 +96,19 @@ FIN_TAB              // 'balance' | 'transactions'
 - แก้ bug: switchYear() reset FINANCE_LOADED
 - .gitignore ครบ, push GitHub Pages แล้ว
 - **UI ปรับแล้ว** (`css/styles.css`): body 16px, page max-width 1400px padding 40px 48px, stat card ใหญ่ขึ้น (padding 28px 24px, ตัวเลข 38px), table cell padding 14px 18px, tab 13px 24px, page title 44px, page-header align-items:center (ทุกหน้า header ดู consistent กัน)
-- **Phase D ✅**: เชื่อมพัสดุกับการเงิน — ฟอร์มจ่ายเงินมี dropdown เลือก procurement_item (กรองตามโครงการ, แยกกลุ่มรอ/เบิกแล้ว) บันทึกแล้ว auto-PATCH withdraw_status='เบิกแล้ว' + revert อันเก่าถ้าเปลี่ยน item (finance.js, events.js, index.html)
+- **UI ขยาย ✅**: page max-width 1400→1700px, nav max-width 1280→1580px, page padding 48→56px (css/styles.css)
+- **Phase E ✅**: รายงานเงินคงเหลือประจำวัน (pivot table)
+  - tab "รายงานประจำวัน" ใน Finance — rows=หมวดเงิน, cols=เงินสด/ธนาคาร/ส่วนราชการ/รวม
+  - pivot จาก FINANCE_BALANCES (view finance_fund_balances) ไม่ต้องโหลดข้อมูลใหม่
+  - แสดง grand total row, ยอดติดลบเป็นสีแดง
+  - ไฟล์ที่แก้: `finance.js` (renderDailyReport, switchFinTab), `index.html`
+- **Phase D ✅**: เชื่อมพัสดุกับการเงิน
+  - ฟอร์มจ่ายเงิน (type=จ่าย) มี dropdown "รายการพัสดุที่เบิก" โผล่อัตโนมัติ
+  - กรองตามโครงการที่เลือก, แยกกลุ่ม "รอเบิก / เบิกแล้ว"
+  - บันทึกแล้ว auto-PATCH `withdraw_status='เบิกแล้ว'` + copy `doc_no` → `withdraw_no`
+  - แก้ไขรายการแล้วเปลี่ยน proc item → revert อันเก่ากลับ 'ยังไม่เบิก' อัตโนมัติ
+  - ไฟล์ที่แก้: `finance.js` (toggleFinProcGroup, populateProcDropdown, saveFinanceTransaction), `events.js`, `index.html`
+- **Push workflow**: local history (1 commit) ≠ remote (web upload) → ใช้ `git push --force` เสมอ
 
 ---
 
@@ -104,11 +116,9 @@ FIN_TAB              // 'balance' | 'transactions'
 
 ### ✅ Phase D — เชื่อมพัสดุกับการเงิน (เสร็จแล้ว)
 
-### 🟡 1. Phase E — รายงานเงินคงเหลือประจำวัน
+### ✅ Phase E — รายงานเงินคงเหลือประจำวัน (เสร็จแล้ว)
 
-- pivot table: หมวดเงิน × (เงินสด / ธนาคาร / ส่วนราชการ)
-
-### 🟡 4. Phase F — Export CSV/Excel
+### 🟡 1. Phase F — Export CSV/Excel
 
 ### 🟡 5. นำเข้าข้อมูลพัสดุจาก Google Drive
 
