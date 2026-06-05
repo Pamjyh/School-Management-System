@@ -45,9 +45,9 @@ function renderFinance(){
   const totalIn  = FINANCE_BALANCES.reduce((s,i)=>s+Number(i.total_in ||0),0);
   const totalOut = FINANCE_BALANCES.reduce((s,i)=>s+Number(i.total_out||0),0);
   const balance  = FINANCE_BALANCES.reduce((s,i)=>s+Number(i.balance  ||0),0);
-  document.getElementById('fin-in').textContent      = numFmt(totalIn);
-  document.getElementById('fin-out').textContent     = numFmt(totalOut);
-  document.getElementById('fin-balance').textContent = numFmt(balance);
+  document.getElementById('fin-in').textContent      = numFull(totalIn);
+  document.getElementById('fin-out').textContent     = numFull(totalOut);
+  document.getElementById('fin-balance').textContent = numFull(balance);
   document.getElementById('fin-funds').textContent   = FUND_CATEGORIES.length;
   document.getElementById('fin-info').textContent    = 'แสดง '+FINANCE_BALANCES.length+' หมวด/ที่เก็บเงิน ปีงบประมาณ '+(CYbe||'—');
 
