@@ -142,11 +142,74 @@ function switchFinTab(tab){
   document.querySelectorAll('[data-ftab]').forEach(function(btn){
     btn.classList.toggle('active', btn.dataset.ftab===tab);
   });
-  var balEl = document.getElementById('fin-tab-balance');
-  var txEl  = document.getElementById('fin-tab-transactions');
-  if(balEl) balEl.style.display = tab==='balance'      ? 'block' : 'none';
-  if(txEl)  txEl.style.display  = tab==='transactions' ? 'block' : 'none';
+  var balEl   = document.getElementById('fin-tab-balance');
+  var dailyEl = document.getElementById('fin-tab-daily');
+  var txEl    = document.getElementById('fin-tab-transactions');
+  if(balEl)   balEl.style.display   = tab==='balance'       ? 'block' : 'none';
+  if(dailyEl) dailyEl.style.display = tab==='daily'         ? 'block' : 'none';
+  if(txEl)    txEl.style.display    = tab==='transactions'  ? 'block' : 'none';
   if(tab==='transactions') loadTransactions();
+  if(tab==='daily') renderDailyReport();
+}
+
+// ---------- DAILY REPORT (PIVOT) ----------
+function renderDailyReport(){
+  var tbody = document.getElementById('fin-daily-tbody');
+  var tfoot = document.getElementById('fin-daily-tfoot');
+  var info  = document.getElementById('fin-daily-info');
+  if(!tbody) return;
+
+  var COLS = ['เงินสด','เงินฝากธนาคาร','เงินฝากส่วนราชการผู้เบิก'];
+
+  if(!FINANCE_BALANCES.length){
+    tbody.innerHTML = '<tr><td colspan="5" class="no-data">ยังไม่มีข้อมูลการเงิน</td></tr>';
+    tfoot.innerHTML = '';
+    if(info) info.textContent = '—';
+    return;
+  }
+
+  // pivot: { fund_name → { holding_type → balance } }
+  var pivot = {};
+  var fundOrder = []; // เก็บลำดับหมวดตามที่โหลดมา
+  FINANCE_BALANCES.forEach(function(row){
+    var fname = row.fund_name || 'ไม่ระบุหมวด';
+    if(!pivot[fname]){ pivot[fname]={}; fundOrder.push(fname); }
+    pivot[fname][row.holding_type] = Number(row.balance||0);
+  });
+  // กรองซ้ำ (กรณี fund ปรากฏหลาย holding_type)
+  var funds = fundOrder.filter(function(v,i){ return fundOrder.indexOf(v)===i; });
+
+  // รวมยอดรวมแต่ละ column
+  var colTotal = {เงินสด:0, เงินฝากธนาคาร:0, เงินฝากส่วนราชการผู้เบิก:0};
+
+  tbody.innerHTML = funds.map(function(fname){
+    var row = pivot[fname];
+    var rowTotal = 0;
+    var cells = COLS.map(function(col){
+      var v = row[col] || 0;
+      rowTotal += v;
+      colTotal[col] += v;
+      var color = v < 0 ? 'color:var(--signal)' : v > 0 ? '' : 'color:var(--muted)';
+      return '<td class="r" style="font-family:var(--mono);font-size:13px;'+color+'">'+(v!==0?fmt(v):'—')+'</td>';
+    }).join('');
+    var totalColor = rowTotal < 0 ? 'color:var(--signal)' : 'color:var(--up)';
+    return '<tr>'+
+      '<td class="ink">'+fname+'</td>'+
+      cells+
+      '<td class="r" style="font-family:var(--mono);font-size:13px;font-weight:600;background:var(--canvas-dim,#f5f5f3);'+totalColor+'">'+fmt(rowTotal)+'</td>'+
+      '</tr>';
+  }).join('');
+
+  var grandTotal = colTotal['เงินสด']+colTotal['เงินฝากธนาคาร']+colTotal['เงินฝากส่วนราชการผู้เบิก'];
+  tfoot.innerHTML = '<tr class="sum-row">'+
+    '<td><strong>รวมทั้งหมด</strong></td>'+
+    COLS.map(function(col){
+      return '<td class="r"><strong style="font-family:var(--mono)">'+fmt(colTotal[col])+'</strong></td>';
+    }).join('')+
+    '<td class="r" style="background:var(--canvas-dim,#f5f5f3)"><strong style="font-family:var(--mono);color:var(--up)">'+fmt(grandTotal)+'</strong></td>'+
+    '</tr>';
+
+  if(info) info.textContent = 'เงินคงเหลือ ณ วันนี้ — ปีงบประมาณ '+(CYbe||'—')+' ('+funds.length+' หมวด)';
 }
 
 // ---------- PROC DROPDOWN HELPERS ----------

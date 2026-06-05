@@ -237,6 +237,7 @@
     <!-- Finance Tabs -->
     <div class="tab-bar">
       <button class="tab-btn active" data-ftab="balance">เงินคงเหลือแยกหมวด</button>
+      <button class="tab-btn" data-ftab="daily">รายงานประจำวัน</button>
       <button class="tab-btn" data-ftab="transactions">รายการรับ-จ่าย</button>
     </div>
 
@@ -255,6 +256,30 @@
         </tbody>
         <tfoot id="fin-balance-tfoot"></tfoot>
       </table>
+    </div>
+
+    <!-- Tab: Daily Report (Pivot) -->
+    <div id="fin-tab-daily" class="table-card" style="display:none">
+      <div class="table-meta">
+        <span class="meta-txt" id="fin-daily-info">—</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table id="fin-daily-table">
+          <thead>
+            <tr>
+              <th style="min-width:220px">หมวดเงิน</th>
+              <th class="r">เงินสด</th>
+              <th class="r">เงินฝากธนาคาร</th>
+              <th class="r">เงินฝากส่วนราชการผู้เบิก</th>
+              <th class="r" style="background:var(--canvas-dim,#f5f5f3)">รวม</th>
+            </tr>
+          </thead>
+          <tbody id="fin-daily-tbody">
+            <tr><td colspan="5" class="no-data">กดรีเฟรชเพื่อโหลดข้อมูล</td></tr>
+          </tbody>
+          <tfoot id="fin-daily-tfoot"></tfoot>
+        </table>
+      </div>
     </div>
 
     <!-- Tab: Transactions -->
