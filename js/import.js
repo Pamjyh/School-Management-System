@@ -409,7 +409,7 @@ async function confirmExcelImport(){
   btn.disabled = true; btn.textContent = 'กำลังนำเข้า...';
   show('loadingOverlay','flex');
 
-  var ok=0; var fail=0;
+  var ok=0; var fail=0; var firstErr='';
   for(var i=0; i<matched.length; i++){
     var r = matched[i];
     try{
@@ -421,17 +421,19 @@ async function confirmExcelImport(){
         holding_type:     r.holding_type,
         amount:           r.amount,
         description:      'ยอดยกมา (นำเข้าจาก Excel)',
-        doc_no:           null,
         project_id:       null,
         remark:           'import: '+r.fund_name
       });
       ok++;
-    }catch(e){ fail++; }
+    }catch(e){ fail++; if(!firstErr) firstErr = e.message; }
   }
 
   hide('loadingOverlay');
   btn.disabled=false; btn.textContent='นำเข้าข้อมูล';
-  status.textContent = '✅ นำเข้าสำเร็จ '+ok+' รายการ'+(fail?' (ล้มเหลว '+fail+')':'');
+  var msg = ok ? '✅ นำเข้าสำเร็จ '+ok+' รายการ' : '';
+  if(fail) msg += (msg?' | ':'')+'❌ ล้มเหลว '+fail+' รายการ';
+  if(firstErr) msg += ' — '+firstErr;
+  status.textContent = msg;
 
   if(ok>0){
     FINANCE_LOADED = false;
