@@ -8,7 +8,11 @@ async function confirmDel(){
   var type=PENDING_DEL.type, id=PENDING_DEL.id;
   show('loadingOverlay','flex');
   try{
-    if(type==='proc')                await DEL('procurement_items',`id=eq.${id}`);
+    if(type==='proc'){
+      await DEL('finance_transactions',`procurement_id=eq.${id}`);
+      await DEL('procurement_items',`id=eq.${id}`);
+      FINANCE_LOADED=false;
+    }
     else if(type==='project')        await DEL('projects',`id=eq.${id}`);
     else if(type==='finance_transaction'){ await DEL('finance_transactions',`id=eq.${id}`); FINANCE_LOADED=false; }
     if(type==='finance_transaction'){
