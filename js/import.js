@@ -267,18 +267,21 @@ var _FUND_KEY_MAP = [
   {keys:['บริจาค','กรุงไทย'],           code:'donation-ktb'},
   {keys:['บริจาค','ธกส','ธ.ก.ส'],       code:'donation-baac'},
   {keys:['โครงการลูกเสือ','ลูกเสือสำรอง'], code:'scout-project'},
-  {keys:['ลูกเสือ','บำรุงลูกเสือ'],      code:'scout'},
-  {keys:['รายหัว','จัดการเรียน'],        code:'per-head'},
+  {keys:['ลูกเสือ','บำรุง'],             code:'scout'},       // บำรุงลูกเสือ
+  {keys:['รายหัว'],                      code:'per-head'},     // ครอบคลุมทั้ง จัดการเรียน และ จัดการศึกษา
   {keys:['หนังสือเรียน'],               code:'textbook'},
   {keys:['อุปกรณ์การเรียน'],            code:'supplies'},
   {keys:['เครื่องแบบ'],                 code:'uniform'},
   {keys:['กิจกรรมพัฒนา'],              code:'activity'},
-  {keys:['กสศ','ยากจนพิเศษ'],          code:'eef'},
+  {keys:['พัฒนาฯ'],                     code:'activity'},     // ค่ากิจกรรมพัฒนาฯ (ตัวย่อ)
+  {keys:['กสศ'],                        code:'eef'},
+  {keys:['ยากจนพิเศษ'],                code:'eef'},
   {keys:['ปัจจัยพื้นฐาน','ยากจน'],     code:'poor-student'},
   {keys:['อาหารกลางวัน'],              code:'lunch'},
   {keys:['ประกันสัญญา'],               code:'guarantee'},
-  {keys:['ภาษีหัก','ภาษี หัก'],        code:'withholding-tax'},
-  {keys:['หลักประกันสุขภาพ','อบต'],    code:'health-local'},
+  {keys:['ภาษีหัก'],                    code:'withholding-tax'},
+  {keys:['หลักประกันสุขภาพ'],          code:'health-local'},
+  {keys:['อบต'],                        code:'health-local'},
   {keys:['รายได้แผ่นดิน'],             code:'state-revenue'},
 ];
 
@@ -328,6 +331,9 @@ function onExcelFileChange(input){
         var row  = data[r];
         var name = row[0] ? String(row[0]).trim() : '';
         if(!name || name==='-') continue;
+
+        // หยุดที่ row "รวม" — ถัดจากนี้คือ section บัญชีธนาคาร (reconciliation) ไม่ใช่หมวดเงิน
+        if(name==='รวม') break;
 
         // skip header/group rows (ไม่มีตัวเลขเลย)
         var hasVal = [row[1],row[2],row[3]].some(function(v){ return v!==null && v!=='-' && v!=='' && !isNaN(Number(v)); });
