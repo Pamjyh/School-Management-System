@@ -74,6 +74,7 @@
         <h2 class="page-title">สรุปการดำเนินงาน</h2>
         <p class="page-sub">ภาพรวมโครงการ งานพัสดุ และการเงิน</p>
       </div>
+      <button class="btn-outline-sm" onclick="loadAll()">รีเฟรช</button>
     </div>
 
     <div class="stat-row">
@@ -121,6 +122,29 @@
       <button class="btn-sm" onclick="openProjectForm()">+ เพิ่มโครงการ</button>
     </div>
 
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#3860BE"></div><div class="stat-ey-text">โครงการทั้งหมด</div></div>
+        <div class="stat-val" id="proj-stat-count">0</div>
+        <div class="stat-sub">โครงการ</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#3860BE"></div><div class="stat-ey-text">งบประมาณรวม</div></div>
+        <div class="stat-val" id="proj-stat-budget">0</div>
+        <div class="stat-sub">บาท</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#CF4500"></div><div class="stat-ey-text">ใช้ไปแล้ว</div></div>
+        <div class="stat-val" id="proj-stat-spent">0</div>
+        <div class="stat-sub">บาท</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#2d9c5c"></div><div class="stat-ey-text">คงเหลือ</div></div>
+        <div class="stat-val" id="proj-stat-remain">0</div>
+        <div class="stat-sub">บาท</div>
+      </div>
+    </div>
+
     <div id="proj-grid" class="project-grid"></div>
 
     <!-- Project detail -->
@@ -151,6 +175,29 @@
         <button class="btn-outline-sm" onclick="exportProcCSV()">↓ Export CSV</button>
         <button class="btn-outline-sm" onclick="openImportModal()">↑ นำเข้า CSV</button>
         <button class="btn-sm" onclick="openProcForm()">+ เพิ่มรายการ</button>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#9A3A0A"></div><div class="stat-ey-text">รายการทั้งหมด</div></div>
+        <div class="stat-val" id="proc-stat-count">0</div>
+        <div class="stat-sub" id="proc-stat-count-sub">รายการ</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#9A3A0A"></div><div class="stat-ey-text">วงเงินรวม</div></div>
+        <div class="stat-val" id="proc-stat-total">0</div>
+        <div class="stat-sub">บาท</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:#2d9c5c"></div><div class="stat-ey-text">เบิกแล้ว</div></div>
+        <div class="stat-val" id="proc-stat-done">0</div>
+        <div class="stat-sub">บาท</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-ey"><div class="stat-dot" style="background:var(--arc)"></div><div class="stat-ey-text">รอเบิก</div></div>
+        <div class="stat-val" id="proc-stat-pend">0</div>
+        <div class="stat-sub">บาท</div>
       </div>
     </div>
 

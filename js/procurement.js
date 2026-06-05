@@ -26,6 +26,13 @@ function renderProc(){
   const rows=getFilteredProc();
   const dc=rows.filter(i=>i.withdraw_status==='เบิกแล้ว').length;
   const pc=rows.filter(i=>i.withdraw_status==='ยังไม่เบิก').length;
+  // update stat cards (always use all PROC not filtered rows for top stats)
+  const allSum=a=>a.reduce((s,i)=>s+Number(i.amount||0),0);
+  document.getElementById('proc-stat-count').textContent = PROC.length;
+  document.getElementById('proc-stat-count-sub').textContent = `ซื้อ ${PROC.filter(i=>i.type==='จัดซื้อ').length} / จ้าง ${PROC.filter(i=>i.type==='จัดจ้าง').length}`;
+  document.getElementById('proc-stat-total').textContent = numFmt(allSum(PROC));
+  document.getElementById('proc-stat-done').textContent  = numFmt(allSum(PROC.filter(i=>i.withdraw_status==='เบิกแล้ว')));
+  document.getElementById('proc-stat-pend').textContent  = numFmt(allSum(PROC.filter(i=>i.withdraw_status==='ยังไม่เบิก')));
   document.getElementById('proc-info').textContent=`แสดง ${rows.length} รายการ`;
   document.getElementById('proc-mg').textContent=`✓ เบิกแล้ว ${dc}`;
   document.getElementById('proc-ma').textContent=`⏳ รอ ${pc}`;

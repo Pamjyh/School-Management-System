@@ -3,6 +3,13 @@
 // =====================================================================
 function renderProjGrid(){
   const el = document.getElementById('proj-grid');
+  // update stat cards
+  const totalBudget = PROJECTS.reduce((s,p)=>s+Number(p.budget_amount||0),0);
+  const totalSpent  = PROJECTS.reduce((s,p)=>s+Number(p.total_spent||p.procurement_items?.reduce((a,i)=>a+Number(i.amount||0),0)||0),0);
+  document.getElementById('proj-stat-count').textContent  = PROJECTS.length;
+  document.getElementById('proj-stat-budget').textContent = numFmt(totalBudget);
+  document.getElementById('proj-stat-spent').textContent  = numFmt(totalSpent);
+  document.getElementById('proj-stat-remain').textContent = numFmt(totalBudget - totalSpent);
   if(!PROJECTS.length){ el.innerHTML='<div class="no-data">ยังไม่มีโครงการ กด "+ เพิ่มโครงการ"</div>'; return; }
   el.innerHTML = PROJECTS.map(p=>{
     const spent = p.procurement_items?.reduce((a,i)=>a+Number(i.amount||0),0)||0;
