@@ -4,7 +4,7 @@
 document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>goPage(t.dataset.page)));
 document.querySelectorAll('[data-ptab2]').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('[data-ptab2]').forEach(x=>x.classList.remove('active'));
-  t.classList.add('active'); PROC_TAB=t.dataset.ptab2; renderProc();
+  t.classList.add('active'); PROC_TAB=t.dataset.ptab2; PROC_PAGE=1; renderProc();
 }));
 document.querySelectorAll('[data-ptab]').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('[data-ptab]').forEach(x=>x.classList.remove('active'));
@@ -21,7 +21,10 @@ if(finProjectEl) finProjectEl.addEventListener('change', ()=>{ if(document.getEl
 
 ['proc-search','proc-ftype','proc-fstatus','proc-fproject'].forEach(id=>{
   const el=document.getElementById(id);
-  if(el){ el.addEventListener('input',renderProc); el.addEventListener('change',renderProc); }
+  if(el){
+    el.addEventListener('input', ()=>{ PROC_PAGE=1; renderProc(); });
+    el.addEventListener('change',()=>{ PROC_PAGE=1; renderProc(); });
+  }
 });
 ['procOverlay','projOverlay','yearOverlay','confirmOverlay','finOverlay','importOverlay','importExcelOverlay','extOverlay','extCatOverlay'].forEach(id=>{
   document.getElementById(id)?.addEventListener('click',function(e){

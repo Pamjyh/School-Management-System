@@ -63,6 +63,7 @@ function getExtFiltered(){
 
 function filterExtData(){
   if(!EXT_LOADED) return;
+  EXT_PAGE = 1; // reset เมื่อ filter เปลี่ยน
   renderExternal();
 }
 
@@ -164,16 +165,31 @@ function renderExtTable(list){
   if(!list.length){
     tbody.innerHTML = '<tr><td colspan="6" class="no-data">ยังไม่มีรายการ กด "+ เพิ่มรายการ" เพื่อเริ่มบันทึก</td></tr>';
     if(tfoot) tfoot.innerHTML = '';
+    renderExtPagination(0, 0);
     return;
   }
 
+  // Pagination
+  var totalPages = Math.ceil(list.length / PAGE_SIZE);
+  if(EXT_PAGE > totalPages) EXT_PAGE = totalPages;
+  if(EXT_PAGE < 1) EXT_PAGE = 1;
+  var start    = (EXT_PAGE - 1) * PAGE_SIZE;
+  var pageList = list.slice(start, start + PAGE_SIZE);
+
+  var info = document.getElementById('ext-info');
+  if(info) info.textContent = 'แสดง '+(start+1)+'–'+(start+pageList.length)+' จาก '+list.length+' รายการ';
+
   var totalIn = 0, totalOut = 0;
-  tbody.innerHTML = list.map(function(t){
+  // คำนวณ total จาก list ทั้งหมด (ไม่ใช่แค่หน้านี้)
+  list.forEach(function(t){
+    if(t.type === 'รายรับ') totalIn  += Number(t.amount||0);
+    else                    totalOut += Number(t.amount||0);
+  });
+
+  tbody.innerHTML = pageList.map(function(t){
     var isIn  = t.type === 'รายรับ';
     var tc    = isIn ? 'var(--up)' : 'var(--signal)';
     var cname = (t.external_categories && t.external_categories.name) ? t.external_categories.name : '—';
-    if(isIn) totalIn  += Number(t.amount||0);
-    else     totalOut += Number(t.amount||0);
     return '<tr>'+
       '<td style="white-space:nowrap">'+fmtDate(t.transaction_date)+'</td>'+
       '<td><span style="font-size:11px;font-weight:700;color:'+tc+'">'+t.type+'</span></td>'+
@@ -188,11 +204,27 @@ function renderExtTable(list){
 
   if(tfoot){
     tfoot.innerHTML = '<tr class="sum-row">'+
-      '<td colspan="4"><strong>รวม</strong></td>'+
+      '<td colspan="4"><strong>รวมทั้งหมด '+list.length+' รายการ</strong></td>'+
       '<td class="r"><strong style="color:var(--up);font-family:var(--mono)">'+fmt(totalIn)+
       '</strong> / <strong style="color:var(--signal);font-family:var(--mono)">'+fmt(totalOut)+'</strong></td>'+
       '<td></td></tr>';
   }
+
+  renderExtPagination(EXT_PAGE, totalPages);
+}
+
+function renderExtPagination(page, total){
+  var el = document.getElementById('ext-pagination');
+  if(!el) return;
+  if(total <= 1){ el.innerHTML=''; return; }
+  el.innerHTML = paginationHTML(page, total, 'goExtPage');
+}
+
+function goExtPage(n){
+  EXT_PAGE = n;
+  var list = getExtFiltered();
+  renderExtTable(list);
+  document.getElementById('page-external')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 // ---------- MONTHLY SUMMARY ----------

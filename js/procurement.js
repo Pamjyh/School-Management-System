@@ -26,21 +26,40 @@ function renderProc(){
   const rows=getFilteredProc();
   const dc=rows.filter(i=>i.withdraw_status==='เบิกแล้ว').length;
   const pc=rows.filter(i=>i.withdraw_status==='ยังไม่เบิก').length;
-  // update stat cards (always use all PROC not filtered rows for top stats)
+  // stat cards ใช้ PROC ทั้งหมด ไม่ใช่ filtered
   const allSum=a=>a.reduce((s,i)=>s+Number(i.amount||0),0);
   document.getElementById('proc-stat-count').textContent = PROC.length;
   document.getElementById('proc-stat-count-sub').textContent = `ซื้อ ${PROC.filter(i=>i.type==='จัดซื้อ').length} / จ้าง ${PROC.filter(i=>i.type==='จัดจ้าง').length}`;
   document.getElementById('proc-stat-total').textContent = numFull(allSum(PROC));
   document.getElementById('proc-stat-done').textContent  = numFull(allSum(PROC.filter(i=>i.withdraw_status==='เบิกแล้ว')));
   document.getElementById('proc-stat-pend').textContent  = numFull(allSum(PROC.filter(i=>i.withdraw_status==='ยังไม่เบิก')));
-  document.getElementById('proc-info').textContent=`แสดง ${rows.length} รายการ`;
-  document.getElementById('proc-mg').textContent=`✓ เบิกแล้ว ${dc}`;
-  document.getElementById('proc-ma').textContent=`⏳ รอ ${pc}`;
+
   const tbody=document.getElementById('proc-tbody');
   const tfoot=document.getElementById('proc-tfoot');
-  if(!rows.length){ tbody.innerHTML='<tr><td colspan="10" class="no-data">ไม่พบข้อมูล</td></tr>'; tfoot.innerHTML=''; return; }
+
+  if(!rows.length){
+    document.getElementById('proc-info').textContent='ไม่พบข้อมูล';
+    document.getElementById('proc-mg').textContent=`✓ เบิกแล้ว 0`;
+    document.getElementById('proc-ma').textContent=`⏳ รอ 0`;
+    tbody.innerHTML='<tr><td colspan="11" class="no-data">ไม่พบข้อมูล</td></tr>';
+    tfoot.innerHTML='';
+    renderProcPagination(0, 0);
+    return;
+  }
+
+  // Pagination
+  const totalPages = Math.ceil(rows.length / PAGE_SIZE);
+  if(PROC_PAGE > totalPages) PROC_PAGE = totalPages;
+  if(PROC_PAGE < 1) PROC_PAGE = 1;
+  const start = (PROC_PAGE - 1) * PAGE_SIZE;
+  const pageRows = rows.slice(start, start + PAGE_SIZE);
+
+  document.getElementById('proc-info').textContent=`แสดง ${start+1}–${start+pageRows.length} จาก ${rows.length} รายการ`;
+  document.getElementById('proc-mg').textContent=`✓ เบิกแล้ว ${dc}`;
+  document.getElementById('proc-ma').textContent=`⏳ รอ ${pc}`;
+
   const sum=a=>a.reduce((s,i)=>s+Number(i.amount||0),0);
-  tbody.innerHTML=rows.map(i=>{
+  tbody.innerHTML=pageRows.map(i=>{
     const isDone=i.withdraw_status==='เบิกแล้ว';
     return`<tr>
       <td style="font-family:var(--mono);font-size:12px;color:var(--muted)">จ.${i.seq}</td>
@@ -59,12 +78,28 @@ function renderProc(){
       </div></td>
     </tr>`;
   }).join('');
+
   const ta=sum(rows), da=sum(rows.filter(i=>i.withdraw_status==='เบิกแล้ว')), pa=sum(rows.filter(i=>i.withdraw_status==='ยังไม่เบิก'));
   tfoot.innerHTML=`<tr class="sum-row">
     <td colspan="7"><strong>รวม ${rows.length} รายการ</strong></td>
     <td class="r"><strong>${fmt(ta)}</strong></td>
     <td colspan="3"><span style="color:var(--up);font-family:var(--mono);font-size:11px">✓ ${fmt(da)}</span> <span style="color:var(--muted)">·</span> <span style="color:var(--arc);font-family:var(--mono);font-size:11px">⏳ ${fmt(pa)}</span></td>
   </tr>`;
+
+  renderProcPagination(PROC_PAGE, totalPages);
+}
+
+function renderProcPagination(page, total){
+  const el = document.getElementById('proc-pagination');
+  if(!el) return;
+  if(total <= 1){ el.innerHTML=''; return; }
+  el.innerHTML = paginationHTML(page, total, 'goProcPage');
+}
+
+function goProcPage(n){
+  PROC_PAGE = n;
+  renderProc();
+  document.querySelector('.page.active')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 // ---- fund category matching ----

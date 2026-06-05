@@ -19,3 +19,8 @@ let FIN_TAB = 'balance'; // 'balance' | 'transactions'
 let EXT_CATEGORIES   = [];
 let EXT_TRANSACTIONS = [];
 let EXT_LOADED       = false;
+
+// Pagination
+const PAGE_SIZE = 100;
+let PROC_PAGE = 1;
+let EXT_PAGE  = 1;
