@@ -58,8 +58,12 @@ async function loadYears(){
 async function loadAll(){
   show('loadingOverlay','flex');
   try{
-    PROJECTS = await GET('projects',`select=*,procurement_items(id,amount,withdraw_status)&year_id=eq.${CY}&order=sort_order`)||[];
-    PROC = await GET('procurement_items',`select=*,projects(name)&year_id=eq.${CY}&order=type,seq`)||[];
+    [PROJECTS, PROC, FUND_CATEGORIES] = await Promise.all([
+      GET('projects',`select=*,procurement_items(id,amount,withdraw_status)&year_id=eq.${CY}&order=sort_order`),
+      GET('procurement_items',`select=*,projects(name)&year_id=eq.${CY}&order=type,seq`),
+      FUND_CATEGORIES.length ? Promise.resolve(FUND_CATEGORIES) : GET('fund_categories','select=*&order=sort_order')
+    ]);
+    PROJECTS = PROJECTS||[]; PROC = PROC||[]; FUND_CATEGORIES = FUND_CATEGORIES||[];
     hide('loadingOverlay');
     renderDashboard();
     renderProjGrid();

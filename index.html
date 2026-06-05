@@ -373,18 +373,19 @@
       <button class="modal-x" onclick="closeFinanceForm()">✕</button>
     </div>
     <input type="hidden" id="finEditId">
+    <input type="hidden" id="finType" value="รับ">
     <div class="form-grid">
+      <div class="fg form-full">
+        <label>ประเภท <span style="color:var(--arc)">*</span></label>
+        <div style="display:flex;gap:8px">
+          <button type="button" class="fin-type-btn active" data-val="รับ" onclick="setFinType('รับ')" style="flex:1;padding:9px;border-radius:var(--r-btn);border:1.5px solid var(--up);background:rgba(45,156,92,.1);color:var(--up);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer">รับ</button>
+          <button type="button" class="fin-type-btn" data-val="จ่าย" onclick="setFinType('จ่าย')" style="flex:1;padding:9px;border-radius:var(--r-btn);border:1.5px solid var(--dust);background:transparent;color:var(--slate);font-family:var(--font);font-size:14px;cursor:pointer">จ่าย</button>
+          <button type="button" class="fin-type-btn" data-val="ยอดยกมา" onclick="setFinType('ยอดยกมา')" style="flex:1;padding:9px;border-radius:var(--r-btn);border:1.5px solid var(--dust);background:transparent;color:var(--slate);font-family:var(--font);font-size:14px;cursor:pointer">ยอดยกมา</button>
+        </div>
+      </div>
       <div class="fg">
         <label>วันที่ <span style="color:var(--arc)">*</span></label>
         <input class="fc" type="date" id="finDate">
-      </div>
-      <div class="fg">
-        <label>ประเภท <span style="color:var(--arc)">*</span></label>
-        <select class="fc" id="finType">
-          <option value="รับ">รับ</option>
-          <option value="จ่าย">จ่าย</option>
-          <option value="ยอดยกมา">ยอดยกมา</option>
-        </select>
       </div>
       <div class="fg">
         <label>หมวดเงิน <span style="color:var(--arc)">*</span></label>
@@ -431,7 +432,8 @@
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeFinanceForm()">ยกเลิก</button>
-      <button class="btn-sm" style="padding:10px 24px;font-size:13px" onclick="saveFinanceTransaction()">บันทึก</button>
+      <button class="btn-outline-sm" onclick="saveFinanceTransaction(true)" style="padding:10px 18px;font-size:13px">บันทึก + เพิ่มต่อ</button>
+      <button class="btn-sm" style="padding:10px 24px;font-size:13px" onclick="saveFinanceTransaction(false)">บันทึก</button>
     </div>
   </div>
 </div>

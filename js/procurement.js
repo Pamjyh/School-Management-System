@@ -67,13 +67,61 @@ function renderProc(){
   </tr>`;
 }
 
+// ---- fund category matching ----
+function matchFundCategory(src){
+  if(!src||!FUND_CATEGORIES.length) return null;
+  const s=src.toLowerCase().replace(/\s/g,'');
+  if(s.includes('พัฒนาผู้เรียน')||s.includes('กิจกรรมพัฒนา'))
+    return (FUND_CATEGORIES.find(c=>c.code==='activity')||{}).id||null;
+  if(s.includes('อาหารกลางวัน'))
+    return (FUND_CATEGORIES.find(c=>c.code==='lunch')||{}).id||null;
+  if(s.includes('ลูกเสือสำรอง'))
+    return (FUND_CATEGORIES.find(c=>c.code==='scout-project')||{}).id||null;
+  if(s.includes('ลูกเสือ'))
+    return (FUND_CATEGORIES.find(c=>c.code==='scout')||{}).id||null;
+  if(s.includes('หนังสือ'))
+    return (FUND_CATEGORIES.find(c=>c.code==='textbook')||{}).id||null;
+  if(s.includes('อุดหนุน')||s.includes('รายหัว'))
+    return (FUND_CATEGORIES.find(c=>c.code==='per-head')||{}).id||null;
+  for(const cat of FUND_CATEGORIES){
+    if(cat.name.toLowerCase().includes(src.toLowerCase())) return cat.id;
+  }
+  return null;
+}
+
+async function createWithdrawTransaction(item){
+  const body={
+    year_id:CY,
+    fund_category_id: matchFundCategory(item.budget_source),
+    project_id: item.project_id||null,
+    procurement_id: item.id,
+    transaction_date: new Date().toISOString().split('T')[0],
+    transaction_type:'จ่าย',
+    holding_type:'เงินฝากธนาคาร',
+    document_no: item.withdraw_no||null,
+    description: item.title,
+    amount: item.amount
+  };
+  await POST('finance_transactions',body);
+  FINANCE_LOADED=false;
+}
+
+async function deleteWithdrawTransaction(procId){
+  await DEL('finance_transactions',`procurement_id=eq.${procId}&transaction_type=eq.จ่าย`);
+  FINANCE_LOADED=false;
+}
+
 // status toggle
 async function toggleStatus(id, current){
   const newStatus = current==='เบิกแล้ว'?'ยังไม่เบิก':'เบิกแล้ว';
   try{
     await PATCH('procurement_items',`id=eq.${id}`,{withdraw_status:newStatus});
     const item = PROC.find(i=>i.id===id);
-    if(item) item.withdraw_status = newStatus;
+    if(item){
+      item.withdraw_status = newStatus;
+      if(newStatus==='เบิกแล้ว') await createWithdrawTransaction(item);
+      else await deleteWithdrawTransaction(id);
+    }
     renderProc(); renderDashboard(); renderProjGrid();
   }catch(e){ alert('อัปเดตไม่ได้: '+e.message); }
 }

@@ -116,7 +116,7 @@ function renderTransactions(){
         (i.transaction_type||'—')+'</span></td>'+
       '<td class="ink">'+fundName+'</td>'+
       '<td>'+descCell+'</td>'+
-      '<td><span style="font-family:var(--mono);font-size:12px">'+(i.doc_no||'—')+'</span></td>'+
+      '<td><span style="font-family:var(--mono);font-size:12px">'+(i.document_no||'—')+'</span></td>'+
       '<td>'+(i.holding_type||'—')+'</td>'+
       '<td class="r" style="color:'+typeColor+'">'+fmt(i.amount)+'</td>'+
       '<td><div class="act-group">'+
@@ -252,6 +252,22 @@ function populateProcDropdown(){
   done.forEach(addOpt);
 }
 
+// ---------- TYPE TOGGLE ----------
+function setFinType(val){
+  document.getElementById('finType').value = val;
+  var colors = {รับ:'var(--up)',จ่าย:'var(--signal)',ยอดยกมา:'var(--slate)'};
+  var bgs = {รับ:'rgba(45,156,92,.12)',จ่าย:'rgba(207,69,0,.1)',ยอดยกมา:'rgba(105,105,105,.1)'};
+  document.querySelectorAll('.fin-type-btn').forEach(function(btn){
+    var v = btn.dataset.val;
+    var active = (v===val);
+    btn.style.border = '1.5px solid '+(active?colors[v]:'var(--dust)');
+    btn.style.background = active?bgs[v]:'transparent';
+    btn.style.color = active?colors[v]:'var(--slate)';
+    btn.style.fontWeight = active?'600':'400';
+  });
+  toggleFinProcGroup();
+}
+
 // ---------- FORM OPEN/CLOSE ----------
 function openFinanceForm(id){
   var overlay = document.getElementById('finOverlay');
@@ -283,11 +299,11 @@ function openFinanceForm(id){
     if(tx){
       document.getElementById('finEditId').value    = tx.id;
       document.getElementById('finDate').value      = tx.transaction_date||'';
-      document.getElementById('finType').value      = tx.transaction_type||'รับ';
+      setFinType(tx.transaction_type||'รับ');
       document.getElementById('finFund').value      = tx.fund_category_id||'';
       document.getElementById('finHolding').value   = tx.holding_type||'เงินสด';
       document.getElementById('finAmount').value    = tx.amount||'';
-      document.getElementById('finDocNo').value     = tx.doc_no||'';
+      document.getElementById('finDocNo').value     = tx.document_no||'';
       document.getElementById('finDesc').value      = tx.description||'';
       document.getElementById('finProject').value   = tx.project_id||'';
       document.getElementById('finRemark').value    = tx.remark||'';
@@ -299,9 +315,9 @@ function openFinanceForm(id){
     // mode: add
     title.textContent = 'เพิ่มรายการรับ-จ่าย';
     document.getElementById('finDate').value    = new Date().toISOString().split('T')[0];
-    document.getElementById('finType').value    = 'รับ';
+    setFinType('รับ');
     document.getElementById('finFund').value    = '';
-    document.getElementById('finHolding').value = 'เงินสด';
+    document.getElementById('finHolding').value = localStorage.getItem('fin_last_holding')||'เงินฝากธนาคาร';
     document.getElementById('finAmount').value  = '';
     document.getElementById('finDocNo').value   = '';
     document.getElementById('finDesc').value    = '';
@@ -318,7 +334,7 @@ function closeFinanceForm(){
 }
 
 // ---------- SAVE ----------
-async function saveFinanceTransaction(){
+async function saveFinanceTransaction(keepOpen){
   var editId  = document.getElementById('finEditId').value;
   var date    = document.getElementById('finDate').value;
   var type    = document.getElementById('finType').value;
@@ -342,7 +358,7 @@ async function saveFinanceTransaction(){
     fund_category_id: fundId,
     holding_type:     holding,
     amount:           amount,
-    doc_no:           docNo   || null,
+    document_no:      docNo   || null,
     description:      desc    || null,
     project_id:       projId  || null,
     procurement_id:   procId,
@@ -371,11 +387,22 @@ async function saveFinanceTransaction(){
       var procItem = PROC.find(function(i){ return i.id===procId; });
       if(procItem){ procItem.withdraw_status='เบิกแล้ว'; procItem.withdraw_no=docVal; }
     }
-    closeFinanceForm();
+    localStorage.setItem('fin_last_holding', holding);
     FINANCE_LOADED = false;
     await loadFinanceData();
-    await loadAll(); // sync PROC state
+    await loadAll();
     if(FIN_TAB==='transactions') loadTransactions();
+    if(keepOpen){
+      // รีเซ็ตฟอร์มแต่ไม่ปิด — กรอกต่อเนื่องได้
+      document.getElementById('finEditId').value = '';
+      document.getElementById('finAmount').value = '';
+      document.getElementById('finDocNo').value  = '';
+      document.getElementById('finDesc').value   = '';
+      document.getElementById('finRemark').value = '';
+      document.getElementById('finAmount').focus();
+    } else {
+      closeFinanceForm();
+    }
   }catch(e){
     alert('บันทึกไม่สำเร็จ: '+e.message);
   }
