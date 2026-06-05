@@ -58,7 +58,7 @@ body{font-family:var(--font);background:var(--canvas);color:var(--ink);font-size
 .nav-pill{
   background:var(--white);border-radius:var(--r-pill);box-shadow:var(--shadow-nav);
   display:flex;align-items:center;justify-content:space-between;
-  padding:12px 28px;max-width:2100px;margin:0 auto;pointer-events:all;
+  padding:12px 28px;max-width:none;margin:0 auto;pointer-events:all;
 }
 .nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer}
 .nav-mark{width:34px;height:22px;position:relative;flex-shrink:0}
@@ -94,7 +94,7 @@ body{font-family:var(--font);background:var(--canvas);color:var(--ink);font-size
 .btn-outline-sm:hover{border-color:var(--ink)}
 
 /* ======= PAGES ======= */
-.page{display:none;max-width:2200px;margin:0 auto;padding:40px 48px 100px}
+.page{display:none;max-width:none;width:100%;padding:40px 48px 100px}
 .page.active{display:block}
 
 /* ======= PAGE HEADER ======= */
