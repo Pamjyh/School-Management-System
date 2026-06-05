@@ -145,7 +145,7 @@ h2.page-title{font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1
 .tab-btn:hover{color:var(--ink)}
 
 /* ======= TABLE CARD ======= */
-.table-card{background:var(--lifted);border-radius:0 var(--r-card) var(--r-card) var(--r-card);border:1px solid rgba(20,20,19,.08);overflow:hidden;box-shadow:var(--shadow-card)}
+.table-card{background:var(--lifted);border-radius:0 var(--r-card) var(--r-card) var(--r-card);border:1px solid rgba(20,20,19,.08);overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:var(--shadow-card)}
 .table-card + .table-card{margin-top:0}
 .table-meta{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:var(--white);border-bottom:1px solid rgba(20,20,19,.06)}
 .meta-txt{font-size:13px;color:var(--slate)}
@@ -252,10 +252,61 @@ textarea.fc{resize:vertical;min-height:60px}
   .stat-row{grid-template-columns:repeat(3,1fr)}
   .finance-stats{grid-template-columns:repeat(2,1fr)}
 }
+
 @media(max-width:900px){
-  .stat-row{grid-template-columns:repeat(2,1fr)}
+  /* NAV: wrap แถวที่ 2 สำหรับ tabs */
+  .nav-outer{padding:0 10px;top:8px}
+  .nav-pill{
+    flex-wrap:wrap;
+    padding:10px 16px;
+    gap:6px;
+    row-gap:8px;
+  }
+  .nav-brand{flex:1}
+  .nav-title{font-size:13px}
+  .nav-right{gap:5px}
+  .nav-right .year-sel{font-size:11px;padding:5px 10px;max-width:90px}
+
+  /* tabs เป็นแถวใหม่ เลื่อนซ้าย-ขวาได้ ไม่ซ่อน */
+  .nav-tabs{
+    display:flex;
+    order:3;
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    gap:2px;
+    padding-bottom:2px;
+  }
+  .nav-tabs::-webkit-scrollbar{display:none}
+  .nav-tab{
+    white-space:nowrap;
+    flex-shrink:0;
+    padding:6px 14px;
+    font-size:12px;
+  }
+  .nav-spacer{height:110px}
+
+  /* LAYOUT */
+  .stat-row{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}
   .finance-stats{grid-template-columns:repeat(2,1fr)}
+  .stat-card{padding:18px 14px}
+  .stat-val{font-size:26px}
   .project-grid{grid-template-columns:1fr}
-  .nav-tabs{display:none}
-  .page{padding:20px 20px 60px}
+  .page{padding:16px 12px 80px}
+  h2.page-title{font-size:26px}
+  .page-header{margin-bottom:20px;gap:10px}
+
+  /* TABLE: เลื่อนซ้าย-ขวาได้ */
+  table{min-width:600px}
+  .toolbar{gap:7px}
+}
+
+@media(max-width:480px){
+  .stat-row{grid-template-columns:repeat(2,1fr);gap:8px}
+  .stat-val{font-size:22px}
+  .stat-card{padding:14px 12px}
+  .page{padding:12px 10px 80px}
+  h2.page-title{font-size:22px}
+  .nav-right .btn-outline-sm{display:none} /* ซ่อนปุ่ม ⚙ บนจอเล็กมาก */
 }
